@@ -25,6 +25,7 @@ import java.util.zip.ZipInputStream;
 
 public class Cartridge implements AddressSpace {
 
+
     public enum GameboyTypeFlag {
         UNIVERSAL, CGB, NON_CGB;
 
@@ -51,9 +52,10 @@ public class Cartridge implements AddressSpace {
 
     private int dmgBoostrap;
 
-    public Cartridge(GameboyOptions options) throws IOException {
-        File file = options.getRomFile();
-        int[] rom = loadFile(file);
+
+    public Cartridge(GameboyOptions options, InputStream inputStream, int streamLength, Battery batteryOverride)  throws IOException {
+
+        int[] rom = load(inputStream, streamLength);
         CartridgeType type = CartridgeType.getById(rom[0x0147]);
         title = getTitle(rom);
         LOG.debug("Cartridge {}, type: {}", title, type);
@@ -68,7 +70,7 @@ public class Cartridge implements AddressSpace {
 
         Battery battery = Battery.NULL_BATTERY;
         if (type.isBattery() && options.isSupportBatterySaves()) {
-            battery = new FileBattery(file.getParentFile(), FilenameUtils.removeExtension(file.getName()));
+            battery = batteryOverride;
         }
 
         if (type.isMbc1()) {
@@ -93,7 +95,53 @@ public class Cartridge implements AddressSpace {
         } else { // UNIVERSAL
             gbc = !options.isForceDmg();
         }
+
+
     }
+
+//    public Cartridge(GameboyOptions options) throws IOException {
+//        File file = options.getRomFile();
+//        int[] rom = loadFile(file);
+//        CartridgeType type = CartridgeType.getById(rom[0x0147]);
+//        title = getTitle(rom);
+//        LOG.debug("Cartridge {}, type: {}", title, type);
+//        gameboyType = GameboyTypeFlag.getFlag(rom[0x0143]);
+//        int romBanks = getRomBanks(rom[0x0148]);
+//        int ramBanks = getRamBanks(rom[0x0149]);
+//        if (ramBanks == 0 && type.isRam()) {
+//            LOG.warn("RAM bank is defined to 0. Overriding to 1.");
+//            ramBanks = 1;
+//        }
+//        LOG.debug("ROM banks: {}, RAM banks: {}", romBanks, ramBanks);
+//
+//        Battery battery = Battery.NULL_BATTERY;
+//        if (type.isBattery() && options.isSupportBatterySaves()) {
+//            battery = new FileBattery(file.getParentFile(), FilenameUtils.removeExtension(file.getName()));
+//        }
+//
+//        if (type.isMbc1()) {
+//            addressSpace = new Mbc1(rom, type, battery, romBanks, ramBanks);
+//        } else if (type.isMbc2()) {
+//            addressSpace = new Mbc2(rom, type, battery, romBanks);
+//        } else if (type.isMbc3()) {
+//            addressSpace = new Mbc3(rom, type, battery, romBanks, ramBanks);
+//        } else if (type.isMbc5()) {
+//            addressSpace = new Mbc5(rom, type, battery, romBanks, ramBanks);
+//        } else {
+//            addressSpace = new Rom(rom, type, romBanks, ramBanks);
+//        }
+//
+//        dmgBoostrap = options.isUsingBootstrap() ? 0 : 1;
+//        if (options.isForceCgb()) {
+//            gbc = true;
+//        } else if (gameboyType == Cartridge.GameboyTypeFlag.NON_CGB) {
+//            gbc = false;
+//        } else if (gameboyType == Cartridge.GameboyTypeFlag.CGB) {
+//            gbc = true;
+//        } else { // UNIVERSAL
+//            gbc = !options.isForceDmg();
+//        }
+//    }
 
     private String getTitle(int[] rom) {
         StringBuilder t = new StringBuilder();

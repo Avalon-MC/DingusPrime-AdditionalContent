@@ -6,14 +6,14 @@ import net.petercashel.dingusprimeacm.dingusprimeacm;
 
 import java.util.UUID;
 
-public class GameBoyCapabilityImplem implements IGameBoyCapability {
+public class GameBoyCartCapabilityImplem implements IGameBoyCartCapability {
     private String value;
 
-    public static final ResourceLocation ID = new ResourceLocation(dingusprimeacm.MODID, "gameboycap");
-    private static final String NBT_KEY = "gameboycap";
+    public static final ResourceLocation ID = new ResourceLocation(dingusprimeacm.MODID, "gameboycartcap");
+    private static final String NBT_KEY = "gameboycartcap";
 
-    public GameBoyCapabilityImplem() { this(UUID.randomUUID().toString()); }
-    public GameBoyCapabilityImplem(String uuid) { this.value = uuid; }
+    public GameBoyCartCapabilityImplem() { this(UUID.randomUUID().toString()); }
+    public GameBoyCartCapabilityImplem(String uuid) { this.value = uuid; }
 
     @Override
     public String getUniqueID() {
@@ -28,12 +28,12 @@ public class GameBoyCapabilityImplem implements IGameBoyCapability {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        tag.putString("uuid", value);
+        tag.putString("uuidcart", value);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        value = nbt.getString("uuid");
+        value = nbt.getString("uuidcart");
     }
 }

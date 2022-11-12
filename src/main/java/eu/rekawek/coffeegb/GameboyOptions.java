@@ -13,16 +13,22 @@ public class GameboyOptions {
 
     private final boolean forceCgb;
 
-    private final boolean useBootstrap;
+    private boolean useBootstrap;
 
-    private final boolean disableBatterySaves;
+    private boolean disableBatterySaves;
 
-    private final boolean debug;
+    private boolean debug;
 
     private final boolean headless;
 
     public GameboyOptions(File romFile) {
         this(romFile, Collections.emptyList(), Collections.emptyList());
+    }
+
+    // Added
+    public GameboyOptions(File romFile, boolean DisableSaves, boolean usebootrom) {
+        this(romFile, Collections.emptyList(), Collections.emptyList());
+        useBootstrap = usebootrom;
     }
 
     public GameboyOptions(File romFile, Collection<String> params, Collection<String> shortParams) {
@@ -38,9 +44,9 @@ public class GameboyOptions {
         this.headless = params.contains("headless");
     }
 
-    public File getRomFile() {
-        return romFile;
-    }
+    //public File getRomFile() {
+//        return romFile;
+//    }
 
     public boolean isForceDmg() {
         return forceDmg;
@@ -79,4 +85,7 @@ public class GameboyOptions {
         stream.println("      --headless                 Start in the headless mode");
     }
 
+    public void DisableDebug() {
+        debug = false;
+    }
 }

@@ -1,4 +1,4 @@
-package net.petercashel.dingusprimeacm.kubejs;
+package net.petercashel.dingusprimeacm.gameboy.registry;
 
 import dev.latvian.mods.kubejs.BuilderBase;
 import dev.latvian.mods.kubejs.KubeJS;

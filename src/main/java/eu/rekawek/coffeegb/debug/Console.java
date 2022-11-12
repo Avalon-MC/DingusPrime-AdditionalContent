@@ -7,7 +7,6 @@ import eu.rekawek.coffeegb.debug.command.ShowHelp;
 import eu.rekawek.coffeegb.debug.command.apu.Channel;
 import eu.rekawek.coffeegb.debug.command.cpu.ShowOpcode;
 import eu.rekawek.coffeegb.debug.command.cpu.ShowOpcodes;
-import eu.rekawek.coffeegb.debug.command.ppu.ShowBackground;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.UserInterruptException;
@@ -44,8 +43,8 @@ public class Console implements Runnable {
         commands.add(new ShowOpcodes());
         commands.add(new Quit());
 
-        commands.add(new ShowBackground(gameboy, ShowBackground.Type.WINDOW));
-        commands.add(new ShowBackground(gameboy, ShowBackground.Type.BACKGROUND));
+        //commands.add(new ShowBackground(gameboy, ShowBackground.Type.WINDOW));
+        //commands.add(new ShowBackground(gameboy, ShowBackground.Type.BACKGROUND));
         commands.add(new Channel(gameboy.getSound()));
 
         Collections.sort(commands, Comparator.comparing(c -> c.getPattern().getCommandNames().get(0)));

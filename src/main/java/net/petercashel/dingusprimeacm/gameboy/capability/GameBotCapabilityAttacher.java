@@ -11,23 +11,25 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
-import net.petercashel.dingusprimeacm.kubejs.GameBoyItemJS;
+import net.petercashel.dingusprimeacm.gameboy.item.GameBoyCartItemJS;
+import net.petercashel.dingusprimeacm.gameboy.item.GameBoyItemJS;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class GameBotCapabilityAttacher {
-    private static class GameBotCapabilityProvider implements  ICapabilityProvider, ICapabilitySerializable<CompoundTag>, INBTSerializable<CompoundTag> {
 
-        public static final ResourceLocation IDENTIFIER = new ResourceLocation(dingusprimeacm.MODID, "gameboycap");
+    private static class GameBoyCartCapabilityProvider implements  ICapabilityProvider, ICapabilitySerializable<CompoundTag>, INBTSerializable<CompoundTag> {
 
-        private final IGameBoyCapability backend = new GameBoyCapabilityImplem();
-        private final LazyOptional<IGameBoyCapability> optionalData = LazyOptional.of(() -> backend);
+        public static final ResourceLocation IDENTIFIER = new ResourceLocation(dingusprimeacm.MODID, "gameboycartcap");
+
+        private final IGameBoyCartCapability backend = new GameBoyCartCapabilityImplem();
+        private final LazyOptional<IGameBoyCartCapability> optionalData = LazyOptional.of(() -> backend);
 
         @Nonnull
         @Override
         public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-            return dingusprimeacm.GAMEBOY_CAP_INSTANCE.orEmpty(cap, this.optionalData);
+            return dingusprimeacm.GAMEBOYCART_CAP_INSTANCE.orEmpty(cap, this.optionalData);
         }
 
         void invalidate() {
@@ -47,9 +49,10 @@ public class GameBotCapabilityAttacher {
 
 
     public static void attach(final AttachCapabilitiesEvent<ItemStack> event) {
-        final GameBotCapabilityProvider provider = new GameBotCapabilityProvider();
-        if (event.getObject().getItem() instanceof GameBoyItemJS) {
-            event.addCapability(GameBotCapabilityProvider.IDENTIFIER, provider);
+
+        final GameBoyCartCapabilityProvider provider2 = new GameBoyCartCapabilityProvider();
+        if (event.getObject().getItem() instanceof GameBoyCartItemJS) {
+            event.addCapability(GameBoyCartCapabilityProvider.IDENTIFIER, provider2);
         }
     }
 

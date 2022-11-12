@@ -35,4 +35,5 @@ public class RomInfoBuilder extends BuilderBase<RomInfo> {
         this.RomPath = new ResourceLocation(resourceLocation);
         return this;
     }
+
 }
