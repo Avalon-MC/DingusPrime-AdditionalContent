@@ -296,11 +296,13 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
                 if (ShopkeeperCurrencyHelper.canRefundPlayer(PlayerReference, merchantoffer.getPriceMultiplier()))
                 {
                     ShopkeeperCurrencyHelper.refundPlayer(PlayerReference, merchantoffer.getPriceMultiplier());
+                    this.tradeContainer.selectionHint_sk = -1;
                 }
                 else
                 {
                     ItemStack result = merchantoffer.getResult();
                     this.PlayerReference.level.addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
+                    this.tradeContainer.selectionHint_sk = -1;
                 }
             }
 

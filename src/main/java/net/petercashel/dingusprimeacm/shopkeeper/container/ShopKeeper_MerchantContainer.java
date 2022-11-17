@@ -58,10 +58,12 @@ public class ShopKeeper_MerchantContainer extends MerchantContainer {
                         this.setItem(2, merchantoffer.assemble());
                     } else {
                         this.setItem(2, ItemStack.EMPTY);
+                        this.selectionHint_sk = -1;
                     }
                 } else {
                     //On fail, do this.
                     this.setItem(2, ItemStack.EMPTY);
+                    this.selectionHint_sk = -1;
                 }
             }
 
@@ -76,6 +78,8 @@ public class ShopKeeper_MerchantContainer extends MerchantContainer {
 
     @Override
     public void setSelectionHint(int pCurrentRecipeIndex) {
+
+        selectionHint_sk = pCurrentRecipeIndex;
 
         if (selectionHint_sk != -1) {
             MerchantOffers merchantoffers = this.merchant_SK.getOffers();
@@ -99,8 +103,6 @@ public class ShopKeeper_MerchantContainer extends MerchantContainer {
         }
 
 
-
-        selectionHint_sk = pCurrentRecipeIndex;
         super.setSelectionHint(pCurrentRecipeIndex);
 
 
