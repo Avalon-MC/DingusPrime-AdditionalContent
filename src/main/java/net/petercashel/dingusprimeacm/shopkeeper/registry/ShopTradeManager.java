@@ -21,6 +21,7 @@ public class ShopTradeManager {
     private final int RandomTradesCount = 3;
     private final Random random = new Random();
     public static final ShopTradeManager INSTANCE = new ShopTradeManager();
+    private long savedMillis;
     public ConcurrentHashMap<ShopTradeInfo.ShopType, ArrayList<ShopTradeInfo>> CurrentTradeDict = new  ConcurrentHashMap<>();
     public ArrayList<ShopTradeInfo> CurrentTrades(ShopTradeInfo.ShopType key) {
         if (CurrentTradeDict.containsKey(key)) return CurrentTradeDict.get(key);
@@ -28,10 +29,13 @@ public class ShopTradeManager {
     };
 
     public ShopTradeManager() {
+        // Save current time of construction
+        savedMillis = System.currentTimeMillis();
     }
 
-
-
+    private void ResetOffers() {
+        CurrentTradeDict.clear();
+    }
 
     public void UpdateRandomTrades(ShopTradeInfo.ShopType _shopType) {
         CurrentTrades(_shopType).clear();
@@ -80,6 +84,11 @@ public class ShopTradeManager {
     }
 
     public void ApplyOffers(MerchantOffers pOffers, ShopTradeInfo.ShopType _shopType) {
+
+        // Check time elapsed
+        if (System.currentTimeMillis() >= savedMillis + 24 * 60 * 60 * 1000) {
+            ResetOffers();
+        }
 
         if (CurrentTrades(_shopType).isEmpty()) {
             UpdateRandomTrades(_shopType);

@@ -258,5 +258,9 @@ public class ShopKeeper extends Villager {
         }
     }
 
-
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (!pSource.isCreativePlayer()) return false;
+        return super.hurt(pSource, pAmount);
+    }
 }

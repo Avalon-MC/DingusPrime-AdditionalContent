@@ -112,7 +112,7 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
         this.font.draw(pPoseStack, TRADES_LABEL, (float)(5 - l / 2 + 48), 6.0F, 4210752);
 
         int wid = this.font.width(BALANCE_LABEL_WORKING);
-        this.font.draw(pPoseStack, BALANCE_LABEL_WORKING, (float)(5 - wid / 2 + 158), 45, 4210752);
+        this.font.draw(pPoseStack, BALANCE_LABEL_WORKING, (float)(5 - wid / 2 + 158), 42, 4210752);
     }
 
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pX, int pY) {
