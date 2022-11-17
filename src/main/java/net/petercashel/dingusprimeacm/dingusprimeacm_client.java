@@ -1,8 +1,11 @@
 package net.petercashel.dingusprimeacm;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.VillagerRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ClientRegistry;
@@ -15,6 +18,9 @@ import net.petercashel.dingusprimeacm.gameboy.client.emulation.GameboyCartScreen
 import net.petercashel.dingusprimeacm.gameboy.client.emulation.GameboyController;
 import net.petercashel.dingusprimeacm.gameboy.client.emulation.GameboyDisplay;
 import net.petercashel.dingusprimeacm.gameboy.client.GameboyScreen;
+import net.petercashel.dingusprimeacm.shopkeeper.container.ShopKeeperScreen;
+import net.petercashel.dingusprimeacm.shopkeeper.entity.ShopKeeper;
+import net.petercashel.dingusprimeacm.shopkeeper.entity.client.ShopKeeperRenderer;
 import org.lwjgl.glfw.GLFW;
 
 
@@ -34,7 +40,8 @@ public class dingusprimeacm_client {
     public static void onClientSetupEvent(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(dingusprimeacm.GAMEBOY_CONTAINER.get(), GameboyScreen::new);
-            MenuScreens.register(dingusprimeacm.GAMEBOYCART_CONTAINER.get(), GameboyCartScreen::new);           // Attach our container to the screen
+            MenuScreens.register(dingusprimeacm.GAMEBOYCART_CONTAINER.get(), GameboyCartScreen::new);
+            MenuScreens.register(dingusprimeacm.SHOP_KEEPER_CONTAINER.get(), ShopKeeperScreen::new);          // Attach our container to the screen
 
             GB_A.setKeyConflictContext(KeyConflictContext.GUI);
             GB_B.setKeyConflictContext(KeyConflictContext.GUI);
@@ -55,6 +62,32 @@ public class dingusprimeacm_client {
             ClientRegistry.registerKeyBinding(GB_START);
 
             GBBinds = new KeyMapping[]{GB_A, GB_B, GB_SEL, GB_START, GB_UP, GB_DOWN, GB_LEFT, GB_RIGHT};
+
+
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_Furniture.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_General.get(), ShopKeeperRenderer::new);
+
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_weapons.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_armor.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_tools.get(), ShopKeeperRenderer::new);
+
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_seeds.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_trees.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_plants.get(), ShopKeeperRenderer::new);
+
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_cosmetic.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_hats.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_shirts.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_pants.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_shoes.get(), ShopKeeperRenderer::new);
+
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_curios.get(), ShopKeeperRenderer::new);
+
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_custom1.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_custom2.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_custom3.get(), ShopKeeperRenderer::new);
+            EntityRenderers.register(dingusprimeacm.SHOP_KEEPER_custom4.get(), ShopKeeperRenderer::new);
         });
     }
 

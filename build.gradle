@@ -4,6 +4,9 @@ buildscript {
         maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://maven.parchmentmc.org' }
         maven { url = 'https://plugins.gradle.org/m2/' }
+        maven {
+            url = "https://maven.theillusivec4.top/"
+        }
         mavenCentral()
     }
     dependencies {
@@ -203,7 +206,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.2'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -228,6 +231,14 @@ dependencies {
     implementation fg.deobf("dev.latvian.mods:rhino-forge:${rhino_version}")
 
     implementation fg.deobf("curse.maven:open-loader-354339:3697234")
+
+    //runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+    //compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    //implementation fg.deobf("curse.maven:curios-309927:3841948")
+    implementation fg.deobf("curse.maven:curios-309927:3841950")
+
+    implementation fg.deobf("curse.maven:calemi-core-573646:3778251")
+    implementation fg.deobf("curse.maven:calemis-economy-579403:3778254")
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }
@@ -259,6 +270,7 @@ processResources {
             mod_credits       : mod_credits,
             minecraft_version : minecraft_version,
             forge_min_version : forge_min_version,
+            calemieconomy_version: calemieconomy_version,
             create_min_version: create_min_version,
             kubejs_min_version: kubejs_min_version,
             openloader_min_version: openloader_min_version,

@@ -3,9 +3,17 @@ package net.petercashel.dingusprimeacm.kubejs;
 import dev.latvian.mods.kubejs.BuilderBase;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.level.gen.forge.BiomeDictionaryWrapper;
+import dev.latvian.mods.kubejs.script.CustomJavaToJsWrappersEvent;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.util.ClassFilter;
+import dev.latvian.mods.rhino.mod.util.CollectionTagWrapper;
+import dev.latvian.mods.rhino.mod.util.CompoundTagWrapper;
+import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
+import net.minecraft.nbt.CollectionTag;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,6 +26,9 @@ import net.petercashel.dingusprimeacm.gameboy.item.GameBoyItemJS;
 import net.petercashel.dingusprimeacm.gameboy.registry.RomInfo;
 import net.petercashel.dingusprimeacm.gameboy.registry.RomRegistryEventJS;
 import net.petercashel.dingusprimeacm.kubejs.kubejs.CardinalBlockJS;
+import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo;
+import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo.ShopType;
+import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeRegistryEventJS;
 
 import java.util.function.Supplier;
 
@@ -35,6 +46,7 @@ public class dingusprimeKubeJSPlugin extends KubeJSPlugin {
     }
 
     public static RegistryObjectBuilderTypes<RomInfo> ROM;
+    public static RegistryObjectBuilderTypes<ShopTradeInfo> SHOPTRADE;
 
     @Override
     public void init()
@@ -65,8 +77,25 @@ public class dingusprimeKubeJSPlugin extends KubeJSPlugin {
         }
     }
 
+    public static void RegistryEventShopTrade(RegistryEvent.Register<ShopTradeInfo> shoptrade)
+    {
+        SHOPTRADE = RegistryObjectBuilderTypes.add(shoptrade.getRegistry().getRegistryKey(), ShopTradeInfo.class);
+        SHOPTRADE.addType("shoptrade", ShopTradeInfoBuilder.class, ShopTradeInfoBuilder::new);
+
+        //Handle firing the event
+        new ShopTradeRegistryEventJS<ShopTradeInfo>(SHOPTRADE).post("shoptrade_registry");
+
+        for (BuilderBase<? extends ShopTradeInfo> builder: SHOPTRADE.objects.values()) {
+            ShopTradeInfoBuilder rib = (ShopTradeInfoBuilder) builder;
+            ShopTradeInfo object = new ShopTradeInfo(rib);
+            shoptrade.getRegistry().register(object);
+        }
+    }
+
     public static Supplier<IForgeRegistry<RomInfo>> ROM_REGISTRY = null;
     public static ResourceLocation RegistryKey = new ResourceLocation(dingusprimeacm.MODID, "rom_registry");
+    public static Supplier<IForgeRegistry<ShopTradeInfo>> SHOPTRADE_REGISTRY = null;
+    public static ResourceLocation RegistryKey_Shop = new ResourceLocation(dingusprimeacm.MODID, "shoptrade_registry");
 
     @SubscribeEvent
     public static void registerRegistries(NewRegistryEvent event) {
@@ -74,5 +103,28 @@ public class dingusprimeKubeJSPlugin extends KubeJSPlugin {
         registryBuilder.setType(RomInfo.class);
         registryBuilder.setName(RegistryKey);
         ROM_REGISTRY = event.create(registryBuilder);
+
+
+        RegistryBuilder<ShopTradeInfo> registryBuilder2 = new RegistryBuilder<>();
+        registryBuilder2.setType(ShopTradeInfo.class);
+        registryBuilder2.setName(RegistryKey_Shop);
+        SHOPTRADE_REGISTRY = event.create(registryBuilder2);
     }
+
+
+
+
+
+    @Override
+    public void addTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
+
+        typeWrappers.register(ShopType.class, ShopType::getShopTrade);
+    }
+
+    @Override
+    public void addCustomJavaToJsWrappers(CustomJavaToJsWrappersEvent event) {
+        //event.add(CompoundTag.class, CompoundTagWrapper::new);
+        //event.add(CollectionTag.class, CollectionTagWrapper::new);
+    }
+
 }

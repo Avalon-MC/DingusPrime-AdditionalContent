@@ -37,3 +37,10 @@ mandatory = true
 versionRange = "[${openloader_min_version},)"
 ordering = "BEFORE"
 side = "BOTH"
+
+[[dependencies.dingusprimeacm]]
+modId = "calemieconomy"
+mandatory = true
+versionRange = "[${calemieconomy_version},)"
+ordering = "NONE"
+side = "BOTH"

@@ -36,8 +36,13 @@ public class PacketHandler {
         INSTANCE.messageBuilder(GBSaveRespPacket_SC.class, 2, NetworkDirection.PLAY_TO_CLIENT).decoder(GBSaveRespPacket_SC::decoder).encoder(GBSaveRespPacket_SC::encoder).consumer(GBSaveRespPacket_SC::messageConsumer).add();
         INSTANCE.messageBuilder(GBUploadSavePacket_CS.class, 3, NetworkDirection.PLAY_TO_SERVER).decoder(GBUploadSavePacket_CS::decoder).encoder(GBUploadSavePacket_CS::encoder).consumer(GBUploadSavePacket_CS::messageConsumer).add();
 
-
         INSTANCE.messageBuilder(GBSaveRespPacket_Chunked_SC.class, 4, NetworkDirection.PLAY_TO_CLIENT).decoder(GBSaveRespPacket_Chunked_SC::decoder).encoder(GBSaveRespPacket_Chunked_SC::encoder).consumer(GBSaveRespPacket_Chunked_SC::messageConsumer).add();
         INSTANCE.messageBuilder(GBUploadSavePacket_Chunked_CS.class, 5, NetworkDirection.PLAY_TO_SERVER).decoder(GBUploadSavePacket_Chunked_CS::decoder).encoder(GBUploadSavePacket_Chunked_CS::encoder).consumer(GBUploadSavePacket_Chunked_CS::messageConsumer).add();
+
+
+        INSTANCE.messageBuilder(ShopkeeperMerchantOffersPacket_SC.class, 6, NetworkDirection.PLAY_TO_CLIENT).decoder(ShopkeeperMerchantOffersPacket_SC::decoder).encoder(ShopkeeperMerchantOffersPacket_SC::encoder).consumer(ShopkeeperMerchantOffersPacket_SC::messageConsumer).add();
+        INSTANCE.messageBuilder(ShopkeeperSelectTradePacket_CS.class, 7, NetworkDirection.PLAY_TO_SERVER).decoder(ShopkeeperSelectTradePacket_CS::decoder).encoder(ShopkeeperSelectTradePacket_CS::encoder).consumer(ShopkeeperSelectTradePacket_CS::messageConsumer).add();
+        INSTANCE.messageBuilder(ShopkeeperDropResultPacket_CS.class, 8, NetworkDirection.PLAY_TO_SERVER).decoder(ShopkeeperDropResultPacket_CS::decoder).encoder(ShopkeeperDropResultPacket_CS::encoder).consumer(ShopkeeperDropResultPacket_CS::messageConsumer).add();
+        INSTANCE.messageBuilder(ShopkeeperSetResultPacket_SC.class, 9, NetworkDirection.PLAY_TO_CLIENT).decoder(ShopkeeperSetResultPacket_SC::decoder).encoder(ShopkeeperSetResultPacket_SC::encoder).consumer(ShopkeeperSetResultPacket_SC::messageConsumer).add();
     }
 }

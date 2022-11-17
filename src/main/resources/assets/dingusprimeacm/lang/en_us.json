@@ -1,4 +1,32 @@
 {
+  "entity.dingusprimeacm.shopkeeper.none": "Porkea Trader",
+  "entity.dingusprimeacm.shopkeeper_furniture.none": "Porkea Trader",
+
+  "entity.dingusprimeacm.shopkeeper_general.none": "General Store",
+
+  "entity.dingusprimeacm.shopkeeper_weapons.none": "Weapons Store",
+  "entity.dingusprimeacm.shopkeeper_armor.none": "Armor Store",
+  "entity.dingusprimeacm.shopkeeper_tools.none": "Tools Store",
+
+  "entity.dingusprimeacm.shopkeeper_seeds.none": "Seeds Store",
+  "entity.dingusprimeacm.shopkeeper_trees.none": "Trees Store",
+  "entity.dingusprimeacm.shopkeeper_plants.none": "Plants Store",
+
+  "entity.dingusprimeacm.shopkeeper_cosmetic.none": "Cosmetic Store",
+  "entity.dingusprimeacm.shopkeeper_hats.none": "Hat Store",
+  "entity.dingusprimeacm.shopkeeper_shirts.none": "Shirt Store",
+  "entity.dingusprimeacm.shopkeeper_pants.none": "Pants Store",
+  "entity.dingusprimeacm.shopkeeper_shoes.none": "Shoe Store",
+
+  "entity.dingusprimeacm.shopkeeper_curios.none": "Curios Store",
+
+  "entity.dingusprimeacm.shopkeeper_custom1.none": "Custom Store",
+  "entity.dingusprimeacm.shopkeeper_custom2.none": "Custom Store",
+  "entity.dingusprimeacm.shopkeeper_custom3.none": "Custom Store",
+  "entity.dingusprimeacm.shopkeeper_custom4.none": "Custom Store",
+
+
+  "merchant.dingusprimeacm.trades": "Click to Buy!",
   "key.categories.dingusprimeacm": "DingusPrime Additional Content",
   "key.GB_A": "GB A Button",
   "key.GB_B": "GB B Button",
