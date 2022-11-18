@@ -72,11 +72,11 @@ public class CardinalBlockJS extends BasicBlockJS {
 
         @Override
         public BlockState getStateForPlacement(BlockPlaceContext context) {
-            var state = defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
 
-            if (blockBuilder.waterlogged) {
-                state = state.setValue(BlockStateProperties.WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
-            }
+            var superState = super.getStateForPlacement(context);
+            var state = superState.setValue(FACING, context.getHorizontalDirection().getOpposite());
+
+
 
             return state;
         }

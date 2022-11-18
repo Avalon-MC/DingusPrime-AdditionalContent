@@ -35,7 +35,7 @@ side = "BOTH"
 modId = "openloader"
 mandatory = true
 versionRange = "[${openloader_min_version},)"
-ordering = "BEFORE"
+ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.dingusprimeacm]]
