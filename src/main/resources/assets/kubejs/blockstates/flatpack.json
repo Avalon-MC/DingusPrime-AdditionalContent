@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "": {
+      "model": "kubejs:block/flatpack",
+      "y": 0
+    }
+  }
+}

@@ -3,33 +3,37 @@ package net.petercashel.dingusprimeacm.kubejs;
 import dev.latvian.mods.kubejs.BuilderBase;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
-import dev.latvian.mods.kubejs.level.gen.forge.BiomeDictionaryWrapper;
 import dev.latvian.mods.kubejs.script.CustomJavaToJsWrappersEvent;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.util.ClassFilter;
-import dev.latvian.mods.rhino.mod.util.CollectionTagWrapper;
-import dev.latvian.mods.rhino.mod.util.CompoundTagWrapper;
 import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
-import net.minecraft.nbt.CollectionTag;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.BiomeDictionary;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegistryBuilder;
+import net.petercashel.dingusprimeacm.cabnet.CabnetBlockEntity;
+import net.petercashel.dingusprimeacm.cabnet.CabnetBlockJS;
+import net.petercashel.dingusprimeacm.chair.ChairBlockJS;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
+import net.petercashel.dingusprimeacm.flatpack.FlatpackBlockJS;
 import net.petercashel.dingusprimeacm.gameboy.item.GameBoyCartItemJS;
 import net.petercashel.dingusprimeacm.gameboy.item.GameBoyItemJS;
 import net.petercashel.dingusprimeacm.gameboy.registry.RomInfo;
 import net.petercashel.dingusprimeacm.gameboy.registry.RomRegistryEventJS;
 import net.petercashel.dingusprimeacm.kubejs.kubejs.CardinalBlockJS;
+import net.petercashel.dingusprimeacm.cartshelf.block.CartShelfBlockEntity;
+import net.petercashel.dingusprimeacm.cartshelf.block.CartShelfBlockJS;
+import net.petercashel.dingusprimeacm.lamps.LampBlockJS;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo.ShopType;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeRegistryEventJS;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 
@@ -52,9 +56,64 @@ public class dingusprimeKubeJSPlugin extends KubeJSPlugin {
     public void init()
     {
         RegistryObjectBuilderTypes.BLOCK.addType("customcardinal", CardinalBlockJS.CardinalBuilder.class, CardinalBlockJS.CardinalBuilder::new);
+        RegistryObjectBuilderTypes.BLOCK.addType("cartshelf", CartShelfBlockJS.CartShelfBuilder.class, CartShelfBlockJS.CartShelfBuilder::new);
+        RegistryObjectBuilderTypes.BLOCK.addType("cabnet", CabnetBlockJS.CabnetBuilder.class, CabnetBlockJS.CabnetBuilder::new);
+        RegistryObjectBuilderTypes.BLOCK.addType("chair", ChairBlockJS.ChairBuilder.class, ChairBlockJS.ChairBuilder::new);
+        RegistryObjectBuilderTypes.BLOCK.addType("lamp_post", LampBlockJS.LampPostBuilder.class, LampBlockJS.LampPostBuilder::new);
+        RegistryObjectBuilderTypes.BLOCK.addType("lamp_top", LampBlockJS.LampTopBuilder.class, LampBlockJS.LampTopBuilder::new);
+
+        RegistryObjectBuilderTypes.BLOCK.addType("flatpack", FlatpackBlockJS.FlatpackBuilder.class, FlatpackBlockJS.FlatpackBuilder::new);
 
         RegistryObjectBuilderTypes.ITEM.addType("gameboy", GameBoyItemJS.GameBoyBuilder.class, GameBoyItemJS.GameBoyBuilder::new);
         RegistryObjectBuilderTypes.ITEM.addType("gbcart", GameBoyCartItemJS.GBCartridgeBuilder.class, GameBoyCartItemJS.GBCartridgeBuilder::new);
+    }
+
+    public static BlockEntityType<CartShelfBlockEntity> CARTSHELF_BE;
+    public static BlockEntityType<CabnetBlockEntity> CABNET_BE;
+
+    @SubscribeEvent
+    public static void registerTE(RegistryEvent.Register<BlockEntityType<?>> evt) {
+        RegisterShelves(evt);
+        RegisterCabnets(evt);
+    }
+
+    private static void RegisterShelves(RegistryEvent.Register<BlockEntityType<?>> evt) {
+        // Register a new block here
+        ArrayList<Block> validCartShelves = new ArrayList<>();
+
+        RegistryObjectBuilderTypes.BLOCK.objects.forEach((resourceLocation,builder) -> {
+            if (builder instanceof CartShelfBlockJS.CartShelfBuilder) {
+                validCartShelves.add(RegistryObjectBuilderTypes.BLOCK.objects.get(resourceLocation).get());
+
+            }
+        });
+
+        if (!validCartShelves.isEmpty()) {
+            BlockEntityType<CartShelfBlockEntity> type = BlockEntityType.Builder.of(CartShelfBlockEntity::new, (Block[]) validCartShelves.toArray(new Block[validCartShelves.size()])).build(null);
+            type.setRegistryName("cartshelfbe");
+            evt.getRegistry().register(type);
+            CARTSHELF_BE = type;
+        }
+    }
+
+
+    private static void RegisterCabnets(RegistryEvent.Register<BlockEntityType<?>> evt) {
+        // Register a new block here
+        ArrayList<Block> validBlocks = new ArrayList<>();
+
+        RegistryObjectBuilderTypes.BLOCK.objects.forEach((resourceLocation,builder) -> {
+            if (builder instanceof CabnetBlockJS.CabnetBuilder) {
+                validBlocks.add(RegistryObjectBuilderTypes.BLOCK.objects.get(resourceLocation).get());
+
+            }
+        });
+
+        if (!validBlocks.isEmpty()) {
+            BlockEntityType<CabnetBlockEntity> type = BlockEntityType.Builder.of(CabnetBlockEntity::new, (Block[]) validBlocks.toArray(new Block[validBlocks.size()])).build(null);
+            type.setRegistryName("cabnetbe");
+            evt.getRegistry().register(type);
+            CABNET_BE = type;
+        }
     }
 
 

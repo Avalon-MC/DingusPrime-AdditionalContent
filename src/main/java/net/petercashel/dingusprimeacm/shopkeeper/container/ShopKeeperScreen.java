@@ -136,7 +136,6 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
                 blit(pPoseStack, this.leftPos + 83 + 99, this.topPos + 35, this.getBlitOffset(), 311.0F, 0.0F, 28, 21, 512, 256);
             }
         }
-
     }
 
     private void renderProgressBar(PoseStack pPoseStack, int pPosX, int pPosY, MerchantOffer pMerchantOffer) {

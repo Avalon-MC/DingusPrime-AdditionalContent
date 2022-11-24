@@ -113,7 +113,7 @@ public class ShopTradeManager {
 
     }
 
-    public ItemStack TryGetStackFromName(ResourceLocation resourceLocation, int count, ShopTradeInfo.ShopResultType shopResultType) {
+    public static ItemStack TryGetStackFromName(ResourceLocation resourceLocation, int count, ShopTradeInfo.ShopResultType shopResultType) {
         if (shopResultType == ShopTradeInfo.ShopResultType.block) {
             try {
                 RegistryObject<Block> item = RegistryObject.create(resourceLocation, ForgeRegistries.BLOCKS);
@@ -127,6 +127,30 @@ public class ShopTradeManager {
         } else {
             try {
                 RegistryObject<Item> item = RegistryObject.create(resourceLocation, ForgeRegistries.ITEMS);
+                if (item.isPresent()) {
+                    return new ItemStack(item.get(), count);
+                }
+
+            } catch (Exception ex) {
+
+            }
+        }
+
+        ResourceLocation location = new ResourceLocation("kubejs", resourceLocation.getPath());
+
+        if (shopResultType == ShopTradeInfo.ShopResultType.block) {
+            try {
+                RegistryObject<Block> item = RegistryObject.create(location, ForgeRegistries.BLOCKS);
+                if (item.isPresent()) {
+                    return new ItemStack(item.get().asItem(), count);
+                }
+
+            } catch (Exception ex) {
+
+            }
+        } else {
+            try {
+                RegistryObject<Item> item = RegistryObject.create(location, ForgeRegistries.ITEMS);
                 if (item.isPresent()) {
                     return new ItemStack(item.get(), count);
                 }

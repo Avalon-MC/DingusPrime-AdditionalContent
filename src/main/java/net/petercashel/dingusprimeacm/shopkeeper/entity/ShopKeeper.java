@@ -29,6 +29,7 @@ import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -260,7 +261,17 @@ public class ShopKeeper extends Villager {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (!pSource.isCreativePlayer()) return false;
-        return super.hurt(pSource, pAmount);
+        //Always hurt zombies
+        if (pSource.getEntity() != null && pSource.getEntity() instanceof Zombie) {
+            pSource.getEntity().hurt(pSource, pAmount); //Pass it on
+        }
+        if (pSource.isCreativePlayer()) return true; //Always by creative players
+
+        //Redirect to attacker
+        if (pSource.getEntity() != null) {
+            pSource.getEntity().hurt(pSource, pAmount); //Pass it on
+        }
+
+        return false; //Not Hurt
     }
 }

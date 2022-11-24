@@ -13,7 +13,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
 
-public abstract class CardinalBlockBuilder extends BlockBuilder {
+public abstract class CardinalBlockBuilder extends HelperBlockBuilder {
 
     public CardinalBlockBuilder(ResourceLocation i) {
         super(i);

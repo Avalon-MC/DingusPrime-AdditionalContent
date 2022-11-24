@@ -5,6 +5,8 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -28,7 +30,12 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ObjectHolder;
 import net.minecraftforge.registries.RegistryObject;
+import net.petercashel.dingusprimeacm.cabnet.CabnetContainer;
+import net.petercashel.dingusprimeacm.cartshelf.block.CartShelfBlockEntity;
+import net.petercashel.dingusprimeacm.cartshelf.container.CartShelfContainer;
+import net.petercashel.dingusprimeacm.chair.ChairEntity;
 import net.petercashel.dingusprimeacm.gameboy.container.GameboyCartContainer;
 import net.petercashel.dingusprimeacm.gameboy.container.GameboyContainer;
 import net.petercashel.dingusprimeacm.gameboy.capability.IGameBoyCartCapability;
@@ -111,6 +118,7 @@ public class dingusprimeacm
     }
 
 
+
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
     // Event bus for receiving Registry Events)
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -178,6 +186,15 @@ public class dingusprimeacm
         }
     }
 
+    public static final RegistryObject<EntityType<ChairEntity>> CHAIR_ENTITY_TYPE = ENTITY_TYPES.register("entity_chair", () -> {
+        return EntityType.Builder.<ChairEntity>of(ChairEntity::new, MobCategory.MISC)
+                .setTrackingRange(256)
+                .setUpdateInterval(20)
+                .sized(0.0001F, 0.0001F)
+                .build("entity_chair");
+    });
+
+
     public static final RegistryObject<EntityType<ShopKeeper>> SHOP_KEEPER = newShopKeeper("shopkeeper", ShopKeeper::new);
 //            ENTITY_TYPES.register("shopkeeper", () -> {
 //                return EntityType.Builder.<ShopKeeper>of(ShopKeeper::new, MobCategory.AMBIENT)
@@ -221,6 +238,12 @@ public class dingusprimeacm
 
     public static final RegistryObject<MenuType<GameboyCartContainer>> GAMEBOYCART_CONTAINER = CONTAINERS.register("gameboycart",
             () -> IForgeMenuType.create((windowId, inv, data) -> new GameboyCartContainer(windowId, inv, inv.player, inv.player.getItemInHand(inv.player.getUsedItemHand()))));
+
+    public static final RegistryObject<MenuType<CartShelfContainer>> CARTSHELF_CONTAINER = CONTAINERS.register("cartshelf",
+            () -> IForgeMenuType.create((windowId, inv, data) -> new CartShelfContainer(windowId, data.readBlockPos(), inv, inv.player)));
+
+    public static final RegistryObject<MenuType<CabnetContainer>> CABNET_CONTAINER = CONTAINERS.register("cabnet",
+            () -> IForgeMenuType.create((windowId, inv, data) -> new CabnetContainer(windowId, data.readBlockPos(), inv, inv.player)));
 
 
     @SubscribeEvent
