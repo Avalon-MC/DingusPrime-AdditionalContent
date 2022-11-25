@@ -27,7 +27,7 @@ It currently contains:
 * * Cycles available items every 24 hours or every server restart.
 
 
-## Configuration - Aka, How to use this? Where's the spawn eggs? Can I change the shop names? Why are my shops empty?
+## Configuration - Aka, How to use this? Where's the spawn eggs? Can I change the shop names? Why are my shops empty? How do I use all these new block types!
 
 ### Shop NPCs
 Whats Configurable: Shop Names, Trades, Villager Skins.
@@ -98,6 +98,36 @@ There are no spawn eggs.
 Instead, Stand where you want the NPC and use the summon command.
 Start by typing `/summon dingusprimeacm:shopkeeper_` into chat and append the shop type to the end
 Ignore `dingusprimeacm:shopkeeper`, is is the base npc for the shopkeepers and defaults to furniture.
+
+
+### New Block Types
+This information is relevent to all of the ones below.
+You will need to setup Blockstates, Models and Textures (B, M and T) for each block you add. If you dont specify a namespace for a block, then its B,M and T need to go under ~~`assets/kubejs/` in your resource pack~~ Read Below.
+
+You will need to deploy these assets to `KubeJS`'s assets folder. (Server/Client) resource packs and OpenLoader do not work as KubeJS won't pickup on the files. I've not found any other method of getting these recognised.
+The two currently known methods of doing this is:
+* Modpack Updates - Your usual pack update and adding the new files to `KubeJS`'s assets folder obviously works.
+* ContentSync - If you are using our other mod ContentSync for your server's modpack, then it supports automatically deploying the contents of 
+We recommend either automating this for your server using ContentSync 1.0.0 (if you are using it for content updates without needing pack updates) or via doing your usual modpack update via CurseForge. 
+
+
+
+### Cardinal Blocks (port from KJS 6 to 5.5)
+
+
+### Shelves (Facing:Yes)
+
+### Cabnets (Facing:Yes)
+
+### Chair (Facing:Yes)
+
+
+
+### Lamp (Tops and Posts) (Facing:No)
+
+### Flatpack Crates (No B,M or T Needed) (Facing:No)
+
+
 
 ### GameBoy Color Emulator
 Included is a GBC emulator, which is a modified version of https://github.com/trekawek/coffee-gb/. All credit for the excelent Java based GBC emulator goes to trekawek.
