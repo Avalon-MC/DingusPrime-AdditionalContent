@@ -100,32 +100,58 @@ Start by typing `/summon dingusprimeacm:shopkeeper_` into chat and append the sh
 Ignore `dingusprimeacm:shopkeeper`, is is the base npc for the shopkeepers and defaults to furniture.
 
 
-### New Block Types
+
+### New Block and Item Types
 This information is relevent to all of the ones below.
-You will need to setup Blockstates, Models and Textures (B, M and T) for each block you add. If you dont specify a namespace for a block, then its B,M and T need to go under ~~`assets/kubejs/` in your resource pack~~ Read Below.
+Each type below will be annotated with any relevent information. Is the facing blockstate supported, required assets, etc.
+
+You will need to setup Blockstates (Block Only), Models and Textures (B, M and T) for each block and item you add. If you dont specify a namespace for a block, then its B,M and T need to go under `assets/kubejs/` in your resource pack, However, Keep reading. 
 
 You will need to deploy these assets to `KubeJS`'s assets folder. (Server/Client) resource packs and OpenLoader do not work as KubeJS won't pickup on the files. I've not found any other method of getting these recognised.
 The two currently known methods of doing this is:
+
 * Modpack Updates - Your usual pack update and adding the new files to `KubeJS`'s assets folder obviously works.
-* ContentSync - If you are using our other mod ContentSync for your server's modpack, then it supports automatically deploying the contents of 
-We recommend either automating this for your server using ContentSync 1.0.0 (if you are using it for content updates without needing pack updates) or via doing your usual modpack update via CurseForge. 
+
+* ContentSync - If you are using our other mod ContentSync for your server's modpack, then it supports automatically deploying the contents of `assets/kubejs/` to the `KubeJS`'s assets folder.
+
+Note: Support for non kubejs namespaced content is not implemented in ContentSync, so if you want to use CS for this issue, do not specify a namespace for the blocks / items. 
 
 
-
-### Cardinal Blocks (port from KJS 6 to 5.5)
-
-
-### Shelves (Facing:Yes)
-
-### Cabnets (Facing:Yes)
-
-### Chair (Facing:Yes)
+### Common new builder methods
+All DingusPrime ACM added block types support a new method.
+* `addBox` - Works almost like the box method. Except it's designed to take the position and size from BlockBench and do the math for you. Finally, the true/false is for flipping the box 180 if the model is backwards.
+* * Example `addBox('posX','posY','posZ','sizeX','sizeY','sizeZ', (true/false))`
 
 
+### Cardinal Blocks (port from KJS 6 to 5.5) (Facing:Yes) (B,M,T)
+type: `customcardinal` - Supports facing any horizontal direction.
 
-### Lamp (Tops and Posts) (Facing:No)
 
-### Flatpack Crates (No B,M or T Needed) (Facing:No)
+### Shelves (Facing:Yes) (B,M,T)
+type: `shelf` - A 16 slot (4x4) shelf that displays items. Included in the mod is a B,M & T for 'gameshelf'. Use this as a reference.
+
+### Cabinet(Facing:Yes) (B,M,T)
+type: `cabinet` - A 16 slot (4x4) shelf that doesn't display items. 
+
+### Chair (Facing:Yes) (B,M,T)
+type: `chair` - Make a custom chair.
+
+The Y height the player sits at is adjustable with a custom method.
+* `sitOffset` - Numerical parameter. (eg `-0.5` or `1.5`) Higher values move you higher up the block. You start centered in the block.
+
+
+### Lamp (Tops and Posts) (Facing:No) (B,M,T)
+type: `lamp_top` - The Light Generating part. Activates on Right Click. Use for custom lights
+
+type: `lamp_post` - The optional stand part. Activates a lamp_top up to 8 blocks above this. Must be connected via other lamp_post blocks.
+
+### Flatpack Crates (Facing:No) (~~B,M,T~~)
+type: `flatpack` - It's a bundle and a block. Automatically uses the included model and textures. Can be used with the shopkeeper.
+
+Add items to a custom box with the custom methods
+* `AddItem` - Takes a registry name of a block or item and a quantity and adds it to the box.
+* *  Will automatically search Items before Blocks for a valid item. Will also search the `kubejs` namespace after the default `minecraft` namespace if no namespace is supplied.
+* * Example `AddItem('fancy_lamp_post', 2)` or `AddItem('kubejs:fancy_lamp_post', 2)`
 
 
 
