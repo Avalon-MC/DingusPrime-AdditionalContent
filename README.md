@@ -197,5 +197,29 @@ TODO: Add info on the following
 
 
 ```
+onEvent('rom_registry', event => {
+	// Register new Roms here
+		      //GAMEID		  //ROM File Path
+	event.create('testgame').romPath('kubejs:rom/testgame.gb')
+})
+```
+GAMEID MUST MATCH BETWEEN CART AND ROM REGISTRY
 
+```
+onEvent('item.registry', event => {
+	// Register new items here
+
+	//CARTS
+		      //Reg Name					  //GAMEID
+	event.create('testgame', 'gbcart').displayName('TestGame').gameID('testgame').parentModel('kubejs:item/gbcart')
+
+	
+	//HandHelds
+			      
+	event.create('testboy', 'gameboy').displayName('Old hamazon FLINT').tooltip("A rare and exceptionally... wait this has batteries in it...")				//Load a different background for the emulator gui - `assets/dingusprimeacm/textures/gui/gameboy_gui_{STRING}.png`
+	event.create('testboy_red', 'gameboy').displayName('Red hamazon FLINT').tooltip("A rare and exceptionally... wait this has batteries in it...").color(0, 0xFF0000).guiBG('red')  //`assets/dingusprimeacm/textures/gui/gameboy_gui_red.png`
+	event.create('testboy_purple', 'gameboy').displayName('Purple hamazon FLINT').tooltip("A rare and exceptionally... wait this has batteries in it...").color(0, 0xFF00FF).guiBG('purple')
+
+
+})
 ```
