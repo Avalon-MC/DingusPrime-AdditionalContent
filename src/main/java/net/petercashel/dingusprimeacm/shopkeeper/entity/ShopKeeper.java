@@ -181,7 +181,9 @@ public class ShopKeeper extends Villager {
         pOffers.add(new MerchantOffer(ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.BLACK_WOOL), 99, 1, 15.0f));
 
 
-        ShopTradeManager.INSTANCE.ApplyOffers(pOffers, shopType);
+        if (!this.level.isClientSide()) {
+            ShopTradeManager.INSTANCE.ApplyOffers(pOffers, shopType);
+        }
     }
 
     @Override
@@ -197,6 +199,10 @@ public class ShopKeeper extends Villager {
 
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+        if (pHand != InteractionHand.MAIN_HAND) { //Dont double execute
+            return super.mobInteract(pPlayer, pHand);
+        }
+
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (itemstack.getItem() != Items.VILLAGER_SPAWN_EGG && this.isAlive() && !this.isTrading() && !this.isSleeping() && !pPlayer.isSecondaryUseActive()) {
             {

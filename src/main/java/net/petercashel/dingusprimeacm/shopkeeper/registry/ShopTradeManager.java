@@ -51,24 +51,48 @@ public class ShopTradeManager {
 
         if (total > 3) {
             for (int i = 0; i < RandomTradesCount; i++) {
-                ShopTradeInfo tradeInfo = (ShopTradeInfo) trades.get(random.nextInt(0, total) - 1);
+                ShopTradeInfo tradeInfo = (ShopTradeInfo) trades.get(random.nextInt(0, total));
 
-                if (pickedTrades.contains(tradeInfo)) {
-                    tradeInfo = (ShopTradeInfo) trades.get(random.nextInt(0, total) - 1);
-                }
-                if (pickedTrades.contains(tradeInfo)) {
-                    tradeInfo = (ShopTradeInfo) trades.get(random.nextInt(0, total) - 1);
+                while (TradeAlreadyPicked(tradeInfo, pickedTrades)) {
+                    //Need better random
+                    int index = random.nextInt(0, (total * 2) -1) / 2;
+                    if (index >= total) index = total - 1;
+
+                    tradeInfo = (ShopTradeInfo) trades.get(index);
                 }
 
-                CurrentTrades(_shopType).add(tradeInfo);
                 pickedTrades.add(tradeInfo);
             }
+
+            pickedTrades.sort(new Comparator<ShopTradeInfo>() {
+                @Override
+                public int compare(ShopTradeInfo o1, ShopTradeInfo o2) {
+                    return o1.ResultName.toString().compareTo(o2.ResultName.toString());
+                }
+            });
+
+            CurrentTrades(_shopType).addAll(pickedTrades);
         } else {
             //Add all
             CurrentTrades(_shopType).addAll((trades));
         }
 
+    }
 
+    private boolean TradeAlreadyPicked(ShopTradeInfo tradeInfo, ArrayList<ShopTradeInfo> pickedTrades) {
+        if (pickedTrades.size() == 0) {
+            return false;
+        }
+        boolean picked = false;
+
+        for (var trade: pickedTrades) {
+            if (trade.ResultName.toString().equals(tradeInfo.ResultName.toString())) {
+                picked = true;
+                break;
+            }
+        }
+
+        return picked;
     }
 
 
@@ -80,6 +104,14 @@ public class ShopTradeManager {
                 trades.add(x);
             }
         }
+
+        trades.sort(new Comparator<ShopTradeInfo>() {
+            @Override
+            public int compare(ShopTradeInfo o1, ShopTradeInfo o2) {
+                return o1.ResultName.toString().compareTo(o2.ResultName.toString());
+            }
+        });
+
         CurrentTrades(_shopType).addAll((trades));
     }
 
@@ -161,5 +193,9 @@ public class ShopTradeManager {
         }
 
         return ItemStack.EMPTY;
+    }
+
+    public void ResetAll() {
+        ResetOffers();
     }
 }

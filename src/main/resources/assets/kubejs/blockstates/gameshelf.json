@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "kubejs:block/gameshelf",
+	  "y": 180
+    },
+    "facing=east": {
+      "model": "kubejs:block/gameshelf",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "kubejs:block/gameshelf",
+      "y": 0
+    },
+    "facing=west": {
+      "model": "kubejs:block/gameshelf",
+      "y": 90
+    }
+  }
+}

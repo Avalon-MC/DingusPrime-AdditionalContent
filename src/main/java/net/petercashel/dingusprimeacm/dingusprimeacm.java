@@ -47,6 +47,7 @@ import net.petercashel.dingusprimeacm.shopkeeper.container.ShopKeeperMenu;
 import net.petercashel.dingusprimeacm.shopkeeper.entity.ShopKeeper;
 import net.petercashel.dingusprimeacm.shopkeeper.entity.subtypes.*;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo;
+import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeManager;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -105,6 +106,7 @@ public class dingusprimeacm
     public void onServerStarting(ServerStartingEvent event)
     {
         // Do something when the server starts
+        ShopTradeManager.INSTANCE.ResetAll();
 
     }
 

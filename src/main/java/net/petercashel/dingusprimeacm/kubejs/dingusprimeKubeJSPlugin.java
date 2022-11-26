@@ -56,8 +56,8 @@ public class dingusprimeKubeJSPlugin extends KubeJSPlugin {
     public void init()
     {
         RegistryObjectBuilderTypes.BLOCK.addType("customcardinal", CardinalBlockJS.CardinalBuilder.class, CardinalBlockJS.CardinalBuilder::new);
-        RegistryObjectBuilderTypes.BLOCK.addType("cartshelf", CartShelfBlockJS.CartShelfBuilder.class, CartShelfBlockJS.CartShelfBuilder::new);
-        RegistryObjectBuilderTypes.BLOCK.addType("cabnet", CabnetBlockJS.CabnetBuilder.class, CabnetBlockJS.CabnetBuilder::new);
+        RegistryObjectBuilderTypes.BLOCK.addType("shelf", CartShelfBlockJS.CartShelfBuilder.class, CartShelfBlockJS.CartShelfBuilder::new);
+        RegistryObjectBuilderTypes.BLOCK.addType("cabinet", CabnetBlockJS.CabnetBuilder.class, CabnetBlockJS.CabnetBuilder::new);
         RegistryObjectBuilderTypes.BLOCK.addType("chair", ChairBlockJS.ChairBuilder.class, ChairBlockJS.ChairBuilder::new);
         RegistryObjectBuilderTypes.BLOCK.addType("lamp_post", LampBlockJS.LampPostBuilder.class, LampBlockJS.LampPostBuilder::new);
         RegistryObjectBuilderTypes.BLOCK.addType("lamp_top", LampBlockJS.LampTopBuilder.class, LampBlockJS.LampTopBuilder::new);
