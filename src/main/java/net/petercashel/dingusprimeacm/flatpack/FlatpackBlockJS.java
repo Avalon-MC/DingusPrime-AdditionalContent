@@ -139,7 +139,7 @@ public class FlatpackBlockJS extends BasicBlockJS {
         public FlatpackBuilder(ResourceLocation i) {
             super(i);
             model("kubejs:block/flatpack");
-            addBox(3,0,3,10,10,10, false);
+            addBox_int(3,0,3,10,10,10, false);
         }
 
         public Block createObject() {

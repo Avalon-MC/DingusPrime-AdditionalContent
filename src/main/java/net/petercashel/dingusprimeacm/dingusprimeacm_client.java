@@ -128,12 +128,14 @@ public class dingusprimeacm_client {
     @SubscribeEvent
     public static void onEntityRenderersEvent(final EntityRenderersEvent.RegisterRenderers event)
     {
-        event.registerBlockEntityRenderer(dingusprimeKubeJSPlugin.CARTSHELF_BE, new BlockEntityRendererProvider() {
-            @Override
-            public BlockEntityRenderer create(Context pContext) {
-                return new CartShelfBlockEntityRenderer(pContext);
-            }
-        });
+        if (dingusprimeKubeJSPlugin.CARTSHELF_BE != null) {
+            event.registerBlockEntityRenderer(dingusprimeKubeJSPlugin.CARTSHELF_BE, new BlockEntityRendererProvider() {
+                @Override
+                public BlockEntityRenderer create(Context pContext) {
+                    return new CartShelfBlockEntityRenderer(pContext);
+                }
+            });
+        }
     }
 
     @Mod.EventBusSubscriber(modid = dingusprimeacm.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)

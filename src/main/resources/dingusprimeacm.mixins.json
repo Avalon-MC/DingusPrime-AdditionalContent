@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "net.petercashel.dingusprimeacm.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "refmap": "dingusprimeacm.refmap.json",
+  "mixins": [
+    "KubeJS_BlockBuilder"
+  ],
+  "client":[
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8.4"
+}
