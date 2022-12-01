@@ -20,16 +20,35 @@ import java.util.UUID;
 
 public class GameboyContainer extends AbstractContainerMenu {
 
-
+    private InteractionHand interactionHand;
+    public boolean ForceGB = false;
     private ItemStack gameboyStack;
     private Player playerEntity;
     private IItemHandler playerInventory;
+
+    public GameboyContainer(int windowId, Inventory playerInventory, Player player, ItemStack gameboyStack, InteractionHand hand) {
+        this(windowId, playerInventory, player, gameboyStack);
+        this.interactionHand = hand;
+        ForceGB = interactionHand == InteractionHand.OFF_HAND;
+    }
 
     public GameboyContainer(int windowId, Inventory playerInventory, Player player, ItemStack gameboyStack) {
         super(dingusprimeacm.GAMEBOY_CONTAINER.get(), windowId);
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
         this.gameboyStack = gameboyStack;
+        this.interactionHand = InteractionHand.MAIN_HAND;
+
+        if (gameboyStack.isEmpty()) {
+            //CLIENT DOESNT KNOW WHAT HAND. Add Duel Wield Protection.
+            gameboyStack = player.getItemInHand(InteractionHand.MAIN_HAND);
+
+            if (gameboyStack.isEmpty() || (!gameboyStack.isEmpty() && !(gameboyStack.getItem() instanceof GameBoyCartItemJS))) {
+                gameboyStack = player.getItemInHand(InteractionHand.OFF_HAND);
+                interactionHand = InteractionHand.OFF_HAND;
+                ForceGB = true;
+            }
+        }
     }
 
     @Override
@@ -52,6 +71,19 @@ public class GameboyContainer extends AbstractContainerMenu {
     }
 
     public ResourceLocation GetUIBack(ResourceLocation defaultGUI) {
+
+        //Even though its fixed in construction. its not.
+        if (gameboyStack.isEmpty()) {
+            gameboyStack = this.playerEntity.getItemInHand(InteractionHand.MAIN_HAND);
+
+            if (gameboyStack.isEmpty() || (!gameboyStack.isEmpty() && !(gameboyStack.getItem() instanceof GameBoyCartItemJS))) {
+                gameboyStack = this.playerEntity.getItemInHand(InteractionHand.OFF_HAND);
+                interactionHand = InteractionHand.OFF_HAND;
+                ForceGB = true;
+            }
+        }
+
+
         GameBoyItemJS gb = (GameBoyItemJS) gameboyStack.getItem();
         return new ResourceLocation("kubejs", "textures/gui/gameboy_gui_" + gb.GuiBG + ".png");
     }

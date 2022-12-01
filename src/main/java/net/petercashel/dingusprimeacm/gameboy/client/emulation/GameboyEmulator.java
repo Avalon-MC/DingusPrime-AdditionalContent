@@ -25,8 +25,15 @@ public class GameboyEmulator {
     private final RomInfo ROMInfo;
     public GameboyStatus gbStatus = GameboyStatus.NewEmulator;
 
-    public GameboyEmulator(RomInfo romInfo, String cartUUID) throws IOException {
 
+    public GameboyEmulator(RomInfo romInfo, String cartUUID) throws IOException {
+        this(romInfo, cartUUID, false);
+
+    }
+
+
+
+    public GameboyEmulator(RomInfo romInfo, String cartUUID, boolean forceGB) throws IOException {
         this.CartUUID = cartUUID;
         this.ROMInfo = romInfo;
 
@@ -39,7 +46,7 @@ public class GameboyEmulator {
 
         GameboyFileBattery gfb = new GameboyFileBattery(saveDir, CartUUID.toString());
 
-        GameboyOptions options = new GameboyOptions(null, false, false); //No Saves for now.
+        GameboyOptions options = new GameboyOptions(null, false, false, forceGB); //No Saves for now.
         options.DisableDebug();
 
         int length = Minecraft.getInstance().getResourceManager().getResource(romFile).getInputStream().readAllBytes().length;
@@ -56,7 +63,6 @@ public class GameboyEmulator {
         gameboy = new Gameboy(options, rom, dingusprimeacm_client.gameboyDisplay, dingusprimeacm_client.controller, sound, serialEndpoint, console);
 
     }
-
 
 
     public void StartEmulation() throws IOException {

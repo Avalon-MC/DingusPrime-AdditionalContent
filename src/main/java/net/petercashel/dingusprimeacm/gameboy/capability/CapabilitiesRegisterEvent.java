@@ -18,6 +18,6 @@ public class CapabilitiesRegisterEvent {
 
     @SubscribeEvent
     public static void onAttachingCapabilities(final AttachCapabilitiesEvent<ItemStack> event) {
-        GameBotCapabilityAttacher.attach(event);
+        //GameBotCapabilityAttacher.attach(event);
     }
 }

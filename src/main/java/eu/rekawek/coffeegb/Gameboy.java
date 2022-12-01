@@ -72,7 +72,8 @@ public class Gameboy implements Runnable {
 
     public Gameboy(GameboyOptions options, Cartridge rom, Display display, Controller controller, SoundOutput soundOutput, SerialEndpoint serialEndpoint, Optional<Console> console) {
         this.display = display;
-        gbc = rom.isGbc();
+        //gbc = rom.isGbc();
+        gbc = rom.isGbc(); //ForceGB. Offhand Forces GB, Main hand uses default behaviour
         speedMode = new SpeedMode();
         interruptManager = new InterruptManager(gbc);
         timer = new Timer(interruptManager, speedMode);
@@ -135,19 +136,6 @@ public class Gameboy implements Runnable {
         doStop = false;
         while (!doStop) {
 
-//            //Slow down the gameboy
-//            synchronized (this) {
-//                try {
-//                    if (nextWait != 0) {
-//                        wait((long) nextWait);
-//                    }
-//                } catch (InterruptedException e) {
-//                    break;
-//                }
-//            }
-//            start = System.currentTimeMillis();
-
-
             Gpu.Mode newMode = tick();
             if (newMode != null) {
                 hdma.onGpuUpdate(newMode);
@@ -173,11 +161,6 @@ public class Gameboy implements Runnable {
             console.ifPresent(Console::tick);
             tickListeners.forEach(Runnable::run);
 
-
-//            finish = System.currentTimeMillis();
-//            //assuming 60fps is ok?
-//            nextWait = (long)((double) (1000.0 / 4194304) - (double)(finish - start));
-//            if (nextWait < 0) nextWait = 0;
         }
     }
 

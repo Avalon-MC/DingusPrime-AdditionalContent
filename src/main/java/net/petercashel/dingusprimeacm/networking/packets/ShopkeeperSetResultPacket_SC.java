@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.network.NetworkEvent;
 import net.petercashel.dingusprimeacm.shopkeeper.container.ShopKeeperMenu;
+import net.petercashel.dingusprimeacm.shopkeeper.container.ShopKeeperScreen;
 
 import java.util.function.Supplier;
 
@@ -68,6 +69,10 @@ public class ShopkeeperSetResultPacket_SC {
                     ShopKeeperMenu merchantmenu = (ShopKeeperMenu)abstractcontainermenu;
                     merchantmenu.setResultItem(resultStack);
 
+                    if (Minecraft.getInstance().screen instanceof ShopKeeperScreen) {
+                        ShopKeeperScreen screen = (ShopKeeperScreen) Minecraft.getInstance().screen;
+                        screen.updateMoney();
+                    }
                 }
 
             } catch (Exception ex) {

@@ -54,8 +54,9 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
         PlayerReference = inventory.player;
         this.trader.setTradingPlayer(inventory.player);
         this.tradeContainer = new ShopKeeper_MerchantContainer(p_40038_, inventory.player);
-        this.addSlot(new Slot(this.tradeContainer, 0, 136, 37));
-        this.addSlot(new Slot(this.tradeContainer, 1, 162, 37));
+        this.tradeContainer.containerId = windowId;
+//        this.addSlot(new Slot(this.tradeContainer, 0, 136, 37));
+//        this.addSlot(new Slot(this.tradeContainer, 1, 162, 37));
         this.addSlot(new MerchantResultSlot(inventory.player, p_40038_, this.tradeContainer, 2, 220, 37));
 
         for(int i = 0; i < 3; ++i) {
@@ -80,6 +81,7 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
     /**
      * Callback for when the crafting matrix is changed.
      */
+    @Override
     public void slotsChanged(Container pInventory) {
         this.tradeContainer.updateSellItem();
         super.slotsChanged(pInventory);
@@ -88,6 +90,12 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
             PacketHandler.sendToPlayer(new ShopkeeperSetResultPacket_SC(this.containerId,this.tradeContainer.getItem(2)), (ServerPlayer) this.PlayerReference);
         }
     }
+
+    @Override
+    public boolean isValidSlotIndex(int p_207776_) {
+        return super.isValidSlotIndex(p_207776_);
+    }
+
 
     public void setSelectionHint(int pCurrentRecipeIndex) {
         this.tradeContainer.setSelectionHint(pCurrentRecipeIndex);
@@ -132,36 +140,50 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
      * Called to determine if the current slot is valid for the stack merging (double-click) code. The stack passed in is
      * null for the initial slot that was double-clicked.
      */
+    @Override
     public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
         return false;
+    }
+
+    @Override
+    protected boolean moveItemStackTo(ItemStack pStack, int pStartIndex, int pEndIndex, boolean pReverseDirection) {
+
+        return super.moveItemStackTo(pStack, pStartIndex, pEndIndex, pReverseDirection);
     }
 
     /**
      * Handle when the stack in slot {@code index} is shift-clicked. Normally this moves the stack between the player
      * inventory and the other inventory(s).
      */
+    @Override
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(pIndex);
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            if (pIndex == 2) {
-//                if (!this.moveItemStackTo(itemstack1, 3, 39, true)) {
-//                    return ItemStack.EMPTY;
-//                }
-//
-//                slot.onQuickCraft(itemstack1, itemstack);
-//                this.playTradeSound();
-            } else if (pIndex != 0 && pIndex != 1) {
-                if (pIndex >= 3 && pIndex < 30) {
-                    if (!this.moveItemStackTo(itemstack1, 30, 39, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (pIndex >= 30 && pIndex < 39 && !this.moveItemStackTo(itemstack1, 3, 30, false)) {
+
+            if (pIndex == 0) {
+                if (!this.moveItemStackTo(itemstack1, 1, 37, true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.moveItemStackTo(itemstack1, 3, 39, false)) {
+                if (!this.PlayerReference.level.isClientSide) {
+                    PacketHandler.sendToPlayer(new ShopkeeperSetResultPacket_SC(this.containerId,this.tradeContainer.getItem(2)), (ServerPlayer) this.PlayerReference);
+                }
+                this.tradeContainer.updateSellItem();
+                this.playTradeSound();
+
+              return ItemStack.EMPTY;
+            } else if (pIndex != 0) {
+                if (pIndex >= 1 && pIndex < 28) {
+                    if (!this.moveItemStackTo(itemstack1, 28, 37, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (pIndex >= 28 && pIndex < 37 && !this.moveItemStackTo(itemstack1, 3, 28, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.moveItemStackTo(itemstack1, 1, 37, false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -181,6 +203,8 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
         return itemstack;
     }
 
+
+
     private void playTradeSound() {
         if (!this.trader.isClientSide()) {
             Entity entity = (Entity)this.trader;
@@ -192,57 +216,61 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
     /**
      * Called when the container is closed.
      */
+    @Override
     public void removed(Player pPlayer) {
         super.removed(pPlayer);
         this.trader.setTradingPlayer((Player)null);
-        if (!this.trader.isClientSide()) {
-            if (!pPlayer.isAlive() || pPlayer instanceof ServerPlayer && ((ServerPlayer)pPlayer).hasDisconnected()) {
-                ItemStack itemstack = this.tradeContainer.removeItemNoUpdate(0);
-                if (!itemstack.isEmpty()) {
-                    pPlayer.drop(itemstack, false);
-                }
-
-                itemstack = this.tradeContainer.removeItemNoUpdate(1);
-                if (!itemstack.isEmpty()) {
-                    pPlayer.drop(itemstack, false);
-                }
-            } else if (pPlayer instanceof ServerPlayer) {
-                pPlayer.getInventory().placeItemBackInInventory(this.tradeContainer.removeItemNoUpdate(0));
-                pPlayer.getInventory().placeItemBackInInventory(this.tradeContainer.removeItemNoUpdate(1));
-            }
-
-        }
+//        if (!this.trader.isClientSide()) {
+//            if (!pPlayer.isAlive() || pPlayer instanceof ServerPlayer && ((ServerPlayer)pPlayer).hasDisconnected()) {
+//                ItemStack itemstack = this.tradeContainer.removeItemNoUpdate(0);
+//                if (!itemstack.isEmpty()) {
+//                    pPlayer.drop(itemstack, false);
+//                }
+//
+//                itemstack = this.tradeContainer.removeItemNoUpdate(1);
+//                if (!itemstack.isEmpty()) {
+//                    pPlayer.drop(itemstack, false);
+//                }
+//            } else if (pPlayer instanceof ServerPlayer) {
+//                pPlayer.getInventory().placeItemBackInInventory(this.tradeContainer.removeItemNoUpdate(0));
+//                pPlayer.getInventory().placeItemBackInInventory(this.tradeContainer.removeItemNoUpdate(1));
+//            }
+//
+//        }
     }
+
 
     public void tryMoveItems(int p_40073_) {
-        if (this.getOffers().size() > p_40073_) {
-            ItemStack itemstack = this.tradeContainer.getItem(0);
-            if (!itemstack.isEmpty()) {
-                if (!this.moveItemStackTo(itemstack, 3, 39, true)) {
-                    return;
-                }
-
-                //this.tradeContainer.setItem(0, itemstack);
-            }
-
-            ItemStack itemstack1 = this.tradeContainer.getItem(1);
-            if (!itemstack1.isEmpty()) {
-                if (!this.moveItemStackTo(itemstack1, 3, 39, true)) {
-                    return;
-                }
-
-                //this.tradeContainer.setItem(1, itemstack1);
-            }
-
-            if (this.tradeContainer.getItem(0).isEmpty() && this.tradeContainer.getItem(1).isEmpty()) {
-                ItemStack itemstack2 = this.getOffers().get(p_40073_).getCostA();
-                //this.moveFromInventoryToPaymentSlot(0, itemstack2);
-                ItemStack itemstack3 = this.getOffers().get(p_40073_).getCostB();
-                //this.moveFromInventoryToPaymentSlot(1, itemstack3);
-            }
-
-        }
+        return;
+//        if (this.getOffers().size() > p_40073_) {
+//            ItemStack itemstack = this.tradeContainer.getItem(0);
+//            if (!itemstack.isEmpty()) {
+//                if (!this.moveItemStackTo(itemstack, 3, 39, true)) {
+//                    return;
+//                }
+//
+//                //this.tradeContainer.setItem(0, itemstack);
+//            }
+//
+//            ItemStack itemstack1 = this.tradeContainer.getItem(1);
+//            if (!itemstack1.isEmpty()) {
+//                if (!this.moveItemStackTo(itemstack1, 3, 39, true)) {
+//                    return;
+//                }
+//
+//                //this.tradeContainer.setItem(1, itemstack1);
+//            }
+//
+//            if (this.tradeContainer.getItem(0).isEmpty() && this.tradeContainer.getItem(1).isEmpty()) {
+//                ItemStack itemstack2 = this.getOffers().get(p_40073_).getCostA();
+//                //this.moveFromInventoryToPaymentSlot(0, itemstack2);
+//                ItemStack itemstack3 = this.getOffers().get(p_40073_).getCostB();
+//                //this.moveFromInventoryToPaymentSlot(1, itemstack3);
+//            }
+//
+//        }
     }
+
 
     private void moveFromInventoryToPaymentSlot(int p_40061_, ItemStack p_40062_) {
         if (!p_40062_.isEmpty()) {
@@ -270,6 +298,7 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
      * net.minecraft.client.network.play.ClientPlayNetHandler uses this to set offers for the client side
      * MerchantContainer
      */
+
     public void setOffers(MerchantOffers pOffers) {
         this.trader.overrideOffers(pOffers);
     }
@@ -293,17 +322,29 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
                 ItemStack result = merchantoffer.getResult();
                 this.PlayerReference.level.addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
             } else {
-                if (ShopkeeperCurrencyHelper.canRefundPlayer(PlayerReference, merchantoffer.getPriceMultiplier()))
-                {
-                    ShopkeeperCurrencyHelper.refundPlayer(PlayerReference, merchantoffer.getPriceMultiplier());
-                    this.tradeContainer.selectionHint_sk = -1;
+
+                //DC protection
+                if (!this.PlayerReference.isAlive() || this.PlayerReference instanceof ServerPlayer && ((ServerPlayer)this.PlayerReference).hasDisconnected()) {
+                    ItemStack itemstack = this.tradeContainer.removeItemNoUpdate(2);
+                    if (!itemstack.isEmpty()) {
+                        this.PlayerReference.drop(itemstack, false);
+                    }
+                } else {
+                    if (ShopkeeperCurrencyHelper.canRefundPlayer(PlayerReference, merchantoffer.getPriceMultiplier()))
+                    {
+                        ShopkeeperCurrencyHelper.refundPlayer(PlayerReference, merchantoffer.getPriceMultiplier());
+                        this.tradeContainer.selectionHint_sk = -1;
+                    }
+                    else
+                    {
+                        ItemStack result = merchantoffer.getResult();
+                        this.PlayerReference.level.addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
+                        this.tradeContainer.selectionHint_sk = -1;
+                    }
                 }
-                else
-                {
-                    ItemStack result = merchantoffer.getResult();
-                    this.PlayerReference.level.addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
-                    this.tradeContainer.selectionHint_sk = -1;
-                }
+
+
+
             }
 
         }

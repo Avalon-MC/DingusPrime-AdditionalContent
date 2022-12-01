@@ -33,6 +33,15 @@ public class GameboyCartContainer extends AbstractContainerMenu {
         this.gameboyStack = gameboyStack;
         cartSlot = null;
 
+        if (gameboyStack.isEmpty()) {
+            //CLIENT DOESNT KNOW WHAT HAND. Add Duel Wield Protection.
+            gameboyStack = player.getItemInHand(InteractionHand.MAIN_HAND);
+
+            if (gameboyStack.isEmpty() || (!gameboyStack.isEmpty() && !(gameboyStack.getItem() instanceof GameBoyCartItemJS))) {
+                gameboyStack = player.getItemInHand(InteractionHand.OFF_HAND);
+            }
+        }
+
         if (gameboyStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).isPresent()) {
             Optional<IItemHandler> cap = gameboyStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve();
             cap.ifPresent(iItemHandler -> cartInv = iItemHandler);

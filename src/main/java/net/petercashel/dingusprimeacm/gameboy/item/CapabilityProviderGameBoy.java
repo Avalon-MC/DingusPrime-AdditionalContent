@@ -37,7 +37,7 @@ public class CapabilityProviderGameBoy implements INBTSerializable<CompoundTag>,
             CompoundTag tag = nbt.getCompound("cart");
 
             if (tag.isEmpty() && nbt.contains("Parent")) {
-                tag = tag.getCompound("Parent");
+                tag = nbt.getCompound("Parent");
                 tag = tag.getCompound("cart");
             }
 

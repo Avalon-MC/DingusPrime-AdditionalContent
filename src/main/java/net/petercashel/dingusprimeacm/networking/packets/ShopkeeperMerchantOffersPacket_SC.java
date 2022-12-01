@@ -109,6 +109,8 @@ public class ShopkeeperMerchantOffersPacket_SC {
                     merchantmenu.setMerchantLevel(pPacket.getVillagerLevel());
                     merchantmenu.setShowProgressBar(pPacket.showProgress());
                     merchantmenu.setCanRestock(pPacket.canRestock());
+
+
                 }
 
             } catch (Exception ex) {

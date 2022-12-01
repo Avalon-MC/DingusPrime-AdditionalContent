@@ -65,6 +65,10 @@ public class ShopkeeperCurrencyHelper {
 
     public static boolean invoicePlayer(Player player, float amount)
     {
+        if (player.level.isClientSide) {
+            return canAfford(player,amount); //Do not charge player client side.
+        }
+
         if (!hasWallet(player)) return false;
 
         ItemStack stack = getCurrentWallet(player);

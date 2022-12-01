@@ -18,10 +18,28 @@ import java.nio.file.Files;
 public class GameboyClientEvents {
 
 
+    private static long LastSaveTime = 0;
+    public static boolean SaveGateing = false;
+
     public static void UploadSave(String uuid, File saveFile) {
-        GameboyScreen.lastInstance.emulator.gbStatus = GameboyStatus.UploadingSave;
-        //TODO
+        if (SaveGateing) {
+            return;
+        }
+        SaveGateing = true;
+
+        //Fix save spam
+        if (System.currentTimeMillis() < LastSaveTime + 5000) {
+            SaveGateing = false;
+            return;
+        }
+
+        LastSaveTime = System.currentTimeMillis();
+        SaveGateing = false;
         System.out.println("Save was called " + saveFile.getAbsolutePath());
+        GameboyScreen.lastInstance.emulator.gbStatus = GameboyStatus.UploadingSave;
+        GameboyScreen.lastInstance.gbStatusCurrent = GameboyStatus.UploadingSave;
+        GameboyScreen.lastInstance.statusTicks = -100;
+
 
         if (saveFile.length() < 16384) {
             GBUploadSavePacket_CS savePacket = new GBUploadSavePacket_CS();

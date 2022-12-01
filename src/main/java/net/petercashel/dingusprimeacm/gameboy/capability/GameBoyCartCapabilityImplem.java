@@ -35,5 +35,9 @@ public class GameBoyCartCapabilityImplem implements IGameBoyCartCapability {
     @Override
     public void deserializeNBT(CompoundTag nbt) {
         value = nbt.getString("uuidcart");
+        if (value.length() < 2) {
+            //FUCK, Unbreak this
+            value = UUID.randomUUID().toString();
+        }
     }
 }

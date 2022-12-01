@@ -44,6 +44,9 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
 
     public static GameboyScreen lastInstance;
     public GameboyEmulator emulator;
+    GameboyStatus gbStatusCurrent = GameboyStatus.NewEmulator;
+    int statusTicks = -1;
+
     public GameboyScreen(GameboyContainer container, Inventory inv, Component name) {
         super(container, inv, name);
         lastInstance = this;
@@ -73,7 +76,7 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
 
         if (rom != null) {
             try {
-                emulator = new GameboyEmulator(rom, CartUUID);
+                emulator = new GameboyEmulator(rom, CartUUID, menu.ForceGB);
 
                 GBSaveReqPacket_CS saveRequest = new GBSaveReqPacket_CS();
                 saveRequest.CartUUID = CartUUID;
@@ -144,6 +147,13 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
     protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         int relX = (this.width - this.imageWidth) / 2;
         int relY = (this.height - this.imageHeight) / 2;
+
+        //Status Tick
+        statusTicks++;
+        if (statusTicks > 10) {
+            statusTicks = 0;
+            gbStatusCurrent = emulator.gbStatus;
+        }
 
         //Status
         AbstractContainerScreen.fill(matrixStack,relX + statusPos[0], relY+ statusPos[1], relX+ statusPos[0] + statusSize[0], relY+ statusPos[1]+ statusSize[1], GetStatusColor());

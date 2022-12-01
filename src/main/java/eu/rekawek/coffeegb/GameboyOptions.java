@@ -7,11 +7,10 @@ import java.util.Collections;
 
 public class GameboyOptions {
 
-    private final File romFile;
 
-    private final boolean forceDmg;
+    private boolean forceDmg;
 
-    private final boolean forceCgb;
+    private boolean forceCgb;
 
     private boolean useBootstrap;
 
@@ -25,6 +24,11 @@ public class GameboyOptions {
         this(romFile, Collections.emptyList(), Collections.emptyList());
     }
 
+    public GameboyOptions(File romFile, boolean DisableSaves, boolean usebootrom, boolean forceDmg) {
+        this(romFile, DisableSaves, usebootrom);
+        this.forceDmg = forceDmg;
+    }
+
     // Added
     public GameboyOptions(File romFile, boolean DisableSaves, boolean usebootrom) {
         this(romFile, Collections.emptyList(), Collections.emptyList());
@@ -32,7 +36,7 @@ public class GameboyOptions {
     }
 
     public GameboyOptions(File romFile, Collection<String> params, Collection<String> shortParams) {
-        this.romFile = romFile;
+        //this.romFile = romFile;
         this.forceDmg = params.contains("force-dmg") || shortParams.contains("d");
         this.forceCgb = params.contains("force-cgb") || shortParams.contains("c");
         if (forceDmg && forceCgb) {

@@ -319,6 +319,10 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 
+    public void updateMoney() {
+        BALANCE_LABEL_WORKING = BALANCE_LABEL.copy().append(ShopkeeperCurrencyHelper.getBalanceTextComponent(this.minecraft.player));
+    }
+
     @OnlyIn(Dist.CLIENT)
     class TradeOfferButton extends Button {
         final int index;

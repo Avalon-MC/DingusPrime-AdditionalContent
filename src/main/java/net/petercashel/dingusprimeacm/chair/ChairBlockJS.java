@@ -46,11 +46,15 @@ public class ChairBlockJS  extends CardinalBlockJS {
 
     @Override
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (chairEntity.getPassengers().size() != 0) {
-            chairEntity.ejectPassengers();
+        if(!level.isClientSide) { //WHOOPS
+            if (chairEntity != null) {
+                if (chairEntity.getPassengers().size() != 0) {
+                    chairEntity.ejectPassengers();
+                }
+                chairEntity.kill();
+                chairEntity = null;
+            }
         }
-        chairEntity.kill();
-        chairEntity = null;
 
         super.playerWillDestroy(level, pos, state, player);
     }

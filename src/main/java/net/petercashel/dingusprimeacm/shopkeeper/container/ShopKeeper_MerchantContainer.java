@@ -1,5 +1,6 @@
 package net.petercashel.dingusprimeacm.shopkeeper.container;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MerchantContainer;
@@ -19,6 +20,7 @@ public class ShopKeeper_MerchantContainer extends MerchantContainer {
     public int selectionHint_sk = -1;
     final Merchant merchant_SK;
     private static boolean doNewTradeCode = true;
+    public int containerId = -1;
 
     public ShopKeeper_MerchantContainer(Merchant merchant, Player player) {
         super(merchant);
@@ -40,38 +42,54 @@ public class ShopKeeper_MerchantContainer extends MerchantContainer {
     @Override
     public void updateSellItem() {
         if (doNewTradeCode == true) {
+
+            //Don't do client side
+            if (this.PlayerReference.level.isClientSide) {
+                return;
+            }
+
             MerchantOffers merchantoffers = this.merchant_SK.getOffers();
 
             if (!merchantoffers.isEmpty()) {
                 MerchantOffer merchantoffer = merchantoffers.getRecipeFor(ItemStack.EMPTY, ItemStack.EMPTY, this.selectionHint_sk);
 
                 float price = merchantoffer.getPriceMultiplier();
+                ItemStack resultStack = merchantoffer.assemble();
 
-                if (ShopkeeperCurrencyHelper.canAfford(PlayerReference,price)) {
-                    if (merchantoffer == null || merchantoffer.isOutOfStock()) {
-                        this.activeOffer = merchantoffer;
-                        merchantoffer = merchantoffers.getRecipeFor(ItemStack.EMPTY, ItemStack.EMPTY, this.selectionHint_sk);
-                    }
+                if (!getItem(2).isEmpty() && getItem(2).equals(resultStack, false)) {
+                    //same item
+                    //No Charging
 
-                    if (merchantoffer != null && !merchantoffer.isOutOfStock() && ShopkeeperCurrencyHelper.invoicePlayer(PlayerReference,price)) {
-                        this.activeOffer = merchantoffer;
-                        this.setItem(2, merchantoffer.assemble());
+                } else {
+                    if (ShopkeeperCurrencyHelper.canAfford(PlayerReference,price)) {
+                        if (merchantoffer != null && !merchantoffer.isOutOfStock() && ShopkeeperCurrencyHelper.invoicePlayer(PlayerReference,price)) {
+                            this.activeOffer = merchantoffer;
+                            this.setItem(2, resultStack);
+                        } else {
+                            this.setItem(2, ItemStack.EMPTY);
+                            this.selectionHint_sk = -1;
+                        }
                     } else {
+                        //On fail, do this.
                         this.setItem(2, ItemStack.EMPTY);
                         this.selectionHint_sk = -1;
                     }
-                } else {
-                    //On fail, do this.
-                    this.setItem(2, ItemStack.EMPTY);
-                    this.selectionHint_sk = -1;
                 }
+
+
+            } else {
+                //On fail, do this.
+                this.setItem(2, ItemStack.EMPTY);
+                this.selectionHint_sk = -1;
             }
 
             this.merchant_SK.notifyTradeUpdated(this.getItem(2));
 
+            if (containerId != -1) {
+                PacketHandler.sendToPlayer(new ShopkeeperSetResultPacket_SC(this.containerId,this.getItem(2)), (ServerPlayer) this.PlayerReference);
+            }
 
-        } else {
-            super.updateSellItem();
+
         }
 
     }
@@ -79,9 +97,7 @@ public class ShopKeeper_MerchantContainer extends MerchantContainer {
     @Override
     public void setSelectionHint(int pCurrentRecipeIndex) {
 
-        selectionHint_sk = pCurrentRecipeIndex;
-
-        if (selectionHint_sk != -1) {
+        if (selectionHint_sk != -1 && selectionHint_sk != pCurrentRecipeIndex) {
             MerchantOffers merchantoffers = this.merchant_SK.getOffers();
             MerchantOffer merchantoffer = merchantoffers.getRecipeFor(ItemStack.EMPTY, ItemStack.EMPTY, this.selectionHint_sk);
 
@@ -102,9 +118,10 @@ public class ShopKeeper_MerchantContainer extends MerchantContainer {
 
         }
 
+        selectionHint_sk = pCurrentRecipeIndex;
 
-        super.setSelectionHint(pCurrentRecipeIndex);
-
+        //super.setSelectionHint(pCurrentRecipeIndex);
+        updateSellItem();
 
 
     }
