@@ -5,8 +5,10 @@ import eu.rekawek.coffeegb.memory.cart.battery.Battery;
 import eu.rekawek.coffeegb.memory.cart.CartridgeType;
 import eu.rekawek.coffeegb.memory.cart.rtc.Clock;
 import eu.rekawek.coffeegb.memory.cart.rtc.RealTimeClock;
+import net.petercashel.dingusprimeacm.gameboy.IForceSaving;
+import net.petercashel.dingusprimeacm.gameboy.client.emulation.GameboyFileBattery;
 
-public class Mbc3 implements AddressSpace {
+public class Mbc3 implements AddressSpace, IForceSaving {
 
     private final CartridgeType type;
 
@@ -50,6 +52,10 @@ public class Mbc3 implements AddressSpace {
     public boolean accepts(int address) {
         return (address >= 0x0000 && address < 0x8000) ||
                (address >= 0xa000 && address < 0xc000);
+    }
+
+    public void ForcedSave(GameboyFileBattery battery) {
+        battery.saveRamWithClock(ram, clock.serialize());
     }
 
     @Override

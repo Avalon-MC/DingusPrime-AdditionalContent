@@ -46,6 +46,7 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
     public GameboyEmulator emulator;
     GameboyStatus gbStatusCurrent = GameboyStatus.NewEmulator;
     int statusTicks = -1;
+    public String GameID;
 
     public GameboyScreen(GameboyContainer container, Inventory inv, Component name) {
         super(container, inv, name);
@@ -70,6 +71,7 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
 
     public void SetupEmulator(String GameID, String CartUUID)
     {
+        this.GameID = GameID;
         System.out.println("GameID: " + GameID);
         System.out.println("CartUUID: " + CartUUID);
         RomInfo rom = menu.GetRomInfo(GameID);
@@ -110,6 +112,10 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
 
     }
 
+    private GameboyStatus getStatus() {
+        if (emulator == null) return GameboyStatus.NewEmulator;
+        return emulator.gbStatus;
+    }
 
     public int GetStatusColor() {
         if (emulator == null) {
@@ -152,7 +158,7 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
         statusTicks++;
         if (statusTicks > 10) {
             statusTicks = 0;
-            gbStatusCurrent = emulator.gbStatus;
+            gbStatusCurrent = getStatus();
         }
 
         //Status
@@ -167,6 +173,7 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
         RenderSystem.setShaderTexture(0, dynamicResource);
         blit(matrixStack, relX + videoPos[0], relY+ videoPos[1], 0, 0, videoSize[0], videoSize[1], videoSize[0], videoSize[1]);
     }
+
 
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers)
@@ -211,14 +218,6 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
         super.onClose();
         if (emulator != null) {
             emulator.StopEmulation();
-
-            File saveDir = new File("DingusPrime/GBSaves").getAbsoluteFile();
-            File save = new File(saveDir, emulator.CartUUID + ".sav");
-
-            if (save.exists()) {
-                GameboyClientEvents.UploadSave(emulator.CartUUID, save);
-            }
-
         }
     }
 }

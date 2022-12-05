@@ -16,6 +16,7 @@ public class RomInfoBuilder extends BuilderBase<RomInfo> {
 
 
     public ResourceLocation RomPath = null;
+    public boolean NeedsForcedSave = false;
 
     public RomInfoBuilder(ResourceLocation i) {
         super(i);
@@ -33,6 +34,11 @@ public class RomInfoBuilder extends BuilderBase<RomInfo> {
 
     public RomInfoBuilder romPath(String resourceLocation) {
         this.RomPath = new ResourceLocation(resourceLocation);
+        return this;
+    }
+
+    public RomInfoBuilder forceSave() {
+        this.NeedsForcedSave = true;
         return this;
     }
 

@@ -3,10 +3,12 @@ package eu.rekawek.coffeegb.memory.cart.type;
 import eu.rekawek.coffeegb.AddressSpace;
 import eu.rekawek.coffeegb.memory.cart.battery.Battery;
 import eu.rekawek.coffeegb.memory.cart.CartridgeType;
+import net.petercashel.dingusprimeacm.gameboy.IForceSaving;
+import net.petercashel.dingusprimeacm.gameboy.client.emulation.GameboyFileBattery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Mbc1 implements AddressSpace {
+public class Mbc1 implements AddressSpace, IForceSaving {
 
     private static final Logger LOG = LoggerFactory.getLogger(Mbc1.class);
 
@@ -193,5 +195,9 @@ public class Mbc1 implements AddressSpace {
             }
         }
         return logoCount > 1;
+    }
+
+    public void ForcedSave(GameboyFileBattery battery) {
+        battery.saveRam(ram);
     }
 }

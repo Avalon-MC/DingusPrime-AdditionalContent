@@ -10,6 +10,8 @@ import eu.rekawek.coffeegb.memory.cart.type.Mbc2;
 import eu.rekawek.coffeegb.memory.cart.type.Mbc3;
 import eu.rekawek.coffeegb.memory.cart.type.Mbc5;
 import eu.rekawek.coffeegb.memory.cart.type.Rom;
+import net.petercashel.dingusprimeacm.gameboy.IForceSaving;
+import net.petercashel.dingusprimeacm.gameboy.client.emulation.GameboyFileBattery;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -97,6 +99,13 @@ public class Cartridge implements AddressSpace {
         }
 
 
+    }
+
+    public void ForcedSave(GameboyFileBattery battery) {
+        if (addressSpace instanceof IForceSaving) {
+            IForceSaving addrspace = (IForceSaving) addressSpace;
+            addrspace.ForcedSave(battery);
+        }
     }
 
 //    public Cartridge(GameboyOptions options) throws IOException {

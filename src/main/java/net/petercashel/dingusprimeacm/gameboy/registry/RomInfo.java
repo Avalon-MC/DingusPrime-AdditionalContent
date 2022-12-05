@@ -9,8 +9,10 @@ import org.jetbrains.annotations.Nullable;
 public class RomInfo extends ForgeRegistryEntry<RomInfo> {
     public RomInfo(RomInfoBuilder romInfoBuilder) {
         RomPath = romInfoBuilder.RomPath;
+        NeedsForcedSave = romInfoBuilder.NeedsForcedSave;
         this.setRegistryName(romInfoBuilder.id);
     }
 
     public ResourceLocation RomPath = null;
+    public boolean NeedsForcedSave = false;
 }
