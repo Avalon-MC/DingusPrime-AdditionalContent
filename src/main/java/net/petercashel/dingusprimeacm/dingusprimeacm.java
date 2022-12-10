@@ -36,6 +36,7 @@ import net.petercashel.dingusprimeacm.cabnet.CabnetContainer;
 import net.petercashel.dingusprimeacm.cartshelf.block.CartShelfBlockEntity;
 import net.petercashel.dingusprimeacm.cartshelf.container.CartShelfContainer;
 import net.petercashel.dingusprimeacm.chair.ChairEntity;
+import net.petercashel.dingusprimeacm.configuration.DPAcmConfig;
 import net.petercashel.dingusprimeacm.gameboy.container.GameboyCartContainer;
 import net.petercashel.dingusprimeacm.gameboy.container.GameboyContainer;
 import net.petercashel.dingusprimeacm.gameboy.capability.IGameBoyCartCapability;
@@ -76,6 +77,9 @@ public class dingusprimeacm
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         CONTAINERS.register(bus);
         ENTITY_TYPES.register(bus);
+
+        DPAcmConfig.LoadConfig();
+        DPAcmConfig.SaveConfig();
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -119,6 +123,14 @@ public class dingusprimeacm
         });
     }
 
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public class ForgeRegistryEvents {
+
+        @SubscribeEvent
+        public static void registerCommands(RegisterCommandsEvent event){
+            DingusPrimeAcmCommand.register(event.getDispatcher());
+        }
+    }
 
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
