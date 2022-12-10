@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.petercashel.dingusprimeacm.configuration.DPAcmConfig;
 import net.petercashel.dingusprimeacm.kubejs.dingusprimeKubeJSPlugin;
 
 import java.util.*;
@@ -18,7 +19,6 @@ import java.util.stream.Stream;
 
 public class ShopTradeManager {
 
-    private final int RandomTradesCount = 3;
     private final Random random = new Random();
     public static final ShopTradeManager INSTANCE = new ShopTradeManager();
     private long savedMillis;
@@ -49,8 +49,8 @@ public class ShopTradeManager {
         }
         int total = (int) trades.size();
 
-        if (total > 3) {
-            for (int i = 0; i < RandomTradesCount; i++) {
+        if (total > DPAcmConfig.ConfigInstance.ShopSettings.RandomShopTradesCount) {
+            for (int i = 0; i < DPAcmConfig.ConfigInstance.ShopSettings.RandomShopTradesCount; i++) {
                 ShopTradeInfo tradeInfo = (ShopTradeInfo) trades.get(random.nextInt(0, total));
 
                 while (TradeAlreadyPicked(tradeInfo, pickedTrades)) {
@@ -64,16 +64,12 @@ public class ShopTradeManager {
                 pickedTrades.add(tradeInfo);
             }
 
-            pickedTrades.sort(new Comparator<ShopTradeInfo>() {
-                @Override
-                public int compare(ShopTradeInfo o1, ShopTradeInfo o2) {
-                    return o1.ResultName.toString().compareTo(o2.ResultName.toString());
-                }
-            });
+            pickedTrades.sort(ShopTradeInfoComparater.instance);
 
             CurrentTrades(_shopType).addAll(pickedTrades);
         } else {
             //Add all
+            trades.sort(ShopTradeInfoComparater.instance);
             CurrentTrades(_shopType).addAll((trades));
         }
 
@@ -105,12 +101,7 @@ public class ShopTradeManager {
             }
         }
 
-        trades.sort(new Comparator<ShopTradeInfo>() {
-            @Override
-            public int compare(ShopTradeInfo o1, ShopTradeInfo o2) {
-                return o1.ResultName.toString().compareTo(o2.ResultName.toString());
-            }
-        });
+        trades.sort(ShopTradeInfoComparater.instance);
 
         CurrentTrades(_shopType).addAll((trades));
     }
