@@ -4,10 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.latvian.mods.kubejs.block.custom.BasicBlockJS;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -30,8 +31,12 @@ import net.petercashel.dingusprimeacm.kubejs.ShopTradeInfoBuilder;
 import net.petercashel.dingusprimeacm.kubejs.kubejs.HelperBlockBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class FlatpackBlockJS extends BasicBlockJS {
+
+
 
     public static class FlatPackData {
         public final String ResourceName;
@@ -71,6 +76,27 @@ public class FlatpackBlockJS extends BasicBlockJS {
 
 
         return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+    }
+
+    public ItemStack CreateItem(int i) {
+        if (i+1 > ItemsToCreate.size()) {
+            return ItemStack.EMPTY;
+        }
+        return GetItemStack(new ResourceLocation(ItemsToCreate.get(i).ResourceName), ItemsToCreate.get(i).Amount);
+    }
+
+
+    public List<FormattedCharSequence> GetAllItemNames() {
+        List<FormattedCharSequence> names = new ArrayList<>();
+
+        for (var item : ItemsToCreate ) {
+            ItemStack stack = GetItemStack(new ResourceLocation(item.ResourceName), item.Amount);
+            names.add(new TextComponent(item.Amount + "x ").append(stack.getHoverName()).append("").getVisualOrderText());
+        }
+
+
+
+        return names;
     }
 
     private ItemStack GetItemStack(ResourceLocation resourceLocation, int count) {

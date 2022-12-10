@@ -4,7 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
+import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -145,8 +147,6 @@ public class ShopKeeper extends Villager {
         MerchantOffers merchantoffers = this.getOffers();
         overrideOffers(merchantoffers);
 
-        //TODO Call Server offer update method
-
     }
 
 
@@ -166,7 +166,12 @@ public class ShopKeeper extends Villager {
     @Override
     public MerchantOffers getOffers() {
         //Update Offers handles this
-        return super.getOffers();
+
+        //Force
+        MerchantOffers merchantoffers = super.getOffers();
+        overrideOffers(merchantoffers);
+
+        return merchantoffers;
     }
 
     @Override
@@ -271,7 +276,16 @@ public class ShopKeeper extends Villager {
         if (pSource.getEntity() != null && pSource.getEntity() instanceof Zombie) {
             pSource.getEntity().hurt(pSource, pAmount); //Pass it on
         }
-        if (pSource.isCreativePlayer()) return true; //Always by creative players
+        if (pSource.isCreativePlayer()) {
+            //Always by creative players
+            if (((Player)(pSource.getEntity())).isCrouching()) {
+                return super.hurt(pSource, pAmount * 100);
+            } else {
+                ((Player)(pSource.getEntity())).sendMessage(new TextComponent("Shift Punch for Max Removal"), Util.NIL_UUID);
+            }
+
+
+        }
 
         //Redirect to attacker
         if (pSource.getEntity() != null) {

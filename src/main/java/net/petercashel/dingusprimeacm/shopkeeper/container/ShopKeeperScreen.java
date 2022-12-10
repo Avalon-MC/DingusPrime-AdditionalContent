@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -29,6 +30,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
+import net.petercashel.dingusprimeacm.flatpack.FlatpackBlockJS;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
 import net.petercashel.dingusprimeacm.networking.packets.ShopkeeperDropResultPacket_CS;
 import net.petercashel.dingusprimeacm.networking.packets.ShopkeeperSelectTradePacket_CS;
@@ -37,6 +39,7 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
 
     /** The GUI texture for the villager merchant GUI. */
     private static final ResourceLocation VILLAGER_LOCATION = new ResourceLocation("dingusprimeacm:textures/gui/shopkeeper.png");
+    private static final ResourceLocation PLUS_LOCATION = new ResourceLocation("dingusprimeacm:textures/gui/plus.png");
 
     private static final Component TRADES_LABEL = new TranslatableComponent("merchant.dingusprimeacm.trades");
     private static final Component LEVEL_SEPARATOR = new TextComponent(" - ");
@@ -112,7 +115,11 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
         this.font.draw(pPoseStack, TRADES_LABEL, (float)(5 - l / 2 + 48), 6.0F, 4210752);
 
         int wid = this.font.width(BALANCE_LABEL_WORKING);
-        this.font.draw(pPoseStack, BALANCE_LABEL_WORKING, (float)(5 - wid / 2 + 158), 42, 4210752);
+        int rightSide = 183;
+
+        this.font.drawShadow(pPoseStack, BALANCE_LABEL_WORKING, (float)rightSide - wid, 42, 16777215);
+
+        renderAndDecorateItem(pPoseStack, new ItemStack(Wallet.get(), 1), 113, 42 - 4);
     }
 
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pX, int pY) {
@@ -180,6 +187,7 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
     }
 
     public static final RegistryObject<Item> CopperCoin = RegistryObject.create(new ResourceLocation("calemieconomy:coin_copper"), ForgeRegistries.ITEMS);
+    public static final RegistryObject<Item> Wallet = RegistryObject.create(new ResourceLocation("calemieconomy:wallet"), ForgeRegistries.ITEMS);
 
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         this.renderBackground(pPoseStack);
@@ -199,29 +207,52 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
                 if (this.canScroll(merchantoffers.size()) && (i1 < this.scrollOff || i1 >= 7 + this.scrollOff)) {
                     ++i1;
                 } else {
-                    ItemStack itemstack = merchantoffer.getBaseCostA();
-                    ItemStack itemstack1 = merchantoffer.getCostA();
-                    ItemStack itemstack2 = merchantoffer.getCostB();
-                    ItemStack itemstack3 = merchantoffer.getResult();
-                    int cost = (int) merchantoffer.getPriceMultiplier();
 
-                    if (itemstack.isEmpty() && itemstack1.isEmpty() && itemstack2.isEmpty()) {
-                        itemstack = new ItemStack(CopperCoin.get(), Math.abs(cost)); //Visually show cost.
-                        itemstack1 = itemstack;
-                    }
+                    //Left Item
+                    int cost = (int) merchantoffer.getPriceMultiplier();
+                    ItemStack CostStack = new ItemStack(CopperCoin.get(), Math.abs(cost)); //Visually show cost.
+
+
+                    //Right Item
+                    ItemStack ResultStack = merchantoffer.getResult();
+
+
 
                     this.itemRenderer.blitOffset = 100.0F;
                     int j1 = k + 2;
-                    this.renderAndDecorateCostA(pPoseStack, itemstack1, itemstack, l, j1);
-                    if (!itemstack2.isEmpty()) {
-                        this.itemRenderer.renderAndDecorateFakeItem(itemstack2, i + 5 + 35, j1);
-                        this.itemRenderer.renderGuiItemDecorations(this.font, itemstack2, i + 5 + 35, j1);
+
+                    this.renderButtonArrows(pPoseStack, merchantoffer,(i - 3) - (16 * 2), j1 + 1);
+                    this.itemRenderer.renderAndDecorateFakeItem(CostStack, l - 3 + (16 * 0), j1 + 1);
+                    this.itemRenderer.renderGuiItemDecorations(this.font, CostStack, l - 3 + (16 * 0), j1 + 1);
+                    this.itemRenderer.blitOffset = 0.0F;
+
+                    if (ResultStack.getItem() instanceof BlockItem && ((BlockItem) ResultStack.getItem()).getBlock() instanceof FlatpackBlockJS) {
+                        //Is flatpack
+
+                        FlatpackBlockJS flat = (FlatpackBlockJS) ((BlockItem) ResultStack.getItem()).getBlock();
+                        ItemStack itemStack1 = flat.CreateItem(0);
+                        ItemStack itemStack2 = flat.CreateItem(1);
+                        ItemStack itemStack3 = flat.CreateItem(2);
+
+                        if (flat.ItemsToCreate.size() > 3) {
+                            pPoseStack.pushPose();
+                            pPoseStack.scale(0.33333333333333f,0.33333333333333f,0.33333333333333f);
+                            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                            RenderSystem.setShaderTexture(0, PLUS_LOCATION);
+                            blit(pPoseStack, ((l - 6 + (16 * 5)) * 3) + 6, (j1 + 11) * 3, 0.0F, 0.0F, 16, 16, 16, 16);
+                            pPoseStack.popPose();
+                        }
+
+                        renderAndDecorateItem(pPoseStack, itemStack1, l - 3 + (16 * 2), j1 + 1);
+                        renderAndDecorateItem(pPoseStack, itemStack2, l - 3 + (16 * 3), j1 + 1);
+                        renderAndDecorateItem(pPoseStack, itemStack3, l - 3 + (16 * 4), j1 + 1);
+
+                    } else {
+                        renderAndDecorateItem(pPoseStack, ResultStack, l - 3 + (16 * 3), j1 + 1);
+
                     }
 
-                    this.renderButtonArrows(pPoseStack, merchantoffer, i, j1);
-                    this.itemRenderer.renderAndDecorateFakeItem(itemstack3, i + 5 + 68, j1);
-                    this.itemRenderer.renderGuiItemDecorations(this.font, itemstack3, i + 5 + 68, j1);
-                    this.itemRenderer.blitOffset = 0.0F;
                     k += 20;
                     ++i1;
                 }
@@ -263,21 +294,34 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
 
     }
 
+    private void renderAndDecorateItem(PoseStack pPoseStack, ItemStack pRealCost, int pX, int pY) {
+        this.itemRenderer.renderAndDecorateFakeItem(pRealCost, pX, pY);
+        this.itemRenderer.renderGuiItemDecorations(this.font, pRealCost, pX, pY);
+    }
+
     private void renderAndDecorateCostA(PoseStack pPoseStack, ItemStack pRealCost, ItemStack pBaseCost, int pX, int pY) {
         this.itemRenderer.renderAndDecorateFakeItem(pRealCost, pX, pY);
-        if (pBaseCost.getCount() == pRealCost.getCount()) {
-            this.itemRenderer.renderGuiItemDecorations(this.font, pRealCost, pX, pY);
-        } else {
-            this.itemRenderer.renderGuiItemDecorations(this.font, pBaseCost, pX, pY, pBaseCost.getCount() == 1 ? "1" : null);
-            this.itemRenderer.renderGuiItemDecorations(this.font, pRealCost, pX + 14, pY, pRealCost.getCount() == 1 ? "1" : null);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, VILLAGER_LOCATION);
-            this.setBlitOffset(this.getBlitOffset() + 300);
-            blit(pPoseStack, pX + 7, pY + 12, this.getBlitOffset(), 0.0F, 176.0F, 9, 2, 512, 256);
-            this.setBlitOffset(this.getBlitOffset() - 300);
-        }
-
+        this.itemRenderer.renderGuiItemDecorations(this.font, pRealCost, pX, pY);
     }
+
+//        this.itemRenderer.renderAndDecorateFakeItem(pBaseCost, pX + 14, pY);
+//        this.itemRenderer.renderGuiItemDecorations(this.font, pBaseCost, pX + 14, pY);
+//    }
+//        if (pBaseCost.getCount() == pRealCost.getCount()) {
+//            this.itemRenderer.renderGuiItemDecorations(this.font, pRealCost, pX, pY);
+//        }
+//        else
+//        {
+//            this.itemRenderer.renderGuiItemDecorations(this.font, pBaseCost, pX, pY, pBaseCost.getCount() == 1 ? "1" : null);
+//            this.itemRenderer.renderGuiItemDecorations(this.font, pRealCost, pX + 14, pY, pRealCost.getCount() == 1 ? "1" : null);
+//            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+//            RenderSystem.setShaderTexture(0, VILLAGER_LOCATION);
+//            this.setBlitOffset(this.getBlitOffset() + 300);
+//            blit(pPoseStack, pX + 7, pY + 12, this.getBlitOffset(), 0.0F, 176.0F, 9, 2, 512, 256);
+//            this.setBlitOffset(this.getBlitOffset() - 300);
+//        }
+
+ //   }
 
     private boolean canScroll(int pNumOffers) {
         return pNumOffers > 7;
@@ -339,27 +383,84 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
 
         public void renderToolTip(PoseStack pPoseStack, int pMouseX, int pMouseY) {
             if (this.isHovered && ShopKeeperScreen.this.menu.getOffers().size() > this.index + ShopKeeperScreen.this.scrollOff) {
-                if (pMouseX < this.x + 20) {
-                    ItemStack itemstack = ShopKeeperScreen.this.menu.getOffers().get(this.index + ShopKeeperScreen.this.scrollOff).getCostA();
+                if (pMouseX < this.x + 16) {
 
-                    //Get correct tooltip item
+                    //Cost
                     int cost = (int) ShopKeeperScreen.this.menu.getOffers().get(this.index + ShopKeeperScreen.this.scrollOff).getPriceMultiplier();
-                    if (itemstack.isEmpty()) {
-                        itemstack = new ItemStack(CopperCoin.get(), Math.abs(cost)); //Visually show cost.
-                    }
+                    ItemStack itemstack = new ItemStack(CopperCoin.get(), Math.abs(cost)); //Visually show cost.
+
 
                     ShopKeeperScreen.this.renderTooltip(pPoseStack, itemstack, pMouseX, pMouseY);
-                } else if (pMouseX < this.x + 50 && pMouseX > this.x + 30) {
-                    ItemStack itemstack2 = ShopKeeperScreen.this.menu.getOffers().get(this.index + ShopKeeperScreen.this.scrollOff).getCostB();
-                    if (!itemstack2.isEmpty()) {
-                        ShopKeeperScreen.this.renderTooltip(pPoseStack, itemstack2, pMouseX, pMouseY);
+                } else {
+                    ItemStack ResultStack = ShopKeeperScreen.this.menu.getOffers().get(this.index + ShopKeeperScreen.this.scrollOff).getResult();
+                    //DIFFERENT
+                    if (ResultStack.getItem() instanceof BlockItem && ((BlockItem) ResultStack.getItem()).getBlock() instanceof FlatpackBlockJS) {
+                        //Is flatpack
+                        FlatpackBlockJS flat = (FlatpackBlockJS) ((BlockItem) ResultStack.getItem()).getBlock();
+                        ItemStack itemStack1 = flat.CreateItem(0);
+                        ItemStack itemStack2 = flat.CreateItem(1);
+                        ItemStack itemStack3 = flat.CreateItem(2);
+
+                        if (flat.ItemsToCreate.size() > 3) {
+                            if (pMouseX < this.x + 88 && pMouseX > this.x + 81) {
+                                if (!itemStack3.isEmpty()) {
+                                    ShopKeeperScreen.this.renderTooltip(pPoseStack, flat.GetAllItemNames(), pMouseX, pMouseY);
+                                }
+                            }
+                        }
+
+                        if (pMouseX < this.x + 48 && pMouseX > this.x + 33) {
+                            if (!itemStack1.isEmpty()) {
+                                ShopKeeperScreen.this.renderTooltip(pPoseStack, itemStack1, pMouseX, pMouseY);
+                            }
+                        }
+                        if (pMouseX < this.x + 64 && pMouseX > this.x + 49) {
+                            if (!itemStack2.isEmpty()) {
+                                ShopKeeperScreen.this.renderTooltip(pPoseStack, itemStack2, pMouseX, pMouseY);
+                            }
+                        }
+                        if (pMouseX < this.x + 80 && pMouseX > this.x + 65) {
+                            if (!itemStack3.isEmpty()) {
+                                ShopKeeperScreen.this.renderTooltip(pPoseStack, itemStack3, pMouseX, pMouseY);
+                            }
+                        }
+
+
+                    } else {
+                        if (pMouseX < this.x + 64 && pMouseX > this.x + 48) {
+                            if (!ResultStack.isEmpty()) {
+                                ShopKeeperScreen.this.renderTooltip(pPoseStack, ResultStack, pMouseX, pMouseY);
+                            }
+                        }
                     }
-                } else if (pMouseX > this.x + 65) {
-                    ItemStack itemstack1 = ShopKeeperScreen.this.menu.getOffers().get(this.index + ShopKeeperScreen.this.scrollOff).getResult();
-                    ShopKeeperScreen.this.renderTooltip(pPoseStack, itemstack1, pMouseX, pMouseY);
+
+//
+//                    if (pMouseX < this.x + 50 && pMouseX > this.x + 30) {
+//                        ItemStack itemstack2 = ShopKeeperScreen.this.menu.getOffers().get(this.index + ShopKeeperScreen.this.scrollOff).getCostB();
+//                        if (!itemstack2.isEmpty()) {
+//                            ShopKeeperScreen.this.renderTooltip(pPoseStack, itemstack2, pMouseX, pMouseY);
+//                        }
+//                    } else if (pMouseX > this.x + 65) {
+//                        ItemStack itemstack1 = ShopKeeperScreen.this.menu.getOffers().get(this.index + ShopKeeperScreen.this.scrollOff).getResult();
+//                        ShopKeeperScreen.this.renderTooltip(pPoseStack, itemstack1, pMouseX, pMouseY);
+//                    }
+
+
                 }
             }
 
         }
+    }
+
+
+    public int packARGB(int A, int R, int G, int B) {
+        //AARRGGBB
+        int value = (int) (B * 255f);
+        value |= (int) (G * 255f) << 8;
+        value |= (int) (R * 255f) << 16;
+        value |= (int) (A * 255f) << 24;
+
+        return (int)value;
+
     }
 }
