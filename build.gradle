@@ -208,7 +208,7 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.2'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.70'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -241,6 +241,13 @@ dependencies {
 
     implementation fg.deobf("curse.maven:calemi-core-573646:3778251")
     implementation fg.deobf("curse.maven:calemis-economy-579403:3778254")
+
+
+    //FramedBlocks
+    implementation fg.deobf("curse.maven:framedblocks-441647:4094409")
+
+    //JourneyMap
+    implementation fg.deobf("curse.maven:journeymap-32274:3927228")
 
     annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
 }
