@@ -2,19 +2,29 @@ package net.petercashel.dingusprimeacm.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.UuidArgument;
+import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;
 import net.petercashel.dingusprimeacm.configuration.DPAcmConfig;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeManager;
+import net.petercashel.dingusprimeacm.world.Zones.ZoneManager;
 
 public class DingusPrimeAcmCommand extends CommandBase{
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
+
+
 
         LiteralArgumentBuilder<CommandSourceStack> commandBuilder = Commands.literal("dingusprimeacm")
                 .requires((commandSource) -> commandSource.hasPermission(1))
@@ -24,6 +34,43 @@ public class DingusPrimeAcmCommand extends CommandBase{
                 .then(Commands.literal("reloadconfig")
                         .executes(commandContext -> executeReloadConfig(commandContext))
                 )
+                .then(Commands.literal("zone")
+                        .then(Commands.literal("add")
+                                .then(Commands.argument("type", StringArgumentType.word())
+                                        .suggests((context, builder) -> {
+                                            return ZoneTypes(builder).buildFuture();
+                                        })
+
+                                        .then(Commands.argument("startPos", BlockPosArgument.blockPos())
+                                                .then(Commands.argument("radius", IntegerArgumentType.integer(1, 64))
+                                                        .executes(commandContext -> ZoneManager.Instance.CreateZone(commandContext))
+                                                )
+                                        )
+                                        .then(Commands.argument("playerUUID", EntityArgument.player())
+                                                .then(Commands.argument("startPos", BlockPosArgument.blockPos())
+                                                        .then(Commands.argument("radius", IntegerArgumentType.integer(1, 64))
+                                                                .executes(commandContext -> ZoneManager.Instance.CreateZone(commandContext))
+                                                        )
+                                                )
+                                        )
+                                )
+                        )
+                        .then(Commands.literal("remove")
+                                .then(Commands.argument("type", StringArgumentType.word())
+                                        .suggests((context, builder) -> {
+                                            return ZoneTypes(builder).buildFuture();
+                                        })
+                                        .then(Commands.argument("startPos", BlockPosArgument.blockPos())
+                                                .executes(commandContext -> ZoneManager.Instance.RemoveZone(commandContext))
+                                        )
+                                        .then(Commands.argument("playerUUID", EntityArgument.player())
+                                                .then(Commands.argument("startPos", BlockPosArgument.blockPos())
+                                                        .executes(commandContext -> ZoneManager.Instance.RemoveZone(commandContext))
+                                                )
+                                        )
+                                )
+                        )
+                )
 
 
 
@@ -31,6 +78,10 @@ public class DingusPrimeAcmCommand extends CommandBase{
                 ;
 
         dispatcher.register(commandBuilder);
+    }
+
+    private static SuggestionsBuilder ZoneTypes(SuggestionsBuilder builder) {
+        return builder.suggest("antibuild").suggest("owneronly");
     }
 
 

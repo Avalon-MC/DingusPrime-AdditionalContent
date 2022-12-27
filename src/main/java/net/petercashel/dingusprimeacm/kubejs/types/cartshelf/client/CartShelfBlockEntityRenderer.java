@@ -60,9 +60,9 @@ public class CartShelfBlockEntityRenderer implements BlockEntityRenderer<CartShe
 
     }
 
-    public ArrayList<String> BasicNames = new ArrayList<String>(Arrays.stream(new String[] {
+    public static ArrayList<String> BasicNames = new ArrayList<String>(Arrays.stream(new String[] {
             "Block", "AbstractBlock", "BlockBehaviour", "RealBasicBlockJS", "SpreadingSnowyDirtBlock", "FallingBlock",
-            "AbstractChestBlock", "BaseEntityBlock", "FaceAttachedHorizontalDirectionalBlock", "BushBlock"
+            "AbstractChestBlock", "BaseEntityBlock", "FaceAttachedHorizontalDirectionalBlock", "BushBlock", "RotatedPillarBlock", "SignBlock"
     }).toList());
 
     private void RenderItemStack(ItemStack itemStack, Direction direction, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int column, int row) {
@@ -83,14 +83,10 @@ public class CartShelfBlockEntityRenderer implements BlockEntityRenderer<CartShe
         //pPoseStack.mulPose(Vector3f.YP.rotationDegrees(45 * 2));
         //pPoseStack.mulPose(Vector3f.ZN.rotationDegrees(45 * 2));
 
-        if (Minecraft.getInstance().options.graphicsMode == GraphicsStatus.FABULOUS) {
+        if (Minecraft.useFancyGraphics()) {
             if (itemStack.getItem() instanceof BlockItem ) {
                 BlockItem blockItem = (BlockItem) itemStack.getItem();
                 ItemTransforms.TransformType type = ItemTransforms.TransformType.NONE;
-
-                if (!BasicNames.contains("BushBlock")) {
-                    BasicNames.add("BushBlock");
-                }
 
                 if (BasicNames.contains(blockItem.getBlock().getClass().getSuperclass().getSimpleName())) {
                     //pPoseStack.mulPose(Vector3f.YP.rotationDegrees(45 * 2));

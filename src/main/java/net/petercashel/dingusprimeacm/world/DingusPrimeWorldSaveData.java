@@ -4,10 +4,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.petercashel.dingusprimeacm.world.Zones.ZoneManager;
 
 public class DingusPrimeWorldSaveData extends SavedData {
 
-    int version = 0;
+    static int version = 1;
 
     public DingusPrimeWorldSaveData() {
 
@@ -17,9 +18,12 @@ public class DingusPrimeWorldSaveData extends SavedData {
     }
 
     public void load(CompoundTag nbt) {
-        version = nbt.getInt("version");
+        int version = nbt.getInt("version");
         if (version == 0) {
 
+        }
+        if (version == 1) {
+            ZoneManager.Instance.Data.Load(nbt.getCompound("ZoneManager"));
         }
 
 
@@ -31,8 +35,8 @@ public class DingusPrimeWorldSaveData extends SavedData {
         //V0
         nbt.putInt("version", version);
 
-
-
+        //V1
+        nbt.put("ZoneManager", ZoneManager.Instance.Data.Save(new CompoundTag()));
 
         return nbt;
     }
