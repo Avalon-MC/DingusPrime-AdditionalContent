@@ -2,7 +2,7 @@ package net.petercashel.dingusprimeacm.networking.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-import net.petercashel.dingusprimeacm.gameboy.client.GameboyScreen;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.GameboyScreen;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

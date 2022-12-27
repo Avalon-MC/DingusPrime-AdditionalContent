@@ -7,10 +7,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkEvent;
-import net.petercashel.dingusprimeacm.gameboy.capability.IGameBoyCartCapability;
-import net.petercashel.dingusprimeacm.gameboy.client.GameboyScreen;
-import net.petercashel.dingusprimeacm.gameboy.item.GameBoyCartItemJS;
-import net.petercashel.dingusprimeacm.gameboy.item.GameBoyItemJS;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability.IGameBoyCartCapability;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.GameboyScreen;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyCartItemJS;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyItemJS;
 
 import java.util.function.*;
 

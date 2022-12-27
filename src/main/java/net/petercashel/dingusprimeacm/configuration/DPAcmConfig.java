@@ -65,6 +65,10 @@ public class DPAcmConfig {
 
         }
 
+        if (ConfigInstance.ShopSettings.SortType == null) {
+            ConfigInstance.ShopSettings.SortType = ShopSortEnum.PriceName;
+        }
+
         return ConfigInstance;
     }
 

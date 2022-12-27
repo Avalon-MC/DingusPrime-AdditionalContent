@@ -2,7 +2,6 @@ package net.petercashel.dingusprimeacm.networking.packets;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-import net.petercashel.dingusprimeacm.gameboy.client.GameboyScreen;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
 import net.petercashel.dingusprimeacm.networking.packets.chunked.GBSaveRespPacket_Chunked_SC;
 

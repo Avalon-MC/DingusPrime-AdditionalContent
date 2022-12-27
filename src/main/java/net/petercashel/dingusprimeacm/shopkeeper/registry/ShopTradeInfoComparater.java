@@ -11,6 +11,9 @@ public class ShopTradeInfoComparater implements java.util.Comparator<ShopTradeIn
     public int compare(ShopTradeInfo o1, ShopTradeInfo o2) {
 
         DPAcmConfig.ShopSortEnum sort = DPAcmConfig.ConfigInstance.ShopSettings.SortType;
+        if (sort == null) {
+            sort = DPAcmConfig.ShopSortEnum.PriceName;
+        }
 
         switch (sort) {
             case Name -> {

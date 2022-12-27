@@ -2,23 +2,17 @@ package net.petercashel.dingusprimeacm.shopkeeper.container;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.tm.calemieconomy.init.InitItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.protocol.game.ServerboundSelectTradePacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.npc.VillagerData;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
-import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -28,12 +22,13 @@ import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
-import net.petercashel.dingusprimeacm.flatpack.FlatpackBlockJS;
+import net.petercashel.dingusprimeacm.kubejs.types.flatpack.FlatpackBlockJS;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
 import net.petercashel.dingusprimeacm.networking.packets.ShopkeeperDropResultPacket_CS;
 import net.petercashel.dingusprimeacm.networking.packets.ShopkeeperSelectTradePacket_CS;
+
+import java.util.Random;
 
 public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
 
@@ -210,6 +205,8 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
 
                     //Left Item
                     int cost = (int) merchantoffer.getPriceMultiplier();
+                    cost = new Random(i1).nextInt(900, 1140);
+                    if (cost > 1100) cost = 1;
                     ItemStack CostStack = new ItemStack(CopperCoin.get(), Math.abs(cost)); //Visually show cost.
 
 
@@ -222,8 +219,18 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
                     int j1 = k + 2;
 
                     this.renderButtonArrows(pPoseStack, merchantoffer,(i - 3) - (16 * 2), j1 + 1);
-                    this.itemRenderer.renderAndDecorateFakeItem(CostStack, l - 3 + (16 * 0), j1 + 1);
-                    this.itemRenderer.renderGuiItemDecorations(this.font, CostStack, l - 3 + (16 * 0), j1 + 1);
+
+                    int basePos = l - 3 + (16 * 0) + 2;
+
+                    this.itemRenderer.renderAndDecorateFakeItem(CostStack, basePos, j1 + 1);
+
+                    if (cost > 999) {
+                        basePos += 6;
+                    } else {
+                        basePos += 0;
+                    }
+
+                    this.itemRenderer.renderGuiItemDecorations(this.font, CostStack, basePos, j1 + 1);
                     this.itemRenderer.blitOffset = 0.0F;
 
                     if (ResultStack.getItem() instanceof BlockItem && ((BlockItem) ResultStack.getItem()).getBlock() instanceof FlatpackBlockJS) {
@@ -287,9 +294,9 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, VILLAGER_LOCATION);
         if (pMerchantOffer.isOutOfStock()) {
-            blit(pPoseStack, pPosX + 5 + 35 + 20, pPosY + 3, this.getBlitOffset(), 25.0F, 171.0F, 10, 9, 512, 256);
+            blit(pPoseStack, pPosX + 5 + 35 + 20 + 2, pPosY + 3, 10, 9, 25.0F, 171.0F, 10, 9, 512, 256);
         } else {
-            blit(pPoseStack, pPosX + 5 + 35 + 20, pPosY + 3, this.getBlitOffset(), 15.0F, 171.0F, 10, 9, 512, 256);
+            blit(pPoseStack, pPosX + 5 + 35 + 20 + 2, pPosY + 3,10, 9, 15.0F, 171.0F, 10, 9, 512, 256);
         }
 
     }

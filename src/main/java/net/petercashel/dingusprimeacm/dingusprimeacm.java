@@ -5,13 +5,9 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -21,6 +17,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,19 +28,17 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ObjectHolder;
 import net.minecraftforge.registries.RegistryObject;
-import net.petercashel.dingusprimeacm.cabnet.CabnetContainer;
-import net.petercashel.dingusprimeacm.cartshelf.block.CartShelfBlockEntity;
-import net.petercashel.dingusprimeacm.cartshelf.container.CartShelfContainer;
-import net.petercashel.dingusprimeacm.chair.ChairEntity;
+import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetContainer;
+import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.container.CartShelfContainer;
+import net.petercashel.dingusprimeacm.kubejs.types.chair.ChairEntity;
 import net.petercashel.dingusprimeacm.commands.DingusPrimeAcmCommand;
 import net.petercashel.dingusprimeacm.configuration.DPAcmConfig;
-import net.petercashel.dingusprimeacm.gameboy.container.GameboyCartContainer;
-import net.petercashel.dingusprimeacm.gameboy.container.GameboyContainer;
-import net.petercashel.dingusprimeacm.gameboy.capability.IGameBoyCartCapability;
-import net.petercashel.dingusprimeacm.gameboy.item.GameBoyItemJS;
-import net.petercashel.dingusprimeacm.gameboy.registry.RomInfo;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyCartContainer;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyContainer;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability.IGameBoyCartCapability;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyItemJS;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 import net.petercashel.dingusprimeacm.kubejs.dingusprimeKubeJSPlugin;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
 import net.petercashel.dingusprimeacm.shopkeeper.container.ShopKeeperMenu;
@@ -51,6 +46,7 @@ import net.petercashel.dingusprimeacm.shopkeeper.entity.ShopKeeper;
 import net.petercashel.dingusprimeacm.shopkeeper.entity.subtypes.*;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeManager;
+import net.petercashel.dingusprimeacm.world.WorldDataManager;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -113,7 +109,12 @@ public class dingusprimeacm
     {
         // Do something when the server starts
         ShopTradeManager.INSTANCE.ResetAll();
+        WorldDataManager.OnServerStarting(event);
+    }
 
+    @SubscribeEvent
+    public void onServerStarted(ServerStartedEvent event) {
+        WorldDataManager.OnServerStarted(event);
     }
 
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, MODID);

@@ -16,19 +16,21 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegistryBuilder;
-import net.petercashel.dingusprimeacm.cabnet.CabnetBlockEntity;
-import net.petercashel.dingusprimeacm.cabnet.CabnetBlockJS;
-import net.petercashel.dingusprimeacm.chair.ChairBlockJS;
+import net.petercashel.dingusprimeacm.kubejs.basictypes.CardinalBlockJS_NoEntity;
+import net.petercashel.dingusprimeacm.kubejs.basictypes.RealBasicBlockJS;
+import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetBlockEntity;
+import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetBlockJS;
+import net.petercashel.dingusprimeacm.kubejs.types.chair.ChairBlockJS;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
-import net.petercashel.dingusprimeacm.flatpack.FlatpackBlockJS;
-import net.petercashel.dingusprimeacm.gameboy.item.GameBoyCartItemJS;
-import net.petercashel.dingusprimeacm.gameboy.item.GameBoyItemJS;
-import net.petercashel.dingusprimeacm.gameboy.registry.RomInfo;
-import net.petercashel.dingusprimeacm.gameboy.registry.RomRegistryEventJS;
-import net.petercashel.dingusprimeacm.kubejs.kubejs.CardinalBlockJS;
-import net.petercashel.dingusprimeacm.cartshelf.block.CartShelfBlockEntity;
-import net.petercashel.dingusprimeacm.cartshelf.block.CartShelfBlockJS;
-import net.petercashel.dingusprimeacm.lamps.LampBlockJS;
+import net.petercashel.dingusprimeacm.kubejs.types.flatpack.FlatpackBlockJS;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyCartItemJS;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyItemJS;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomRegistryEventJS;
+import net.petercashel.dingusprimeacm.kubejs.basictypes.CardinalBlockJS;
+import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.block.CartShelfBlockEntity;
+import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.block.CartShelfBlockJS;
+import net.petercashel.dingusprimeacm.kubejs.types.lamps.LampBlockJS;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo.ShopType;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeRegistryEventJS;
@@ -55,7 +57,11 @@ public class dingusprimeKubeJSPlugin extends KubeJSPlugin {
     @Override
     public void init()
     {
-        RegistryObjectBuilderTypes.BLOCK.addType("customcardinal", CardinalBlockJS.CardinalBuilder.class, CardinalBlockJS.CardinalBuilder::new);
+        RegistryObjectBuilderTypes.BLOCK.addType("realbasic", RealBasicBlockJS.Builder.class, RealBasicBlockJS.Builder::new);
+
+        RegistryObjectBuilderTypes.BLOCK.addType("customcardinal", CardinalBlockJS_NoEntity.CardinalBuilder.class, CardinalBlockJS_NoEntity.CardinalBuilder::new);
+        RegistryObjectBuilderTypes.BLOCK.addType("customcardinal_entity", CardinalBlockJS.CardinalBuilder.class, CardinalBlockJS.CardinalBuilder::new);
+
         RegistryObjectBuilderTypes.BLOCK.addType("shelf", CartShelfBlockJS.CartShelfBuilder.class, CartShelfBlockJS.CartShelfBuilder::new);
         RegistryObjectBuilderTypes.BLOCK.addType("cabinet", CabnetBlockJS.CabnetBuilder.class, CabnetBlockJS.CabnetBuilder::new);
         RegistryObjectBuilderTypes.BLOCK.addType("chair", ChairBlockJS.ChairBuilder.class, ChairBlockJS.ChairBuilder::new);

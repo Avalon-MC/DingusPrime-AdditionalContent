@@ -1,16 +1,9 @@
 package net.petercashel.dingusprimeacm.kubejs;
 
-import dev.architectury.registry.registries.RegistrySupplier;
 import dev.latvian.mods.kubejs.BuilderBase;
-import dev.latvian.mods.kubejs.CommonProperties;
 import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
-import dev.latvian.mods.kubejs.item.ItemBuilder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.petercashel.dingusprimeacm.gameboy.registry.RomInfo;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 
 public class RomInfoBuilder extends BuilderBase<RomInfo> {
 

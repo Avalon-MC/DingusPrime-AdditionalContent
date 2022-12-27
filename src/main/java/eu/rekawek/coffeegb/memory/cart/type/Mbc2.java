@@ -3,8 +3,8 @@ package eu.rekawek.coffeegb.memory.cart.type;
 import eu.rekawek.coffeegb.AddressSpace;
 import eu.rekawek.coffeegb.memory.cart.battery.Battery;
 import eu.rekawek.coffeegb.memory.cart.CartridgeType;
-import net.petercashel.dingusprimeacm.gameboy.IForceSaving;
-import net.petercashel.dingusprimeacm.gameboy.client.emulation.GameboyFileBattery;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.IForceSaving;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.emulation.GameboyFileBattery;
 
 public class Mbc2 implements AddressSpace, IForceSaving {
 

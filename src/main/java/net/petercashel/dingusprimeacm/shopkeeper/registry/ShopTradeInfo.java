@@ -3,7 +3,6 @@ package net.petercashel.dingusprimeacm.shopkeeper.registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.petercashel.dingusprimeacm.flatpack.FlatpackBlockJS;
 import net.petercashel.dingusprimeacm.kubejs.ShopTradeInfoBuilder;
 
 public class ShopTradeInfo extends ForgeRegistryEntry<ShopTradeInfo> {

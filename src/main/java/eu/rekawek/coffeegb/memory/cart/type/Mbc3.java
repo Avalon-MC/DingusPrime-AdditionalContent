@@ -5,8 +5,8 @@ import eu.rekawek.coffeegb.memory.cart.battery.Battery;
 import eu.rekawek.coffeegb.memory.cart.CartridgeType;
 import eu.rekawek.coffeegb.memory.cart.rtc.Clock;
 import eu.rekawek.coffeegb.memory.cart.rtc.RealTimeClock;
-import net.petercashel.dingusprimeacm.gameboy.IForceSaving;
-import net.petercashel.dingusprimeacm.gameboy.client.emulation.GameboyFileBattery;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.IForceSaving;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.emulation.GameboyFileBattery;
 
 public class Mbc3 implements AddressSpace, IForceSaving {
 
