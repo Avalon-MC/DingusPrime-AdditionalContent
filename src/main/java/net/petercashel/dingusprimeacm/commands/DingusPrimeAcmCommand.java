@@ -27,50 +27,14 @@ public class DingusPrimeAcmCommand extends CommandBase{
 
 
         LiteralArgumentBuilder<CommandSourceStack> commandBuilder = Commands.literal("dingusprimeacm")
-                .requires((commandSource) -> commandSource.hasPermission(1))
+                .requires((commandSource) -> commandSource.hasPermission(3))
                 .then(Commands.literal("resettrades")
                         .executes(commandContext -> executeResetTraders(commandContext))
                 )
                 .then(Commands.literal("reloadconfig")
                         .executes(commandContext -> executeReloadConfig(commandContext))
                 )
-                .then(Commands.literal("zone")
-                        .then(Commands.literal("add")
-                                .then(Commands.argument("type", StringArgumentType.word())
-                                        .suggests((context, builder) -> {
-                                            return ZoneTypes(builder).buildFuture();
-                                        })
 
-                                        .then(Commands.argument("startPos", BlockPosArgument.blockPos())
-                                                .then(Commands.argument("radius", IntegerArgumentType.integer(1, 64))
-                                                        .executes(commandContext -> ZoneManager.Instance.CreateZone(commandContext))
-                                                )
-                                        )
-                                        .then(Commands.argument("playerUUID", EntityArgument.player())
-                                                .then(Commands.argument("startPos", BlockPosArgument.blockPos())
-                                                        .then(Commands.argument("radius", IntegerArgumentType.integer(1, 64))
-                                                                .executes(commandContext -> ZoneManager.Instance.CreateZone(commandContext))
-                                                        )
-                                                )
-                                        )
-                                )
-                        )
-                        .then(Commands.literal("remove")
-                                .then(Commands.argument("type", StringArgumentType.word())
-                                        .suggests((context, builder) -> {
-                                            return ZoneTypes(builder).buildFuture();
-                                        })
-                                        .then(Commands.argument("startPos", BlockPosArgument.blockPos())
-                                                .executes(commandContext -> ZoneManager.Instance.RemoveZone(commandContext))
-                                        )
-                                        .then(Commands.argument("playerUUID", EntityArgument.player())
-                                                .then(Commands.argument("startPos", BlockPosArgument.blockPos())
-                                                        .executes(commandContext -> ZoneManager.Instance.RemoveZone(commandContext))
-                                                )
-                                        )
-                                )
-                        )
-                )
 
 
 
@@ -78,10 +42,8 @@ public class DingusPrimeAcmCommand extends CommandBase{
                 ;
 
         dispatcher.register(commandBuilder);
-    }
 
-    private static SuggestionsBuilder ZoneTypes(SuggestionsBuilder builder) {
-        return builder.suggest("antibuild").suggest("owneronly");
+        dispatcher.register(ZoneCommand.BuildCommand(Commands.literal("zone")));
     }
 
 

@@ -9,13 +9,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.petercashel.dingusprimeacm.world.Zones.ZonePermissions;
+import org.apache.commons.lang3.RandomStringUtils;
 
+import java.util.Locale;
 import java.util.UUID;
 
-public abstract class BaseZone implements INBTSerializable {
+public abstract class BaseZone implements INBTSerializable<CompoundTag> {
 
     public UUID OwnerUUID;
     public AABB CollisionBox;
+    public String ZoneName = RandomStringUtils.randomAlphanumeric(16).toLowerCase(Locale.ROOT);
 
     protected BaseZone() {
         CollisionBox = new AABB(Vec3.ZERO, Vec3.ZERO);
@@ -67,7 +71,7 @@ public abstract class BaseZone implements INBTSerializable {
     }
 
     @Override
-    public Tag serializeNBT() {
+    public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         tag.putDouble("AABB_min_X", getCollisionBox().minX);
         tag.putDouble("AABB_min_Y", getCollisionBox().minY);
@@ -75,19 +79,25 @@ public abstract class BaseZone implements INBTSerializable {
         tag.putDouble("AABB_max_X", getCollisionBox().maxX);
         tag.putDouble("AABB_max_Y", getCollisionBox().maxY);
         tag.putDouble("AABB_max_Z", getCollisionBox().maxZ);
+
+        tag.putString("ZoneName", ZoneName);
         return tag;
     }
 
     @Override
-    public void deserializeNBT(Tag nbt) {
-        CompoundTag tag = (CompoundTag) nbt;
+    public void deserializeNBT(CompoundTag tag) {
         if (tag != null) {
-            CollisionBox.setMinX(tag.getDouble("AABB_min_X"));
-            CollisionBox.setMinX(tag.getDouble("AABB_min_Y"));
-            CollisionBox.setMinX(tag.getDouble("AABB_min_Z"));
-            CollisionBox.setMinX(tag.getDouble("AABB_max_X"));
-            CollisionBox.setMinX(tag.getDouble("AABB_max_Y"));
-            CollisionBox.setMinX(tag.getDouble("AABB_max_Z"));
+            CollisionBox = CollisionBox.setMinX(tag.getDouble("AABB_min_X"));
+            CollisionBox = CollisionBox.setMinY(tag.getDouble("AABB_min_Y"));
+            CollisionBox = CollisionBox.setMinZ(tag.getDouble("AABB_min_Z"));
+            CollisionBox = CollisionBox.setMaxX(tag.getDouble("AABB_max_X"));
+            CollisionBox = CollisionBox.setMaxY(tag.getDouble("AABB_max_Y"));
+            CollisionBox = CollisionBox.setMaxZ(tag.getDouble("AABB_max_Z"));
+
+
+            if (tag.contains("ZoneName")) {
+                ZoneName = tag.getString("ZoneName");
+            }
         }
     }
 
@@ -95,9 +105,10 @@ public abstract class BaseZone implements INBTSerializable {
         return player.hasPermissions(3);
     }
 
-    boolean isOwner(Player player) {
+    public boolean isOwner(Player player) {
         return player.getUUID().equals(OwnerUUID);
     }
+
 
     public boolean Contains(BlockPos startPos) {
         return CollisionBox.contains(startPos.getX(), startPos.getY(), startPos.getZ());
@@ -108,8 +119,15 @@ public abstract class BaseZone implements INBTSerializable {
 
     public abstract boolean CanBuild(BlockPos pos, Player player);
 
+    public abstract boolean HasPermission(BlockPos pos, Player player, ZonePermissions.ZonePermissionsEnum flag);
+
     public BaseZone SetOwner(UUID uuid) {
         this.OwnerUUID = uuid;
+        return this;
+    }
+
+    public BaseZone SetName(String playerName) {
+        ZoneName = playerName;
         return this;
     }
 }

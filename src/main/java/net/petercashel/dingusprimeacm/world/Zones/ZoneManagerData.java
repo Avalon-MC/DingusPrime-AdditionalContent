@@ -2,6 +2,7 @@ package net.petercashel.dingusprimeacm.world.Zones;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.Vec3;
+import net.petercashel.dingusprimeacm.world.WorldDataManager;
 import net.petercashel.dingusprimeacm.world.Zones.Types.AntiBuildZone;
 import net.petercashel.dingusprimeacm.world.Zones.Types.OwnerZone;
 
@@ -15,7 +16,15 @@ public class ZoneManagerData {
     public ArrayList<AntiBuildZone> AntiBuildZones = new ArrayList<>();
     public ArrayList<OwnerZone> OwnerZones = new ArrayList<>();
 
+    public void MarkDirty() {
+        WorldDataManager.SaveDataInstance.markDirty();
+    }
+
     public void Load(CompoundTag nbt) {
+        PlayerPositions.clear();
+        AntiBuildZones.clear();
+        OwnerZones.clear();
+
         int version = nbt.getInt("version");
 
         CompoundTag AntiBuildZones = nbt.getCompound("AntiBuildZones");

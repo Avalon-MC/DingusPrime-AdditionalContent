@@ -12,12 +12,15 @@ public class DingusPrimeWorldSaveData extends SavedData {
 
     public DingusPrimeWorldSaveData() {
 
+    }
 
-
-
+    private void InitStatics() {
+        ZoneManager.Instance = new ZoneManager();
     }
 
     public void load(CompoundTag nbt) {
+        InitStatics();
+
         int version = nbt.getInt("version");
         if (version == 0) {
 
@@ -29,6 +32,7 @@ public class DingusPrimeWorldSaveData extends SavedData {
 
 
     }
+
 
     @Override
     public CompoundTag save(CompoundTag nbt) {
