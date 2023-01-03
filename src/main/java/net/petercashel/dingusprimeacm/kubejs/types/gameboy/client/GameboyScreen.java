@@ -16,7 +16,7 @@ import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.emulation.Game
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyContainer;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
-import net.petercashel.dingusprimeacm.networking.packets.GBSaveReqPacket_CS;
+import net.petercashel.dingusprimeacm.networking.packets.gb.GBSaveReqPacket_CS;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

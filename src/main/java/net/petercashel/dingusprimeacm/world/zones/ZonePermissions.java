@@ -1,4 +1,4 @@
-package net.petercashel.dingusprimeacm.world.Zones;
+package net.petercashel.dingusprimeacm.world.zones;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -47,6 +47,12 @@ public class ZonePermissions implements INBTSerializable<CompoundTag> {
         } else {
             this.removePermissionFlag(permission);
         }
+    }
+
+    public enum ZonePermissionPlayerType {
+        Member,
+        Ally,
+        Public
     }
 
     public enum ZonePermissionsEnum implements FlagEnum {

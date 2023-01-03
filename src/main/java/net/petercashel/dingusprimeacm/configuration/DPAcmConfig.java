@@ -68,7 +68,9 @@ public class DPAcmConfig {
         if (ConfigInstance.ShopSettings.SortType == null) {
             ConfigInstance.ShopSettings.SortType = ShopSortEnum.PriceName;
         }
-
+        if (ConfigInstance.ZoneSettings == null) {
+            ConfigInstance.ZoneSettings = new ZoneSettings();
+        }
         return ConfigInstance;
     }
 
@@ -110,6 +112,16 @@ public class DPAcmConfig {
 
         @Expose
         public int RandomShopTradesCount = 3;
+
+    }
+
+    @Expose
+    public ZoneSettings ZoneSettings = new ZoneSettings();
+    public static class ZoneSettings {
+        @Expose
+        public int MaxZoneCreate_WandWidth = 16 * 16;
+
+        public int MaxZoneCreate_Radius = 16 * 8;
 
     }
 

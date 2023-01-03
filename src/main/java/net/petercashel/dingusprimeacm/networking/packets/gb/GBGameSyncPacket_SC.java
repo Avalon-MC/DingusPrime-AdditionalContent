@@ -1,4 +1,4 @@
-package net.petercashel.dingusprimeacm.networking.packets;
+package net.petercashel.dingusprimeacm.networking.packets.gb;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;

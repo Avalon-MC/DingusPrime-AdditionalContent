@@ -1,4 +1,4 @@
-package net.petercashel.dingusprimeacm.networking.packets;
+package net.petercashel.dingusprimeacm.networking.packets.gb;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -46,15 +46,12 @@ public class GBSaveRespPacket_SC {
         ctx.enqueueWork(() -> {
             //Client Side
             try {
-
-                //Todo Write Save Bytes to client temp folder
                 if (saveBytes != null && saveBytes.length != 0) {
                     File saveDir = new File("DingusPrime/GBSaves").getAbsoluteFile();
                     File save = new File(saveDir, CartUUID + ".sav");
 
                     FileUtils.writeByteArrayToFile(save, saveBytes);
                 }
-
 
                 GameboyScreen.lastInstance.emulator.StartEmulation();
 

@@ -103,6 +103,7 @@ public class dingusprimeacm_client {
             EntityRenderers.register(dingusprimeacm.CHAIR_ENTITY_TYPE.get(), EmptyRenderer::new);
         });
 
+
     }
 
     private static class EmptyRenderer extends EntityRenderer<ChairEntity>

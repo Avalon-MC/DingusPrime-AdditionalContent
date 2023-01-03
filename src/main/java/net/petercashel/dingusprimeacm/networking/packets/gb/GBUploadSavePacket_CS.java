@@ -1,8 +1,6 @@
-package net.petercashel.dingusprimeacm.networking.packets;
+package net.petercashel.dingusprimeacm.networking.packets.gb;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraftforge.network.NetworkEvent;
 import org.apache.commons.io.FileUtils;
 

@@ -9,7 +9,7 @@ import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
-import net.petercashel.dingusprimeacm.networking.packets.ShopkeeperSetResultPacket_SC;
+import net.petercashel.dingusprimeacm.networking.packets.shop.ShopkeeperSetResultPacket_SC;
 
 import javax.annotation.Nullable;
 

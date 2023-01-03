@@ -1,11 +1,11 @@
-package net.petercashel.dingusprimeacm.world.Zones.Types;
+package net.petercashel.dingusprimeacm.world.zones.Types;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.petercashel.dingusprimeacm.world.Zones.ZonePermissions;
+import net.petercashel.dingusprimeacm.world.zones.ZonePermissions;
 
 public class AntiBuildZone extends BaseZone {
 
@@ -28,6 +28,10 @@ public class AntiBuildZone extends BaseZone {
     public AntiBuildZone(CompoundTag compound) {
         super();
         this.deserializeNBT(compound);
+    }
+
+    public AntiBuildZone(AABB collisionBox) {
+        super(collisionBox);
     }
 
 

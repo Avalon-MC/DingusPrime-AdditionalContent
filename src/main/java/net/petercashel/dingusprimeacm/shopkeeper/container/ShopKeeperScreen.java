@@ -25,8 +25,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.petercashel.dingusprimeacm.kubejs.types.flatpack.FlatpackBlockJS;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
-import net.petercashel.dingusprimeacm.networking.packets.ShopkeeperDropResultPacket_CS;
-import net.petercashel.dingusprimeacm.networking.packets.ShopkeeperSelectTradePacket_CS;
+import net.petercashel.dingusprimeacm.networking.packets.shop.ShopkeeperDropResultPacket_CS;
+import net.petercashel.dingusprimeacm.networking.packets.shop.ShopkeeperSelectTradePacket_CS;
 
 import java.util.Random;
 

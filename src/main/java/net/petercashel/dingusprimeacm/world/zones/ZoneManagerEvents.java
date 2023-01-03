@@ -1,14 +1,16 @@
-package net.petercashel.dingusprimeacm.world.Zones;
+package net.petercashel.dingusprimeacm.world.zones;
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
+import net.petercashel.dingusprimeacm.world.zones.selection.PlayerSelectionSession;
 
-import static net.petercashel.dingusprimeacm.world.Zones.ZoneManager.Instance;
+import static net.petercashel.dingusprimeacm.world.zones.ZoneManager.Instance;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = dingusprimeacm.MODID)
 public class ZoneManagerEvents {
@@ -21,6 +23,10 @@ public class ZoneManagerEvents {
 
         //Add to movement tracking
         Instance.Data.PlayerPositions.put(event.getPlayer().getUUID(), event.getPlayer().position());
+        Instance.Data.PlayerSelectionSessions.put(event.getPlayer().getUUID(), new PlayerSelectionSession());
+
+
+        Instance.Data.SendZonesToClient(event.getPlayer());
     }
 
     @SubscribeEvent
@@ -31,6 +37,7 @@ public class ZoneManagerEvents {
 
         //Remove from movement tracking
         Instance.Data.PlayerPositions.remove(event.getPlayer().getUUID());
+        Instance.Data.PlayerSelectionSessions.remove(event.getPlayer().getUUID());
     }
 
     @SubscribeEvent
@@ -41,6 +48,8 @@ public class ZoneManagerEvents {
         Instance.Data.PlayerPositions.put(event.getPlayer().getUUID(), event.getPlayer().position());
     }
 
+    //TODO DIM CHANCE INTO ZONE WITH ENTER = FALSE IS DEATH
+
     @SubscribeEvent
     public static void OnPlayerTickEvent(TickEvent.PlayerTickEvent.PlayerTickEvent event) {
         if (event.side.isClient()) return;
@@ -50,11 +59,12 @@ public class ZoneManagerEvents {
             var newPos = event.player.position();
 
             if (!oldPos.equals(newPos)) {
-                //Fire Update Event
-                Instance.OnPlayerMove(event.player, oldPos, newPos);
 
                 Instance.Data.PlayerPositions.remove(event.player.getUUID());
                 Instance.Data.PlayerPositions.put(event.player.getUUID(), event.player.position());
+                if (event.player.level.dimension() != Level.OVERWORLD) return;
+                //Fire Update Event
+                Instance.OnPlayerMove(event.player, oldPos, newPos);
             }
 
         }
@@ -63,6 +73,7 @@ public class ZoneManagerEvents {
     @SubscribeEvent
     public static void OnBlockPlace(BlockEvent.EntityPlaceEvent event) {
         if (event.getEntity() instanceof Player) {
+            if (((Player) event.getEntity()).level.dimension() != Level.OVERWORLD) return;
             if (!Instance.CanBuild(event.getPos(), (Player) event.getEntity())) {
                 if (event.isCancelable() && !event.isCanceled()) {
                     event.setCanceled(true);
@@ -74,6 +85,7 @@ public class ZoneManagerEvents {
 
     @SubscribeEvent
     public static void OnBlockBreak(BlockEvent.BreakEvent event) {
+        if (event.getPlayer().level.dimension() != Level.OVERWORLD) return;
         if (!Instance.CanBuild(event.getPos(), event.getPlayer())) {
             if (event.isCancelable() && !event.isCanceled()) {
                 event.setCanceled(true);

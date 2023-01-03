@@ -2,23 +2,15 @@ package net.petercashel.dingusprimeacm.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.ArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.commands.arguments.UuidArgument;
-import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;
 import net.petercashel.dingusprimeacm.configuration.DPAcmConfig;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeManager;
-import net.petercashel.dingusprimeacm.world.Zones.ZoneManager;
 
 public class DingusPrimeAcmCommand extends CommandBase{
 
@@ -44,6 +36,9 @@ public class DingusPrimeAcmCommand extends CommandBase{
         dispatcher.register(commandBuilder);
 
         dispatcher.register(ZoneCommand.BuildCommand(Commands.literal("zone")));
+        dispatcher.register(ZoneCommand.BuildWandCommand(Commands.literal("zonewand")));
+        dispatcher.register(ZoneCommand.BuildPlotCommand(Commands.literal("plot")));
+        dispatcher.register(ZoneCommand.BuildAdminCommand(Commands.literal("zoneadmin")));
     }
 
 

@@ -1,4 +1,4 @@
-package net.petercashel.dingusprimeacm.networking.packets.chunked;
+package net.petercashel.dingusprimeacm.networking.packets.gb.chunked;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;

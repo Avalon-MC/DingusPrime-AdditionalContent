@@ -8,9 +8,18 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
-import net.petercashel.dingusprimeacm.networking.packets.*;
-import net.petercashel.dingusprimeacm.networking.packets.chunked.GBSaveRespPacket_Chunked_SC;
-import net.petercashel.dingusprimeacm.networking.packets.chunked.GBUploadSavePacket_Chunked_CS;
+import net.petercashel.dingusprimeacm.networking.packets.gb.chunked.GBSaveRespPacket_Chunked_SC;
+import net.petercashel.dingusprimeacm.networking.packets.gb.chunked.GBUploadSavePacket_Chunked_CS;
+import net.petercashel.dingusprimeacm.networking.packets.gb.GBGameSyncPacket_SC;
+import net.petercashel.dingusprimeacm.networking.packets.gb.GBSaveReqPacket_CS;
+import net.petercashel.dingusprimeacm.networking.packets.gb.GBSaveRespPacket_SC;
+import net.petercashel.dingusprimeacm.networking.packets.gb.GBUploadSavePacket_CS;
+import net.petercashel.dingusprimeacm.networking.packets.shop.ShopkeeperDropResultPacket_CS;
+import net.petercashel.dingusprimeacm.networking.packets.shop.ShopkeeperMerchantOffersPacket_SC;
+import net.petercashel.dingusprimeacm.networking.packets.shop.ShopkeeperSelectTradePacket_CS;
+import net.petercashel.dingusprimeacm.networking.packets.shop.ShopkeeperSetResultPacket_SC;
+import net.petercashel.dingusprimeacm.networking.packets.zones.ZoneDataPacket_SC;
+import net.petercashel.dingusprimeacm.networking.packets.zones.ZoneSelectionPacket_SC;
 
 public class PacketHandler {
     //dingusprimeacm
@@ -44,5 +53,8 @@ public class PacketHandler {
         INSTANCE.messageBuilder(ShopkeeperSelectTradePacket_CS.class, 7, NetworkDirection.PLAY_TO_SERVER).decoder(ShopkeeperSelectTradePacket_CS::decoder).encoder(ShopkeeperSelectTradePacket_CS::encoder).consumer(ShopkeeperSelectTradePacket_CS::messageConsumer).add();
         INSTANCE.messageBuilder(ShopkeeperDropResultPacket_CS.class, 8, NetworkDirection.PLAY_TO_SERVER).decoder(ShopkeeperDropResultPacket_CS::decoder).encoder(ShopkeeperDropResultPacket_CS::encoder).consumer(ShopkeeperDropResultPacket_CS::messageConsumer).add();
         INSTANCE.messageBuilder(ShopkeeperSetResultPacket_SC.class, 9, NetworkDirection.PLAY_TO_CLIENT).decoder(ShopkeeperSetResultPacket_SC::decoder).encoder(ShopkeeperSetResultPacket_SC::encoder).consumer(ShopkeeperSetResultPacket_SC::messageConsumer).add();
+
+        INSTANCE.messageBuilder(ZoneDataPacket_SC.class, 10, NetworkDirection.PLAY_TO_CLIENT).decoder(ZoneDataPacket_SC::decoder).encoder(ZoneDataPacket_SC::encoder).consumer(ZoneDataPacket_SC::messageConsumer).add();
+        INSTANCE.messageBuilder(ZoneSelectionPacket_SC.class, 11, NetworkDirection.PLAY_TO_CLIENT).decoder(ZoneSelectionPacket_SC::decoder).encoder(ZoneSelectionPacket_SC::encoder).consumer(ZoneSelectionPacket_SC::messageConsumer).add();
     }
 }

@@ -21,6 +21,7 @@ import net.petercashel.dingusprimeacm.kubejs.basictypes.HelperBlockBuilder;
 
 public class LampBlockJS extends BasicBlockJS {
 
+    public static final int Light = 64;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     private final boolean isLampTop;
     private boolean isOn = false;
@@ -38,14 +39,14 @@ public class LampBlockJS extends BasicBlockJS {
     public int getLightBlock(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
         boolean flag = pState.getValue(LIT);
         if (!flag) return 0;
-        return 14;
+        return Light;
     }
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
         boolean flag = state.getValue(LIT);
         if (!flag) return 0;
-        return 14;
+        return Light;
     }
 
 

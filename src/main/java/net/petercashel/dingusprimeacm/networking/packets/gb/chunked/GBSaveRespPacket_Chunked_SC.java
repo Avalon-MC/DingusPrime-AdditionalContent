@@ -1,4 +1,4 @@
-package net.petercashel.dingusprimeacm.networking.packets.chunked;
+package net.petercashel.dingusprimeacm.networking.packets.gb.chunked;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -131,8 +131,6 @@ public class GBSaveRespPacket_Chunked_SC {
                 newSaveBytes.put(part, 0, part.length);
             }
 
-
-            //Todo Write Save Bytes to client temp folder
             if (newSaveBytes != null && newSaveBytes.capacity() != 0) {
                 File saveDir = new File("DingusPrime/GBSaves").getAbsoluteFile();
                 File save = new File(saveDir, CartUUID + ".sav");

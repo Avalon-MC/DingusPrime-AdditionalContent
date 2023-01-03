@@ -44,3 +44,10 @@ mandatory = true
 versionRange = "[${calemieconomy_version},)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.mymodId]]
+modId = "journeymap"
+mandatory = false
+versionRange = "[5.9.0beta2,)"
+ordering = "NONE"
+side = "CLIENT"

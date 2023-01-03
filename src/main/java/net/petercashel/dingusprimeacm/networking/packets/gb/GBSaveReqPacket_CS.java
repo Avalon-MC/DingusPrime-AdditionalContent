@@ -1,9 +1,9 @@
-package net.petercashel.dingusprimeacm.networking.packets;
+package net.petercashel.dingusprimeacm.networking.packets.gb;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
-import net.petercashel.dingusprimeacm.networking.packets.chunked.GBSaveRespPacket_Chunked_SC;
+import net.petercashel.dingusprimeacm.networking.packets.gb.chunked.GBSaveRespPacket_Chunked_SC;
 
 import java.io.File;
 import java.io.FileInputStream;

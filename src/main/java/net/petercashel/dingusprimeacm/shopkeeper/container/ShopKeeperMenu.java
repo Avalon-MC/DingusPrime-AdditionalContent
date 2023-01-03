@@ -1,6 +1,5 @@
 package net.petercashel.dingusprimeacm.shopkeeper.container;
 
-import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -16,11 +15,7 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
-import net.petercashel.dingusprimeacm.networking.packets.ShopkeeperSetResultPacket_SC;
-
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Optional;
+import net.petercashel.dingusprimeacm.networking.packets.shop.ShopkeeperSetResultPacket_SC;
 
 public class ShopKeeperMenu extends AbstractContainerMenu {
 

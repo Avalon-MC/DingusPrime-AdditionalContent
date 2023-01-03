@@ -1,11 +1,10 @@
-package net.petercashel.dingusprimeacm.networking.packets;
+package net.petercashel.dingusprimeacm.networking.packets.shop;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.network.NetworkEvent;
 import net.petercashel.dingusprimeacm.shopkeeper.container.ShopKeeperMenu;
 import net.petercashel.dingusprimeacm.shopkeeper.container.ShopKeeperScreen;

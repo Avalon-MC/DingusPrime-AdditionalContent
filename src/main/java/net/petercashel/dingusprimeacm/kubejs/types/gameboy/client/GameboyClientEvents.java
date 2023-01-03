@@ -2,8 +2,8 @@ package net.petercashel.dingusprimeacm.kubejs.types.gameboy.client;
 
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.emulation.GameboyStatus;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
-import net.petercashel.dingusprimeacm.networking.packets.GBUploadSavePacket_CS;
-import net.petercashel.dingusprimeacm.networking.packets.chunked.GBUploadSavePacket_Chunked_CS;
+import net.petercashel.dingusprimeacm.networking.packets.gb.GBUploadSavePacket_CS;
+import net.petercashel.dingusprimeacm.networking.packets.gb.chunked.GBUploadSavePacket_Chunked_CS;
 
 import java.io.*;
 

@@ -1,4 +1,4 @@
-package net.petercashel.dingusprimeacm.networking.packets;
+package net.petercashel.dingusprimeacm.networking.packets.shop;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -7,29 +7,33 @@ import net.petercashel.dingusprimeacm.shopkeeper.container.ShopKeeperMenu;
 
 import java.util.function.Supplier;
 
-public class ShopkeeperDropResultPacket_CS {
+public class ShopkeeperSelectTradePacket_CS {
 
 
+    private final int item;
 
-    public ShopkeeperDropResultPacket_CS() {
-
+    public ShopkeeperSelectTradePacket_CS(int pItem) {
+        this.item = pItem;
     }
 
-    public ShopkeeperDropResultPacket_CS(FriendlyByteBuf pBuffer) {
-
+    public ShopkeeperSelectTradePacket_CS(FriendlyByteBuf pBuffer) {
+        this.item = pBuffer.readVarInt();
     }
 
 
 
-    public static ShopkeeperDropResultPacket_CS decoder(FriendlyByteBuf friendlyByteBuf) {
-        return new ShopkeeperDropResultPacket_CS(friendlyByteBuf);
+    public static ShopkeeperSelectTradePacket_CS decoder(FriendlyByteBuf friendlyByteBuf) {
+        return new ShopkeeperSelectTradePacket_CS(friendlyByteBuf);
     }
 
 
     public void encoder(FriendlyByteBuf pBuffer) {
-
+        pBuffer.writeVarInt(this.item);
     }
 
+    public int getItem() {
+        return this.item;
+    }
 
 
     public boolean messageConsumer(Supplier< NetworkEvent.Context> contextSupplier) {
@@ -37,12 +41,14 @@ public class ShopkeeperDropResultPacket_CS {
         ctx.enqueueWork(() -> {
             //Client Side
             try {
-                ShopkeeperDropResultPacket_CS pPacket = this;
+                ShopkeeperSelectTradePacket_CS pPacket = this;
                 //PacketUtils.ensureRunningOnSameThread(pPacket, this, this.player.getLevel());
+                int i = pPacket.getItem();
                 AbstractContainerMenu abstractcontainermenu = ctx.getSender().containerMenu;
                 if (abstractcontainermenu instanceof ShopKeeperMenu) {
                     ShopKeeperMenu merchantmenu = (ShopKeeperMenu)abstractcontainermenu;
-                    merchantmenu.dropResultItem();
+                    merchantmenu.setSelectionHint(i);
+                    merchantmenu.tryMoveItems(i);
                 }
 
 

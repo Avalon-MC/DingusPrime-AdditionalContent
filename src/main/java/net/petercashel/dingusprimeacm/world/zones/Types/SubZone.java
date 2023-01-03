@@ -1,54 +1,47 @@
-package net.petercashel.dingusprimeacm.world.Zones.Types;
+package net.petercashel.dingusprimeacm.world.zones.Types;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.petercashel.dingusprimeacm.world.Zones.ZonePermissions;
+import net.petercashel.dingusprimeacm.world.zones.ZonePermissions;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
-public class OwnerZone extends BaseZone {
+public class SubZone extends BaseOwnableZone {
 
-    public OwnerZone(BlockPos startPos, double radius) {
-        super(startPos, radius);
-    }
+    public OwnerZone ParentZone;
+    public UUID ParentZoneUUID;
 
-    public OwnerZone(BlockPos startPos, BlockPos endPos) {
-        super(startPos, endPos);
-    }
-
-    public OwnerZone(Vec3 startPos, double radius) {
-        super(startPos, radius);
-    }
-
-    public OwnerZone(Vec3 startPos, Vec3 endPos) {
-        super(startPos, endPos);
-    }
-
-    public OwnerZone(CompoundTag compound) {
+    public SubZone(CompoundTag compound) {
         super();
         this.deserializeNBT(compound);
     }
 
-    public ArrayList<UUID> MemberUUIDs = new ArrayList<>();
-    public ZonePermissions MemberPerms = new ZonePermissions();
-
-    public ArrayList<UUID> AllyUUIDs = new ArrayList<>();
-    public ZonePermissions AllyPerms = new ZonePermissions();
-
-    public ZonePermissions PublicPerms = new ZonePermissions();
+    public SubZone(AABB box) {
+        super(box);
+    }
+    public SubZone(AABB box, OwnerZone parentZone) {
+        super(box);
+        this.ParentZone = parentZone;
+        this.ParentZoneUUID = parentZone.ZoneUUID;
+    }
 
     static int version = 1;
+
+    @Override
+    public boolean isOwner(Player player) {
+        return player.getUUID().equals(OwnerUUID) || player.getUUID().equals(ParentZone.OwnerUUID);
+    }
 
     @Override
     public boolean CanBuild(BlockPos pos, Player player) {
         return isOwner(player) || isPlayerOP(player) ||
                 (isMember(player) && MemberPerms.hasPermissionFlag(ZonePermissions.ZonePermissionsEnum.Build)) ||
                 (isAlly(player) && AllyPerms.hasPermissionFlag(ZonePermissions.ZonePermissionsEnum.Build)) ||
-                 (PublicPerms.hasPermissionFlag(ZonePermissions.ZonePermissionsEnum.Build));
+                (PublicPerms.hasPermissionFlag(ZonePermissions.ZonePermissionsEnum.Build));
     }
 
     @Override
@@ -59,12 +52,6 @@ public class OwnerZone extends BaseZone {
                 (PublicPerms.hasPermissionFlag(flag));
     }
 
-    boolean isMember(Player player) {
-        return MemberUUIDs.contains(player.getUUID());
-    }
-    boolean isAlly(Player player) {
-        return AllyUUIDs.contains(player.getUUID());
-    }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
@@ -97,20 +84,6 @@ public class OwnerZone extends BaseZone {
 
     }
 
-    private void LoadAllies(CompoundTag allyUUIDs) {
-        int count = allyUUIDs.getInt("count");
-        for (int i = 0; i < count; i++) {
-            this.AllyUUIDs.add(allyUUIDs.getUUID(Integer.toString(i)));
-        }
-    }
-
-    private void LoadMembers(CompoundTag memberUUIDs) {
-        int count = memberUUIDs.getInt("count");
-        for (int i = 0; i < count; i++) {
-            this.MemberUUIDs.add(memberUUIDs.getUUID(Integer.toString(i)));
-        }
-    }
-
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = (CompoundTag) super.serializeNBT();
@@ -130,30 +103,5 @@ public class OwnerZone extends BaseZone {
 
 
         return tag;
-    }
-
-    private CompoundTag SaveMembers(CompoundTag tag) {
-        tag.putInt("count", MemberUUIDs.size());
-        int i = 0;
-        for (var uuid : MemberUUIDs) {
-            tag.putUUID(Integer.toString((i++)), uuid);
-        }
-        return tag;
-    }
-
-    private CompoundTag SaveAllies(CompoundTag tag) {
-        tag.putInt("count", AllyUUIDs.size());
-        int i = 0;
-        for (var uuid : AllyUUIDs) {
-            tag.putUUID(Integer.toString((i++)), uuid);
-        }
-        return tag;
-    }
-
-    public boolean isMember(UUID uuid) {
-        return this.MemberUUIDs.contains(uuid);
-    }
-    public boolean isAlly(UUID uuid) {
-        return this.AllyUUIDs.contains(uuid);
     }
 }

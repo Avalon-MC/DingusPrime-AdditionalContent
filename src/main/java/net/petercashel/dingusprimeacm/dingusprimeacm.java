@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.MinecraftForge;
@@ -29,6 +30,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.petercashel.dingusprimeacm.creative.DPACM_MainTab;
+import net.petercashel.dingusprimeacm.items.zonetool.ZoneTool;
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetContainer;
 import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.container.CartShelfContainer;
 import net.petercashel.dingusprimeacm.kubejs.types.chair.ChairEntity;
@@ -55,10 +58,11 @@ public class dingusprimeacm
 {
     public static final String MODID = "dingusprimeacm";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
 
-
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
     public dingusprimeacm()
     {
@@ -75,6 +79,8 @@ public class dingusprimeacm
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         CONTAINERS.register(bus);
         ENTITY_TYPES.register(bus);
+        BLOCKS.register(bus);
+        ITEMS.register(bus);
 
         DPAcmConfig.LoadConfig();
         DPAcmConfig.SaveConfig();
@@ -135,6 +141,9 @@ public class dingusprimeacm
         }
     }
 
+    public static final DPACM_MainTab DPACM_MAINTAB = new DPACM_MainTab(CreativeModeTab.TABS.length, MODID);
+
+    public static final RegistryObject<Item> ZONETOOLITEM = ITEMS.register("zonewand", () -> new ZoneTool(ZoneTool.GetDefaultItemProperties(new Item.Properties().tab(DPACM_MAINTAB))));
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
     // Event bus for receiving Registry Events)

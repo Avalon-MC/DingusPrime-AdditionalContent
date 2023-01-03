@@ -30,7 +30,7 @@ import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyCart
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyContainer;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
-import net.petercashel.dingusprimeacm.networking.packets.GBGameSyncPacket_SC;
+import net.petercashel.dingusprimeacm.networking.packets.gb.GBGameSyncPacket_SC;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

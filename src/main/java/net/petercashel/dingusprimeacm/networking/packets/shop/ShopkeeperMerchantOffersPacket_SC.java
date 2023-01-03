@@ -1,25 +1,13 @@
-package net.petercashel.dingusprimeacm.networking.packets;
+package net.petercashel.dingusprimeacm.networking.packets.shop;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.PacketUtils;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundMerchantOffersPacket;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraftforge.network.NetworkEvent;
 import net.petercashel.dingusprimeacm.shopkeeper.container.ShopKeeperMenu;
-import org.apache.commons.io.FileUtils;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraftforge.network.NetworkEvent;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
 import java.util.function.Supplier;
-import java.io.File;
 
 public class ShopkeeperMerchantOffersPacket_SC {
 
