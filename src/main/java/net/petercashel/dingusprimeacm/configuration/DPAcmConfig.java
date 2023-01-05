@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.Reader;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DPAcmConfig {
 
@@ -71,6 +73,18 @@ public class DPAcmConfig {
         if (ConfigInstance.ZoneSettings == null) {
             ConfigInstance.ZoneSettings = new ZoneSettings();
         }
+
+        if (ConfigInstance.DailyRewardSettings == null) {
+            ConfigInstance.DailyRewardSettings = new DailyRewardSettings();
+        }
+        if (ConfigInstance.DailyRewardSettings.DailyRewardsCurrency.isEmpty()) {
+            //Defaults
+            ConfigInstance.DailyRewardSettings.DailyRewardsCurrency.put(0, 50);
+            ConfigInstance.DailyRewardSettings.DailyRewardsCurrency.put(1, 10);
+            ConfigInstance.DailyRewardSettings.DailyRewardsCurrency.put(3, 20);
+            ConfigInstance.DailyRewardSettings.DailyRewardsCurrency.put(7, 35);
+            ConfigInstance.DailyRewardSettings.DailyRewardsCurrency.put(14, 50);
+        }
         return ConfigInstance;
     }
 
@@ -118,10 +132,23 @@ public class DPAcmConfig {
     @Expose
     public ZoneSettings ZoneSettings = new ZoneSettings();
     public static class ZoneSettings {
+
         @Expose
         public int MaxZoneCreate_WandWidth = 16 * 16;
 
+        @Expose
         public int MaxZoneCreate_Radius = 16 * 8;
+
+    }
+
+    @Expose
+    public DailyRewardSettings DailyRewardSettings = new DailyRewardSettings();
+    public static class DailyRewardSettings {
+        @Expose
+        public boolean DailyRewardsEnabled = false;
+
+        @Expose
+        public ConcurrentHashMap<Integer, Integer> DailyRewardsCurrency = new ConcurrentHashMap<Integer, Integer>();
 
     }
 

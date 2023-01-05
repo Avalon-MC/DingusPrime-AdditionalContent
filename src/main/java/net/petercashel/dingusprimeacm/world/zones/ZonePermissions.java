@@ -9,6 +9,19 @@ import java.util.Map;
 public class ZonePermissions implements INBTSerializable<CompoundTag> {
     public EnumSet<ZonePermissionsEnum> permissionSet = EnumSet.noneOf(ZonePermissionsEnum.class);
 
+    public ZonePermissions() {
+    }
+
+    public ZonePermissions(EnumSet<ZonePermissionsEnum> permSet) {
+        permissionSet = permSet;
+    }
+
+    public ZonePermissions(EnumSet<ZonePermissionsEnum> permSet, boolean removeBuild, boolean removeDestroy) {
+        this(permSet);
+        if (removeBuild) permissionSet.remove(ZonePermissionsEnum.Build);
+        if (removeDestroy) permissionSet.remove(ZonePermissionsEnum.Destroy);
+    }
+
     public boolean hasPermissionFlag(ZonePermissionsEnum flag) {
         return permissionSet.contains(flag);
     }
@@ -61,6 +74,9 @@ public class ZonePermissions implements INBTSerializable<CompoundTag> {
         Destroy(4),
         Interact(8),
         ItemUse(16),
+        Attack(32),
+        AnimalSpawns(64),
+        MobSpawns(128)
 
         ;
         private int flag;

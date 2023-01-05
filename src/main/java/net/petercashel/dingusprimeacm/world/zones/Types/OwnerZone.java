@@ -65,6 +65,12 @@ public class OwnerZone extends BaseOwnableZone {
         }
         return null;
     }
+    public SubZone GetSubzoneForPosition(Vec3 pos) {
+        for (SubZone zone : SubZones) {
+            if (zone.CollisionBox.contains(pos.x(), pos.y(), pos.z())) return zone;
+        }
+        return null;
+    }
 
     @Override
     public boolean HasPermission(BlockPos pos, Player player, ZonePermissions.ZonePermissionsEnum flag) {
@@ -77,6 +83,28 @@ public class OwnerZone extends BaseOwnableZone {
                 (isMember(player) && MemberPerms.hasPermissionFlag(flag)) ||
                 (isAlly(player) && AllyPerms.hasPermissionFlag(flag)) ||
                 (PublicPerms.hasPermissionFlag(flag));
+    }
+
+    @Override
+    public boolean HasPermission(Vec3 pos, Player player, ZonePermissions.ZonePermissionsEnum flag) {
+        SubZone zone = GetSubzoneForPosition(pos);
+        if (zone != null) {
+            return zone.HasPermission(pos, player, flag);
+        }
+
+        return isOwner(player) || isPlayerOP(player) ||
+                (isMember(player) && MemberPerms.hasPermissionFlag(flag)) ||
+                (isAlly(player) && AllyPerms.hasPermissionFlag(flag)) ||
+                (PublicPerms.hasPermissionFlag(flag));
+    }
+
+    @Override
+    public boolean HasPublicPermission(Vec3 pos, ZonePermissions.ZonePermissionsEnum flag) {
+        SubZone zone = GetSubzoneForPosition(pos);
+        if (zone != null) {
+            return zone.HasPublicPermission(pos, flag);
+        }
+        return (PublicPerms.hasPermissionFlag(flag));
     }
 
 

@@ -96,6 +96,7 @@ public abstract class BaseZone implements INBTSerializable<CompoundTag> {
         return tag;
     }
 
+
     @Override
     public void deserializeNBT(CompoundTag tag) {
         if (tag != null) {
@@ -139,6 +140,8 @@ public abstract class BaseZone implements INBTSerializable<CompoundTag> {
     public abstract boolean CanBuild(BlockPos pos, Player player);
 
     public abstract boolean HasPermission(BlockPos pos, Player player, ZonePermissions.ZonePermissionsEnum flag);
+    public abstract boolean HasPermission(Vec3 pos, Player player, ZonePermissions.ZonePermissionsEnum flag);
+    public abstract boolean HasPublicPermission(Vec3 pos, ZonePermissions.ZonePermissionsEnum flag);
 
     public BaseZone SetOwner(UUID uuid) {
         this.OwnerUUID = uuid;

@@ -9,6 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import net.petercashel.dingusprimeacm.world.zones.ZonePermissions;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.UUID;
 
 public abstract class BaseOwnableZone extends BaseZone {
@@ -45,7 +46,7 @@ public abstract class BaseOwnableZone extends BaseZone {
 
 
     public ArrayList<UUID> MemberUUIDs = new ArrayList<>();
-    public ZonePermissions MemberPerms = new ZonePermissions();
+    public ZonePermissions MemberPerms = new ZonePermissions(EnumSet.allOf(ZonePermissions.ZonePermissionsEnum.class));
 
     public ArrayList<UUID> AllyUUIDs = new ArrayList<>();
     public ZonePermissions AllyPerms = new ZonePermissions();
@@ -83,6 +84,13 @@ public abstract class BaseOwnableZone extends BaseZone {
                 (isAlly(player) && AllyPerms.hasPermissionFlag(ZonePermissions.ZonePermissionsEnum.Build)) ||
                 (PublicPerms.hasPermissionFlag(ZonePermissions.ZonePermissionsEnum.Build));
     }
+    @Override
+    public boolean HasPermission(Vec3 pos, Player player, ZonePermissions.ZonePermissionsEnum flag) {
+        return isOwner(player) || isPlayerOP(player) ||
+                (isMember(player) && MemberPerms.hasPermissionFlag(flag)) ||
+                (isAlly(player) && AllyPerms.hasPermissionFlag(flag)) ||
+                (PublicPerms.hasPermissionFlag(flag));
+    }
 
     @Override
     public boolean HasPermission(BlockPos pos, Player player, ZonePermissions.ZonePermissionsEnum flag) {
@@ -90,6 +98,11 @@ public abstract class BaseOwnableZone extends BaseZone {
                 (isMember(player) && MemberPerms.hasPermissionFlag(flag)) ||
                 (isAlly(player) && AllyPerms.hasPermissionFlag(flag)) ||
                 (PublicPerms.hasPermissionFlag(flag));
+    }
+
+    @Override
+    public boolean HasPublicPermission(Vec3 pos, ZonePermissions.ZonePermissionsEnum flag) {
+        return (PublicPerms.hasPermissionFlag(flag));
     }
 
 

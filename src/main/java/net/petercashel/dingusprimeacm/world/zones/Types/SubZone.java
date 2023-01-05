@@ -45,6 +45,14 @@ public class SubZone extends BaseOwnableZone {
     }
 
     @Override
+    public boolean HasPermission(Vec3 pos, Player player, ZonePermissions.ZonePermissionsEnum flag) {
+        return isOwner(player) || isPlayerOP(player) ||
+                (isMember(player) && MemberPerms.hasPermissionFlag(flag)) ||
+                (isAlly(player) && AllyPerms.hasPermissionFlag(flag)) ||
+                (PublicPerms.hasPermissionFlag(flag));
+    }
+
+    @Override
     public boolean HasPermission(BlockPos pos, Player player, ZonePermissions.ZonePermissionsEnum flag) {
         return isOwner(player) || isPlayerOP(player) ||
                 (isMember(player) && MemberPerms.hasPermissionFlag(flag)) ||

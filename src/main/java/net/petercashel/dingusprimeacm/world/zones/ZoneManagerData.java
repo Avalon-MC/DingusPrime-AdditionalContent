@@ -5,6 +5,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.UseOnContext;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.fml.loading.FMLServiceProvider;
@@ -28,12 +30,13 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ZoneManagerData {
+public class ZoneManagerData implements INBTSerializable<CompoundTag> {
     static int version = 1;
 
     //ServerOnly Data
     public boolean isServerInstance = false;
     public ConcurrentHashMap<UUID, Vec3> PlayerPositions = new ConcurrentHashMap<>();
+    public ConcurrentHashMap<UUID, ResourceKey<Level>> PlayerDimension = new ConcurrentHashMap<>();
     public ConcurrentHashMap<UUID, PlayerSelectionSession> PlayerSelectionSessions = new ConcurrentHashMap<>();
 
 
@@ -48,6 +51,15 @@ public class ZoneManagerData {
         }
     }
 
+    @Override
+    public CompoundTag serializeNBT() {
+        return Save(new CompoundTag());
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag nbt) {
+        Load(nbt);
+    }
 
     public void Load(CompoundTag nbt) {
         PlayerPositions.clear();
@@ -158,7 +170,7 @@ public class ZoneManagerData {
     }
 
     public void ClearPlayerSelection(Player player) {
-        PlayerSelectionSessions.get(player.getUUID()).ClearSelections();
+        PlayerSelectionSessions.get(player.getUUID()).ClearSelections(player);
         SendSelectionToClient(player);
     }
 
@@ -181,4 +193,5 @@ public class ZoneManagerData {
         PlayerSelectionSession session = GetPlayerSelection(playerOrException);
         return session != null;
     }
+
 }

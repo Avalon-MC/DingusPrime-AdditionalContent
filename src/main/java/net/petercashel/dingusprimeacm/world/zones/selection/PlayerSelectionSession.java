@@ -1,14 +1,19 @@
 package net.petercashel.dingusprimeacm.world.zones.selection;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.scores.Team;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.petercashel.dingusprimeacm.networking.NetworkUtils;
 
@@ -22,12 +27,16 @@ public class PlayerSelectionSession implements INBTSerializable<CompoundTag> {
 
     public void SetPlayerSelectionLeft(BlockState pState, Level pLevel, Player pPlayer, BlockPos pPos) {
         SelectionPositionA = pPos;
-        ProcessPlayerSelection(this);
+        ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
+        serverPlayer.sendMessage(new TextComponent("First Position Selected"), ChatType.GAME_INFO, Util.NIL_UUID);
+        ProcessPlayerSelection(this, pPlayer);
     }
 
     public void SetPlayerSelectionRight(UseOnContext pContext) {
         SelectionPositionB = pContext.getClickedPos();
-        ProcessPlayerSelection(this);
+        ServerPlayer serverPlayer = (ServerPlayer) pContext.getPlayer();
+        serverPlayer.sendMessage(new TextComponent("Second Position Selected"), ChatType.GAME_INFO, Util.NIL_UUID);
+        ProcessPlayerSelection(this, pContext.getPlayer());
     }
 
     public void expandSelection(Direction facing, int count, int backward) {
@@ -78,18 +87,26 @@ public class PlayerSelectionSession implements INBTSerializable<CompoundTag> {
         }
     }
 
-    public void ClearSelections() {
+    public void ClearSelections(Player pPlayer) {
         SelectionPositionA = null;
         SelectionPositionB = null;
         selectionBox = null;
+        ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
+        serverPlayer.sendMessage(new TextComponent("Selection Cleared"), ChatType.GAME_INFO, Util.NIL_UUID);
     }
 
-    public void ProcessPlayerSelection(PlayerSelectionSession session) {
+    public void ProcessPlayerSelection(PlayerSelectionSession session, Player pPlayer) {
 
         if (session.SelectionPositionA != null && session.SelectionPositionB != null) {
             selectionBox = new AABB(SelectionPositionA).minmax(new AABB(SelectionPositionB));
+            ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
+            serverPlayer.sendMessage(new TextComponent("Selection: " +
+                    (Math.abs( selectionBox.maxX - selectionBox.minX)) + " x " +
+                    (Math.abs( selectionBox.maxY - selectionBox.minY)) + " x " +
+                    (Math.abs( selectionBox.maxZ - selectionBox.minZ))), ChatType.GAME_INFO, Util.NIL_UUID);
         } else {
             selectionBox = null;
+            ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
         }
     }
 

@@ -39,6 +39,7 @@ public class ZoneManager {
         WorldDataManager.SaveDataInstance.markDirty();
     }
 
+
     public static enum ZoneTypeEnum {
         AntiBuild,
         OwnedZone
@@ -293,6 +294,21 @@ public class ZoneManager {
 
         return Command.SINGLE_SUCCESS;
     }
+    private BaseZone GetZoneForPosition(Vec3 startPos, Class<? extends BaseZone> zoneClass) {
+        if (zoneClass.equals(AntiBuildZone.class)) {
+            for (AntiBuildZone zone: Data.AntiBuildZones) {
+                if (zone.Contains(startPos)) return zone;
+            }
+        }
+        if (zoneClass.equals(OwnerZone.class)) {
+            for (OwnerZone zone: Data.OwnerZones) {
+                if (zone.Contains(startPos)) return zone;
+            }
+        }
+
+
+        return null;
+    }
 
     private BaseZone GetZoneForPosition(BlockPos startPos, Class<? extends BaseZone> zoneClass) {
         if (zoneClass.equals(AntiBuildZone.class)) {
@@ -363,6 +379,20 @@ public class ZoneManager {
         return true;
     }
 
+    public boolean HasPermission(Vec3 pos, Player player, ZonePermissions.ZonePermissionsEnum flag)
+    {
+        AntiBuildZone zone;
+        if ((zone = (AntiBuildZone) GetZoneForPosition(pos, AntiBuildZone.class)) != null) {
+            return zone.HasPermission(pos, player, flag);
+        }
+        OwnerZone zone2;
+        if ((zone2 = (OwnerZone) GetZoneForPosition(pos, OwnerZone.class)) != null) {
+            return zone2.HasPermission(pos, player, flag);
+        }
+
+        return true;
+    }
+
     public boolean HasPermission(BlockPos pos, Player player, ZonePermissions.ZonePermissionsEnum flag) {
         AntiBuildZone zone;
         if ((zone = (AntiBuildZone) GetZoneForPosition(pos, AntiBuildZone.class)) != null) {
@@ -373,6 +403,20 @@ public class ZoneManager {
             return zone2.HasPermission(pos, player, flag);
         }
 
+
+        return true;
+    }
+
+
+    public boolean HasPublicPermission(Vec3 pos, ZonePermissions.ZonePermissionsEnum flag) {
+        AntiBuildZone zone;
+        if ((zone = (AntiBuildZone) GetZoneForPosition(pos, AntiBuildZone.class)) != null) {
+            return zone.HasPublicPermission(pos, flag);
+        }
+        OwnerZone zone2;
+        if ((zone2 = (OwnerZone) GetZoneForPosition(pos, OwnerZone.class)) != null) {
+            return zone2.HasPublicPermission(pos, flag);
+        }
 
         return true;
     }
