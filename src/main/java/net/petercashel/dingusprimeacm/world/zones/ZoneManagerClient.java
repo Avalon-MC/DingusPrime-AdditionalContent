@@ -67,26 +67,36 @@ public class ZoneManagerClient {
         }
     }
 
-
+    private static int ClientTickCounter = 0;
     @SubscribeEvent
     public static void OnClientTick(final TickEvent.ClientTickEvent clientTickEvent) {
+        if (clientTickEvent.phase == TickEvent.Phase.START) {
+            ClientTickCounter++;
+
+            if (ClientTickCounter > 20) {
+                ClientTickCounter = 0;
+
+
+                if (clientTickEvent.phase == TickEvent.Phase.START) {
+                    if (Minecraft.getInstance().player == null) return;
+                    ItemStack stack = Minecraft.getInstance().player.getItemInHand(InteractionHand.MAIN_HAND);
+                    ZoneInfoEnabled = (stack != null && !stack.isEmpty() && stack.getItem() instanceof ZoneTool);
+                }
+            }
+        }
 
     }
 
     @SubscribeEvent
     public static void OnPlayerTick(final TickEvent.PlayerTickEvent clientTickEvent) {
-        if (clientTickEvent.phase == TickEvent.Phase.START) {
-            if (Minecraft.getInstance().player == null) return;
-            ItemStack stack = Minecraft.getInstance().player.getItemInHand(InteractionHand.MAIN_HAND);
-            ZoneInfoEnabled = (stack != null && !stack.isEmpty() && stack.getItem() instanceof ZoneTool);
-        }
+
     }
 
     @SubscribeEvent
     public static void onRenderLevelStageEvent(final RenderLevelStageEvent event)
     {
         //Overlay Time
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS && Minecraft.getInstance().level.dimension() == Level.OVERWORLD && ZoneInfoEnabled) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES && Minecraft.getInstance().level.dimension() == Level.OVERWORLD && ZoneInfoEnabled) {
 
             if (selectionPointA != null) RenderWorldLines(event, selectionPointA, event.getPoseStack(), 0.75f, 0f, 0f, 1f);
             if (selectionPointB != null) RenderWorldLines(event, selectionPointB, event.getPoseStack(), 0f, 0f, 0.75f, 1f);

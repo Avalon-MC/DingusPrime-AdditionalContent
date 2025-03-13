@@ -2,14 +2,18 @@ package net.petercashel.dingusprimeacm.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;
 import net.petercashel.dingusprimeacm.configuration.DPAcmConfig;
+import net.petercashel.dingusprimeacm.export.DataExporter;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeManager;
 
 public class DingusPrimeAcmCommand extends CommandBase{
@@ -27,7 +31,9 @@ public class DingusPrimeAcmCommand extends CommandBase{
                         .executes(commandContext -> executeReloadConfig(commandContext))
                 )
 
-
+                .then(Commands.literal("exportkubetooldata")
+                        .executes(commandContext -> exportKubeTool(commandContext))
+                )
 
 
                 //Fallback
@@ -39,6 +45,19 @@ public class DingusPrimeAcmCommand extends CommandBase{
         dispatcher.register(ZoneCommand.BuildWandCommand(Commands.literal("zonewand")));
         dispatcher.register(ZoneCommand.BuildPlotCommand(Commands.literal("plot")));
         dispatcher.register(ZoneCommand.BuildAdminCommand(Commands.literal("zoneadmin")));
+    }
+
+
+
+    private static int exportKubeTool(CommandContext<CommandSourceStack> commandContext) {
+        try {
+            DataExporter.Player = commandContext.getSource().getPlayerOrException();
+            DataExporter.Server = commandContext.getSource().getServer();
+        } catch (CommandSyntaxException e) {
+            e.printStackTrace();
+        }
+        DataExporter.StartExportThread();
+        return Command.SINGLE_SUCCESS;
     }
 
 

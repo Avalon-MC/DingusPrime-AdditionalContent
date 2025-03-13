@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.petercashel.dingusprimeacm.kubejs.basictypes.HelperBlockBuilder;
+import net.petercashel.dingusprimeacm.kubejs.basictypes.ExtendedBlockBuilder;
 
 
 public class LampBlockJS extends BasicBlockJS {
@@ -120,7 +120,7 @@ public class LampBlockJS extends BasicBlockJS {
         return this.blockBuilder;
     }
 
-    public static abstract class LampBuilder extends HelperBlockBuilder {
+    public static abstract class LampBuilder extends ExtendedBlockBuilder {
         public LampBuilder(ResourceLocation i) {
             super(i);
         }

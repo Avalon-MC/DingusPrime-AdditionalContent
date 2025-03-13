@@ -28,14 +28,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class RealBasicBlockJS extends Block implements BlockBuilderProvider {
-    public final BlockBuilder blockBuilder;
+    public final ExtendedBlockBuilder blockBuilder;
     public final VoxelShape shape;
 
-    public RealBasicBlockJS(BlockBuilder p) {
+    public RealBasicBlockJS(ExtendedBlockBuilder p) {
         super(p.createProperties());
         this.blockBuilder = p;
         this.shape = p.createShape();
-        if (this.blockBuilder.waterlogged) {
+        if (this.blockBuilder.IsWaterlogged) {
             this.registerDefaultState((BlockState)((BlockState)this.stateDefinition.any()).setValue(BlockStateProperties.WATERLOGGED, false));
         }
 
@@ -53,9 +53,9 @@ public class RealBasicBlockJS extends Block implements BlockBuilderProvider {
 
     protected void createBlockStateDefinition(net.minecraft.world.level.block.state.StateDefinition.Builder<Block, BlockState> builder) {
         BuilderBase var3 = RegistryObjectBuilderTypes.BLOCK.getCurrent();
-        if (var3 instanceof BlockBuilder) {
-            BlockBuilder current = (BlockBuilder)var3;
-            if (current.waterlogged) {
+        if (var3 instanceof ExtendedBlockBuilder) {
+            ExtendedBlockBuilder current = (ExtendedBlockBuilder)var3;
+            if (current.IsWaterlogged) {
                 builder.add(new Property[]{BlockStateProperties.WATERLOGGED});
             }
         }
@@ -65,18 +65,18 @@ public class RealBasicBlockJS extends Block implements BlockBuilderProvider {
     /** @deprecated */
     @Deprecated
     public FluidState getFluidState(BlockState state) {
-        return this.blockBuilder.waterlogged && (Boolean)state.getValue(BlockStateProperties.WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return this.blockBuilder.IsWaterlogged && (Boolean)state.getValue(BlockStateProperties.WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return !this.blockBuilder.waterlogged ? this.defaultBlockState() : (BlockState)this.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
+        return !this.blockBuilder.IsWaterlogged ? this.defaultBlockState() : (BlockState)this.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
     }
 
     /** @deprecated */
     @Deprecated
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor world, BlockPos pos, BlockPos facingPos) {
-        if (this.blockBuilder.waterlogged && (Boolean)state.getValue(BlockStateProperties.WATERLOGGED)) {
+        if (this.blockBuilder.IsWaterlogged && (Boolean)state.getValue(BlockStateProperties.WATERLOGGED)) {
             world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
         }
 
@@ -84,7 +84,7 @@ public class RealBasicBlockJS extends Block implements BlockBuilderProvider {
     }
 
     public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
-        return this.blockBuilder.transparent || !this.blockBuilder.waterlogged || !(Boolean)state.getValue(BlockStateProperties.WATERLOGGED);
+        return this.blockBuilder.transparent || !this.blockBuilder.IsWaterlogged || !(Boolean)state.getValue(BlockStateProperties.WATERLOGGED);
     }
 
     /** @deprecated */
@@ -124,7 +124,7 @@ public class RealBasicBlockJS extends Block implements BlockBuilderProvider {
         return this.blockBuilder.transparent ? state2.is(this) || super.skipRendering(state, state2, direction) : super.skipRendering(state, state2, direction);
     }
 
-    public static class Builder extends BlockBuilder {
+    public static class Builder extends ExtendedBlockBuilder {
         public Builder(ResourceLocation i) {
             super(i);
         }

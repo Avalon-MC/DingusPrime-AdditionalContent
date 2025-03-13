@@ -74,6 +74,10 @@ public class DPAcmConfig {
             ConfigInstance.ZoneSettings = new ZoneSettings();
         }
 
+        if (ConfigInstance.DataExportSettings == null) {
+            ConfigInstance.DataExportSettings = new DataExportSettings();
+        }
+
         if (ConfigInstance.DailyRewardSettings == null) {
             ConfigInstance.DailyRewardSettings = new DailyRewardSettings();
         }
@@ -118,6 +122,13 @@ public class DPAcmConfig {
 
     }
 
+    @Expose
+    public DataExportSettings DataExportSettings = new DataExportSettings();
+    public static class DataExportSettings {
+        @Expose
+        public boolean fileNameHashTag = false;
+
+    }
     @Expose
     public ShopSettings ShopSettings = new ShopSettings();
     public class ShopSettings {

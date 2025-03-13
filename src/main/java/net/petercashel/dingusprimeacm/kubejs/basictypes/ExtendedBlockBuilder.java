@@ -4,13 +4,16 @@ import dev.latvian.mods.kubejs.block.BlockBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 
-public abstract class HelperBlockBuilder extends BlockBuilder {
-    public HelperBlockBuilder(ResourceLocation i) {
+public abstract class ExtendedBlockBuilder extends BlockBuilder {
+    public ExtendedBlockBuilder(ResourceLocation i) {
         super(i);
     }
 
 
-    public HelperBlockBuilder addBox_int(double x0, double y0, double z0, double x1, double y1, double z1, boolean flip) {
+    public transient boolean IsWaterlogged;
+
+
+    public ExtendedBlockBuilder addBox_int(double x0, double y0, double z0, double x1, double y1, double z1, boolean flip) {
         if (flip) {
             x0 = A(x0 + x1);
             z0 = A(z0 + z1);
