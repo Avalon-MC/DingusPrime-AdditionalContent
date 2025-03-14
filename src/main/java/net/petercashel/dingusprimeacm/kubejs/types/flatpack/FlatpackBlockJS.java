@@ -78,7 +78,7 @@ public class FlatpackBlockJS extends BasicBlockJS {
 
         for (var item : ItemsToCreate ) {
             ItemStack stack = GetItemStack(new ResourceLocation(item.ResourceName), item.Amount);
-            names.add(new TextComponent(item.Amount + "x ").append(stack.getHoverName()).append("").getVisualOrderText());
+            names.add(Component.literal(item.Amount + "x ").append(stack.getHoverName()).append("").getVisualOrderText());
         }
 
 

@@ -67,12 +67,12 @@ public class GameBoyItemJS extends BasicItemJS {
                 if (pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof GameBoyItemJS
                     && pPlayer.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof GameBoyItemJS)
                 {
-                    pPlayer.sendMessage(new TextComponent("Duel Wielding handhelds is not allowed."), Util.NIL_UUID);
+                    pPlayer.sendMessage(Component.literal("Duel Wielding handhelds is not allowed."), Util.NIL_UUID);
                     return InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));
                 }
 
                 if (pPlayer.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof ShieldItem) {
-                    pPlayer.sendMessage(new TextComponent("Shields do not make good fingers."), Util.NIL_UUID);
+                    pPlayer.sendMessage(Component.literal("Shields do not make good fingers."), Util.NIL_UUID);
                     return InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));
                 }
 
@@ -81,7 +81,7 @@ public class GameBoyItemJS extends BasicItemJS {
                     MenuProvider containerProvider = new MenuProvider() {
                         @Override
                         public Component getDisplayName() {
-                            return new TextComponent("If you can see this. Tell us.");
+                            return Component.literal("If you can see this. Tell us.");
                         }
 
                         @Override
@@ -97,7 +97,7 @@ public class GameBoyItemJS extends BasicItemJS {
                     MenuProvider containerProvider = new MenuProvider() {
                         @Override
                         public Component getDisplayName() {
-                            return new TextComponent("If you can see this. Tell us.");
+                            return Component.literal("If you can see this. Tell us.");
                         }
 
                         @Override
@@ -212,12 +212,12 @@ public class GameBoyItemJS extends BasicItemJS {
             if (handler != null && !handler.getStackInSlot(0).isEmpty()) {
                 LazyOptional<IGameBoyCartCapability> cap = handler.getStackInSlot(0).getCapability(dingusprimeacm.GAMEBOYCART_CAP_INSTANCE);
                 if (cap.isPresent()) {
-                    tooltip.add(new TextComponent("HAS CART: " + ((GameBoyCartItemJS)handler.getStackInSlot(0).getItem()).gameID));
+                    tooltip.add(Component.literal("HAS CART: " + ((GameBoyCartItemJS)handler.getStackInSlot(0).getItem()).gameID));
                     IGameBoyCartCapability capability = cap.resolve().get();
                     if (capability.getUniqueID() == null || capability.getUniqueID().isBlank()) {
                         capability.setUniqueID(UUID.randomUUID().toString());
                     }
-                    tooltip.add(new TextComponent("GAME UUID: " + capability.getUniqueID()));
+                    tooltip.add(Component.literal("GAME UUID: " + capability.getUniqueID()));
                 }
 
             }

@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -176,7 +175,7 @@ public class ShopKeeper extends Villager {
         pOffers.add(new MerchantOffer(ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.BLACK_WOOL), 99, 1, 15.0f));
 
 
-        if (!this.level.isClientSide()) {
+        if (!this.level().isClientSide()) {
             ShopTradeManager.INSTANCE.ApplyOffers(pOffers, shopType);
         }
     }
@@ -203,7 +202,7 @@ public class ShopKeeper extends Villager {
             {
                 boolean flag = this.getOffers().isEmpty();
                 if (pHand == InteractionHand.MAIN_HAND) {
-                    if (flag && !this.level.isClientSide) {
+                    if (flag && !this.level().isClientSide) {
                         this.setUnhappy();
                     }
 
@@ -211,14 +210,14 @@ public class ShopKeeper extends Villager {
                 }
 
                 if (flag) {
-                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 } else {
-                    if (!this.level.isClientSide && !this.offers.isEmpty()) {
+                    if (!this.level().isClientSide && !this.offers.isEmpty()) {
                         this.setTradingPlayer(pPlayer);
                         this.startTrading(pPlayer);
                     }
 
-                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
             }
         } else {
@@ -271,7 +270,7 @@ public class ShopKeeper extends Villager {
             if (((Player)(pSource.getEntity())).isCrouching()) {
                 return super.hurt(pSource, pAmount * 100);
             } else {
-                ((Player)(pSource.getEntity())).sendMessage(new TextComponent("Shift Punch for Max Removal"), Util.NIL_UUID);
+                ((Player)(pSource.getEntity())).sendSystemMessage(Component.literal("Shift Punch for Max Removal"));
             }
 
 

@@ -21,7 +21,7 @@ public class GenericExporter<V extends IForgeRegistryEntry<V>> {
     private static void SendStatus(String s) {
         if (net.petercashel.dingusprimeacm.export.DataExporter.Player != null) {
             if (net.petercashel.dingusprimeacm.export.DataExporter.Player.isAlive()) {
-                net.petercashel.dingusprimeacm.export.DataExporter.Player.sendMessage(new TextComponent(s), ChatType.GAME_INFO, Util.NIL_UUID);
+                net.petercashel.dingusprimeacm.export.DataExporter.Player.sendMessage(Component.literal(s), ChatType.GAME_INFO, Util.NIL_UUID);
             }
         }
     }

@@ -38,7 +38,7 @@ public class DailyManager {
             var Reward = data.GetCurrentReward();
             if (Reward == DailyRewardData.DailyRewardStatus.FirstTime) {
                 int currency = GetReward(0);
-                player.sendMessage(new TextComponent("First Time Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
+                player.sendMessage(Component.literal("First Time Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
                 ShopkeeperCurrencyHelper.refundPlayer(player, currency);
             }
             else if (Reward == DailyRewardData.DailyRewardStatus.TooEarly) {
@@ -52,21 +52,21 @@ public class DailyManager {
 
                 var rewardlevel = data.GetRewardLevel();
                 int currency = GetReward(rewardlevel);
-                player.sendMessage(new TextComponent("Daily Login Bonus Missed! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
+                player.sendMessage(Component.literal("Daily Login Bonus Missed! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
             }
             else {
                 var rewardlevel = data.GetRewardLevel();
                 int currency = GetReward(rewardlevel);
                 if (rewardlevel == GetMaxDailyRewardLevel()) {
-                    player.sendMessage(new TextComponent("Daily Login Bonus Maxed! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
+                    player.sendMessage(Component.literal("Daily Login Bonus Maxed! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
                     ShopkeeperCurrencyHelper.refundPlayer(player, currency);
                 } else {
                     if (rewardlevel > 1) {
                         //Streak?
-                        player.sendMessage(new TextComponent("Daily Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
+                        player.sendMessage(Component.literal("Daily Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
                         ShopkeeperCurrencyHelper.refundPlayer(player, currency);
                     } else {
-                        player.sendMessage(new TextComponent("Daily Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
+                        player.sendMessage(Component.literal("Daily Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
                         ShopkeeperCurrencyHelper.refundPlayer(player, currency);
                     }
                 }

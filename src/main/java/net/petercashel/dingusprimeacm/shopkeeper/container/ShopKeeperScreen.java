@@ -37,9 +37,9 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
     private static final ResourceLocation PLUS_LOCATION = new ResourceLocation("dingusprimeacm:textures/gui/plus.png");
 
     private static final Component TRADES_LABEL = new TranslatableComponent("merchant.dingusprimeacm.trades");
-    private static final Component LEVEL_SEPARATOR = new TextComponent(" - ");
-    private static final Component BALANCE_LABEL = new TextComponent("");
-    private static Component BALANCE_LABEL_WORKING = new TextComponent("Balance: ");
+    private static final Component LEVEL_SEPARATOR = Component.literal(" - ");
+    private static final Component BALANCE_LABEL = Component.literal("");
+    private static Component BALANCE_LABEL_WORKING = Component.literal("Balance: ");
     private static final Component DEPRECATED_TOOLTIP = new TranslatableComponent("merchant.deprecated");
     /** The integer value corresponding to the currently selected merchant recipe. */
     private int shopItem;

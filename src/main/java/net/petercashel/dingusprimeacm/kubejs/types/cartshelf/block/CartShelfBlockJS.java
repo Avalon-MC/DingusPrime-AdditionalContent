@@ -44,7 +44,7 @@ public class CartShelfBlockJS  extends CabnetBlockJS implements EntityBlock {
                 MenuProvider containerProvider = new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
-                        return new TextComponent("Cart Shelf");
+                        return Component.literal("Cart Shelf");
                     }
 
                     @Override

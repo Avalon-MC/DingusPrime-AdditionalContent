@@ -46,7 +46,7 @@ public class CabnetBlockJS extends CardinalBlockJS implements EntityBlock {
                 MenuProvider containerProvider = new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
-                        return new TextComponent(pState.getBlock().getName().getContents());
+                        return Component.literal(pState.getBlock().getName().getContents());
                     }
 
                     @Override

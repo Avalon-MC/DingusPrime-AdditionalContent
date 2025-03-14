@@ -52,7 +52,7 @@ public class ShopkeeperCurrencyHelper {
     }
 
     public static MutableComponent formatCurrency(int amount) {
-        return new TextComponent(StringHelper.insertCommas(amount)).append(new TranslatableComponent("ce.rc"));
+        return Component.literal(StringHelper.insertCommas(amount)).append(new TranslatableComponent("ce.rc"));
     }
 
 

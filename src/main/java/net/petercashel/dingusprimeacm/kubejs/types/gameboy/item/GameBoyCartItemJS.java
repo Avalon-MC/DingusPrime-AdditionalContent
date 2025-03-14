@@ -140,9 +140,9 @@ public class GameBoyCartItemJS extends BasicItemJS {
             if (capability.getUniqueID() == null || capability.getUniqueID().isBlank()) {
                 capability.setUniqueID(UUID.randomUUID().toString());
             }
-            tooltip.add(new TextComponent("UUID: " + capability.getUniqueID()));
+            tooltip.add(Component.literal("UUID: " + capability.getUniqueID()));
         } else {
-            tooltip.add(new TextComponent("UUID: CAP MISSING"));
+            tooltip.add(Component.literal("UUID: CAP MISSING"));
         }
 
         super.appendHoverText(stack, worldIn, tooltip, flagIn);

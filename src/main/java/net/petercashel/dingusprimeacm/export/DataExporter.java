@@ -56,14 +56,14 @@ public class DataExporter {
     private static void SendStatus(String s) {
         if (Player != null) {
             if (Player.isAlive()) {
-                Player.sendMessage(new TextComponent(s), ChatType.GAME_INFO, Util.NIL_UUID);
+                Player.sendMessage(Component.literal(s), ChatType.GAME_INFO, Util.NIL_UUID);
             }
         }
     }
     private static void SendChat(String s) {
         if (Player != null) {
             if (Player.isAlive()) {
-                Player.sendMessage(new TextComponent(s), ChatType.CHAT, Util.NIL_UUID);
+                Player.sendMessage(Component.literal(s), ChatType.CHAT, Util.NIL_UUID);
             }
         }
     }
