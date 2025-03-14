@@ -1,7 +1,7 @@
 package net.petercashel.dingusprimeacm.networking.packets.gb.chunked;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.network.NetworkEvent;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

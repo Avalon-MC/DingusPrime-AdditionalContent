@@ -19,8 +19,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.SpreadingSnowyDirtBlock;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.registries.ForgeRegistries;
+import net.neoforged.registries.RegistryObject;
 import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.block.CartShelfBlockEntity;
 
 import java.util.ArrayList;

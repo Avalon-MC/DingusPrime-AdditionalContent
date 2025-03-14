@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.network.NetworkHooks;
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetBlockJS;
 import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.container.CartShelfContainer;
 import org.jetbrains.annotations.Nullable;

@@ -9,9 +9,9 @@ import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.block.CartShelfBloc
 
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.items.IItemHandler;
+import net.neoforged.items.SlotItemHandler;
+import net.neoforged.items.wrapper.InvWrapper;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
 
 public class CartShelfContainer extends AbstractContainerMenu {

@@ -1,5 +1,6 @@
 package net.petercashel.dingusprimeacm.world;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.petercashel.dingusprimeacm.world.daily.DailyManager;
@@ -14,7 +15,7 @@ public class DingusPrimeWorldSaveData extends SavedData {
     }
 
     private void InitStatics() {
-        ZoneManager.Instance = new ZoneManager();
+
         DailyManager.Instance = new DailyManager();//System.currentTimeMillis()
     }
 
@@ -26,7 +27,7 @@ public class DingusPrimeWorldSaveData extends SavedData {
 
         }
         if (version == 1) {
-            ZoneManager.Instance.Data.deserializeNBT(nbt.getCompound("ZoneManager"));
+            //WasZoneManager
         }
 
         if (version == 2) {
@@ -39,12 +40,12 @@ public class DingusPrimeWorldSaveData extends SavedData {
 
 
     @Override
-    public CompoundTag save(CompoundTag nbt) {
+    public CompoundTag save(CompoundTag nbt, HolderLookup.Provider registries) {
         //V0
         nbt.putInt("version", version);
 
         //V1
-        nbt.put("ZoneManager", ZoneManager.Instance.Data.serializeNBT());
+        //WasZoneManager
 
         //V2
         nbt.put("DailyManager", DailyManager.Instance.Data.serializeNBT());

@@ -1,7 +1,7 @@
 package net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.neoforged.common.util.INBTSerializable;
 
 public interface IGameBoyCartCapability extends INBTSerializable<CompoundTag> {
     String getUniqueID();

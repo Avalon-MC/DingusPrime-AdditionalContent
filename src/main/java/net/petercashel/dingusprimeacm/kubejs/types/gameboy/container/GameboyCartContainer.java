@@ -6,10 +6,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.neoforged.items.CapabilityItemHandler;
+import net.neoforged.items.IItemHandler;
+import net.neoforged.items.SlotItemHandler;
+import net.neoforged.items.wrapper.InvWrapper;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyCartItemJS;
 

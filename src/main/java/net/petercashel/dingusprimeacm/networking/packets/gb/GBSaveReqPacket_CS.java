@@ -1,7 +1,7 @@
 package net.petercashel.dingusprimeacm.networking.packets.gb;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.network.NetworkEvent;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
 import net.petercashel.dingusprimeacm.networking.packets.gb.chunked.GBSaveRespPacket_Chunked_SC;
 

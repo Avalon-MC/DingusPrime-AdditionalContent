@@ -2,11 +2,11 @@ package net.petercashel.dingusprimeacm.networking;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.network.NetworkDirection;
+import net.neoforged.network.NetworkRegistry;
+import net.neoforged.network.PacketDistributor;
+import net.neoforged.network.simple.SimpleChannel;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
 import net.petercashel.dingusprimeacm.networking.packets.gb.chunked.GBSaveRespPacket_Chunked_SC;
 import net.petercashel.dingusprimeacm.networking.packets.gb.chunked.GBUploadSavePacket_Chunked_CS;
@@ -54,7 +54,5 @@ public class PacketHandler {
         INSTANCE.messageBuilder(ShopkeeperDropResultPacket_CS.class, 8, NetworkDirection.PLAY_TO_SERVER).decoder(ShopkeeperDropResultPacket_CS::decoder).encoder(ShopkeeperDropResultPacket_CS::encoder).consumer(ShopkeeperDropResultPacket_CS::messageConsumer).add();
         INSTANCE.messageBuilder(ShopkeeperSetResultPacket_SC.class, 9, NetworkDirection.PLAY_TO_CLIENT).decoder(ShopkeeperSetResultPacket_SC::decoder).encoder(ShopkeeperSetResultPacket_SC::encoder).consumer(ShopkeeperSetResultPacket_SC::messageConsumer).add();
 
-        INSTANCE.messageBuilder(ZoneDataPacket_SC.class, 10, NetworkDirection.PLAY_TO_CLIENT).decoder(ZoneDataPacket_SC::decoder).encoder(ZoneDataPacket_SC::encoder).consumer(ZoneDataPacket_SC::messageConsumer).add();
-        INSTANCE.messageBuilder(ZoneSelectionPacket_SC.class, 11, NetworkDirection.PLAY_TO_CLIENT).decoder(ZoneSelectionPacket_SC::decoder).encoder(ZoneSelectionPacket_SC::encoder).consumer(ZoneSelectionPacket_SC::messageConsumer).add();
     }
 }

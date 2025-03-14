@@ -2,13 +2,13 @@ package net.petercashel.dingusprimeacm.kubejs.types.gameboy.item;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.common.capabilities.Capability;
+import net.neoforged.common.capabilities.ICapabilityProvider;
+import net.neoforged.common.util.INBTSerializable;
+import net.neoforged.common.util.LazyOptional;
+import net.neoforged.items.CapabilityItemHandler;
+import net.neoforged.items.IItemHandler;
+import net.neoforged.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class CapabilityProviderGameBoy implements INBTSerializable<CompoundTag>,ICapabilityProvider {

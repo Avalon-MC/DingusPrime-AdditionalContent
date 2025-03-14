@@ -10,13 +10,13 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.settings.KeyConflictContext;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.ClientRegistry;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.settings.KeyConflictContext;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.client.CabnetScreen;
 import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.client.CartShelfScreen;
 import net.petercashel.dingusprimeacm.kubejs.types.chair.ChairEntity;
@@ -143,7 +143,7 @@ public class dingusprimeacm_client {
     public class acmClientEvents_forge {
 
         @SubscribeEvent
-        public static void onClientDisconnectionFromServer(net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggedOutEvent event) {
+        public static void onClientDisconnectionFromServer(net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggedOutEvent event) {
             try {
                 GameboyScreen.lastInstance.emulator.StopEmulation();
             } catch (Exception ex) {

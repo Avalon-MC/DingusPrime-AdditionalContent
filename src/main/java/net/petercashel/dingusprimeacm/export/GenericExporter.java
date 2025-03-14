@@ -7,10 +7,10 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.minecraftforge.registries.tags.ITag;
+import net.neoforged.registries.ForgeRegistries;
+import net.neoforged.registries.IForgeRegistry;
+import net.neoforged.registries.IForgeRegistryEntry;
+import net.neoforged.registries.tags.ITag;
 import net.petercashel.dingusprimeacm.export.data.FluidExport;
 import net.petercashel.dingusprimeacm.export.data.GenericExport;
 

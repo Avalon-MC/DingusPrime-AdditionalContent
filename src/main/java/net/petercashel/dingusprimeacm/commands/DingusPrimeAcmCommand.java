@@ -2,6 +2,7 @@ package net.petercashel.dingusprimeacm.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.Message;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -10,7 +11,8 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.world.entity.player.Player;
 import net.petercashel.dingusprimeacm.configuration.DPAcmConfig;
 import net.petercashel.dingusprimeacm.export.DataExporter;
@@ -41,10 +43,7 @@ public class DingusPrimeAcmCommand extends CommandBase{
 
         dispatcher.register(commandBuilder);
 
-        dispatcher.register(ZoneCommand.BuildCommand(Commands.literal("zone")));
-        dispatcher.register(ZoneCommand.BuildWandCommand(Commands.literal("zonewand")));
-        dispatcher.register(ZoneCommand.BuildPlotCommand(Commands.literal("plot")));
-        dispatcher.register(ZoneCommand.BuildAdminCommand(Commands.literal("zoneadmin")));
+
     }
 
 
@@ -67,18 +66,18 @@ public class DingusPrimeAcmCommand extends CommandBase{
 
     private static int executeReloadConfig(CommandContext<CommandSourceStack> command){
         DPAcmConfig.LoadConfig();
-        if(command.getSource().getEntity() instanceof Player){
-            Player player = (Player) command.getSource().getEntity();
-            player.sendMessage(new TextComponent("Reloaded Config"), Util.NIL_UUID);
+        if(command.getSource().getEntity() instanceof Player player){
+            player.sendSystemMessage(Component.literal("Reloaded Config"));
         }
+
+        ComponentUtils.fromMessage(() -> "");
         return Command.SINGLE_SUCCESS;
     }
 
     private static int executeResetTraders(CommandContext<CommandSourceStack> command){
         ShopTradeManager.INSTANCE.ResetAll();
-        if(command.getSource().getEntity() instanceof Player){
-            Player player = (Player) command.getSource().getEntity();
-            player.sendMessage(new TextComponent("Trades Reset"), Util.NIL_UUID);
+        if(command.getSource().getEntity() instanceof Player player){
+            player.sendSystemMessage(Component.literal("Trades Reset"));
         }
         return Command.SINGLE_SUCCESS;
     }

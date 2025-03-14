@@ -20,9 +20,8 @@ build
 # other
 eclipse
 run
+runs
+run-data
 
-# Files from Forge MDK
-forge*changelog.txt
-src/main/resources/assets/kubejs/textures/gui/gameboy_gui_*.png
-src/main/resources/assets/kubejs/rom/*
+repo
 src/main/resources/assets/dingusprimeacm/rom/pkmonred.gbc

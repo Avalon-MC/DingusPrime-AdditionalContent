@@ -2,17 +2,8 @@ package net.petercashel.dingusprimeacm.networking;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.util.INBTSerializable;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class NetworkUtils {
 
@@ -42,17 +33,17 @@ public class NetworkUtils {
 
         public static CompoundTag SerializeBlockPos(BlockPos pos) {
             CompoundTag tag = new CompoundTag();
-            tag.putDouble("X", pos.getX());
-            tag.putDouble("Y", pos.getY());
-            tag.putDouble("Z", pos.getZ());
+            tag.putInt("X", pos.getX());
+            tag.putInt("Y", pos.getY());
+            tag.putInt("Z", pos.getZ());
             return tag;
         }
 
         public static BlockPos DeserializeBlockPos(CompoundTag tag) {
             BlockPos pos = new BlockPos(
-                    tag.getDouble("X"),
-                    tag.getDouble("Y"),
-                    tag.getDouble("Z")
+                    tag.getInt("X"),
+                    tag.getInt("Y"),
+                    tag.getInt("Z")
             );
             return pos;
         }

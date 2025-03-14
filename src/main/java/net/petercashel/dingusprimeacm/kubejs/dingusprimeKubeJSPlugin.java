@@ -10,12 +10,12 @@ import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.NewRegistryEvent;
-import net.minecraftforge.registries.RegistryBuilder;
+import net.neoforged.neoforge.event.RegistryEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.registries.IForgeRegistry;
+import net.neoforged.registries.NewRegistryEvent;
+import net.neoforged.registries.RegistryBuilder;
 import net.petercashel.dingusprimeacm.kubejs.basictypes.CardinalBlockJS_NoEntity;
 import net.petercashel.dingusprimeacm.kubejs.basictypes.RealBasicBlockJS;
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetBlockEntity;
@@ -46,8 +46,8 @@ public class dingusprimeKubeJSPlugin extends KubeJSPlugin {
     public void addClasses(ScriptType type, ClassFilter filter) {
         super.addClasses(type, filter);
 
-        //filter.allow("net.minecraftforge"); // Forge
-        //filter.deny("net.minecraftforge.fml");
+        //filter.allow("net.neoforged"); // Forge
+        //filter.deny("net.neoforged.fml");
 
     }
 

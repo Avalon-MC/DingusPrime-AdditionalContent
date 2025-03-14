@@ -2,7 +2,7 @@ package net.petercashel.dingusprimeacm.world.daily;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.neoforged.common.util.INBTSerializable;
 import net.petercashel.dingusprimeacm.world.WorldDataManager;
 
 import java.util.UUID;

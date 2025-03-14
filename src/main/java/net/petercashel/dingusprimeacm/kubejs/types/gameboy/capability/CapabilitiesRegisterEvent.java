@@ -1,10 +1,10 @@
 package net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.common.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.AttachCapabilitiesEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
 
 @Mod.EventBusSubscriber(modid = dingusprimeacm.MODID)
