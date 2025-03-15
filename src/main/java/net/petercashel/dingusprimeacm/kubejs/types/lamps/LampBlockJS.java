@@ -49,11 +49,9 @@ public class LampBlockJS extends BasicBlockJS {
         return Light;
     }
 
-
-
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide() && pHand == InteractionHand.MAIN_HAND) {
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
+        if (!pLevel.isClientSide() && pPlayer.getUsedItemHand() == InteractionHand.MAIN_HAND) {
             if (isLampTop) {
                 var newState = pState.cycle(LIT);
                 pLevel.setBlock(pPos, newState, 1);

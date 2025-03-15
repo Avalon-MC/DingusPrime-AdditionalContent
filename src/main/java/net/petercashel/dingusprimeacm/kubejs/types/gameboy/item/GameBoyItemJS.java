@@ -25,7 +25,7 @@ import net.neoforged.common.capabilities.ICapabilityProvider;
 
 
 
-import net.neoforged.network.NetworkHooks;
+
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability.IGameBoyCartCapability;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyCartContainer;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyContainer;

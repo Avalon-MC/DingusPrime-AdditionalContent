@@ -1,8 +1,10 @@
 package net.petercashel.dingusprimeacm.kubejs.types.cabnet;
 
+import dev.latvian.mods.kubejs.block.custom.HorizontalDirectionalBlockBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -19,12 +21,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-import net.neoforged.network.NetworkHooks;
-import net.petercashel.dingusprimeacm.kubejs.basictypes.CardinalBlockBuilder;
-import net.petercashel.dingusprimeacm.kubejs.basictypes.CardinalBlockJS;
 import org.jetbrains.annotations.Nullable;
 
-public class CabnetBlockJS extends CardinalBlockJS implements EntityBlock {
+public class CabnetBlockJS extends HorizontalDirectionalBlockBuilder.HorizontalDirectionalBlockJS implements EntityBlock {
     public CabnetBlockJS(CabnetBuilder p) {
         super(p);
     }
@@ -35,8 +34,8 @@ public class CabnetBlockJS extends CardinalBlockJS implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide && pHand == InteractionHand.MAIN_HAND)
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
+        if (!pLevel.isClientSide() && pPlayer.getUsedItemHand() == InteractionHand.MAIN_HAND)
         {
             //Temp, Randomise carts
             CabnetBlockEntity csbe = (CabnetBlockEntity) pLevel.getBlockEntity(pPos);
@@ -46,7 +45,7 @@ public class CabnetBlockJS extends CardinalBlockJS implements EntityBlock {
                 MenuProvider containerProvider = new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
-                        return Component.literal(pState.getBlock().getName().getContents());
+                        return MutableComponent.create(pState.getBlock().getName().getContents());
                     }
 
                     @Override
@@ -63,12 +62,12 @@ public class CabnetBlockJS extends CardinalBlockJS implements EntityBlock {
         }
 
 
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHit);
     }
 
 
     @Override
-    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         if (!pLevel.isClientSide()) {
             CabnetBlockEntity csbe = (CabnetBlockEntity) pLevel.getBlockEntity(pPos);
 
@@ -86,10 +85,10 @@ public class CabnetBlockJS extends CardinalBlockJS implements EntityBlock {
             }
         }
 
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        return super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
     }
 
-    public static class CabnetBuilder extends CardinalBlockBuilder {
+    public static class CabnetBuilder extends HorizontalDirectionalBlockBuilder {
         public CabnetBuilder(ResourceLocation i) {
             super(i);
         }

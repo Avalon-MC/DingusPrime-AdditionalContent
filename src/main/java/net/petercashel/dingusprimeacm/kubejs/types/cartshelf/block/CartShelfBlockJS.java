@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.network.NetworkHooks;
+
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetBlockJS;
 import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.container.CartShelfContainer;
 import org.jetbrains.annotations.Nullable;
@@ -33,9 +33,8 @@ public class CartShelfBlockJS  extends CabnetBlockJS implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide && pHand == InteractionHand.MAIN_HAND)
-        {
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
+        if (!pLevel.isClientSide() && pPlayer.getUsedItemHand() == InteractionHand.MAIN_HAND) {
             //Temp, Randomise carts
             CartShelfBlockEntity csbe = (CartShelfBlockEntity) pLevel.getBlockEntity(pPos);
             if (csbe != null) {
@@ -61,7 +60,7 @@ public class CartShelfBlockJS  extends CabnetBlockJS implements EntityBlock {
         }
 
 
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHit);
     }
 
 
