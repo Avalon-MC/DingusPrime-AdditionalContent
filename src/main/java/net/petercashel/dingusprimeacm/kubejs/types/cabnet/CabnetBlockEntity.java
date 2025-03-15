@@ -9,11 +9,11 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.common.capabilities.Capability;
-import net.neoforged.common.util.LazyOptional;
-import net.neoforged.items.CapabilityItemHandler;
-import net.neoforged.items.IItemHandler;
-import net.neoforged.items.ItemStackHandler;
+
+
+
+
+
 import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.block.CartShelfBlockJS;
 import net.petercashel.dingusprimeacm.kubejs.dingusprimeKubeJSPlugin;
 import org.jetbrains.annotations.NotNull;

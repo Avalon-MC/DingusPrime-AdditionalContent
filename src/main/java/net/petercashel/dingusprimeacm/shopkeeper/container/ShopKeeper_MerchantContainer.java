@@ -44,7 +44,7 @@ public class ShopKeeper_MerchantContainer extends MerchantContainer {
         if (doNewTradeCode == true) {
 
             //Don't do client side
-            if (this.PlayerReference.level.isClientSide) {
+            if (this.PlayerReference.level().isClientSide) {
                 return;
             }
 
@@ -103,7 +103,7 @@ public class ShopKeeper_MerchantContainer extends MerchantContainer {
 
             if (!ShopKeeperMenu.RefundNotDrop) {
                 ItemStack result = merchantoffer.getResult();
-                this.PlayerReference.level.addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
+                this.PlayerReference.level().addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
             } else {
                 if (ShopkeeperCurrencyHelper.canRefundPlayer(PlayerReference, merchantoffer.getPriceMultiplier()))
                 {
@@ -112,7 +112,7 @@ public class ShopKeeper_MerchantContainer extends MerchantContainer {
                 else
                 {
                     ItemStack result = merchantoffer.getResult();
-                    this.PlayerReference.level.addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
+                    this.PlayerReference.level().addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
                 }
             }
 

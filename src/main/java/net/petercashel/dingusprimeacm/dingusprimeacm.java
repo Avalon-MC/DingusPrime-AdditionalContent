@@ -10,9 +10,10 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
+import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -265,10 +266,10 @@ public class dingusprimeacm
 
 
     @SubscribeEvent
-    public void pickupItem(EntityItemPickupEvent event) {
+    public void pickupItem(ItemEntityPickupEvent.Pre event) {
         //Bug work around
-        if (event.getItem().getItem().getItem() instanceof GameBoyItemJS && event.getPlayer().isCreative()) {
-            event.setCanceled(true);
+        if (event.getItemEntity().getItem().getItem() instanceof GameBoyItemJS && event.getPlayer().isCreative()) {
+            event.setCanPickup(TriState.FALSE);
         }
     }
 

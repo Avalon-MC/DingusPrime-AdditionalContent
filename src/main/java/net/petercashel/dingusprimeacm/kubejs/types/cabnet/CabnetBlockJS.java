@@ -2,7 +2,7 @@ package net.petercashel.dingusprimeacm.kubejs.types.cabnet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.items.CapabilityItemHandler;
+
 import net.neoforged.network.NetworkHooks;
 import net.petercashel.dingusprimeacm.kubejs.basictypes.CardinalBlockBuilder;
 import net.petercashel.dingusprimeacm.kubejs.basictypes.CardinalBlockJS;

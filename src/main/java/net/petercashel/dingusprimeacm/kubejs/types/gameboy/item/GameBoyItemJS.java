@@ -2,11 +2,11 @@ package net.petercashel.dingusprimeacm.kubejs.types.gameboy.item;
 
 import dev.latvian.mods.kubejs.block.custom.BasicBlockJS;
 import dev.latvian.mods.kubejs.item.ItemBuilder;
-import dev.latvian.mods.kubejs.item.custom.BasicItemJS;
+
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -15,15 +15,16 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.common.capabilities.ICapabilityProvider;
-import net.neoforged.common.util.LazyOptional;
-import net.neoforged.items.CapabilityItemHandler;
-import net.neoforged.items.IItemHandler;
-import net.neoforged.items.ItemStackHandler;
+
+
+
+
 import net.neoforged.network.NetworkHooks;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability.IGameBoyCartCapability;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyCartContainer;
@@ -36,12 +37,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class GameBoyItemJS extends BasicItemJS {
+public class GameBoyItemJS extends Item {
 
     public String GuiBG;
 
     public GameBoyItemJS(GameBoyBuilder p) {
-        super(p);
+        super(p.createItemProperties());
         GuiBG = p.guiBG;
 
         BasicBlockJS fuck;
@@ -238,7 +239,7 @@ public class GameBoyItemJS extends BasicItemJS {
         public GameBoyBuilder(ResourceLocation i) {
             super(i);
 
-            this.parentModel("minecraft:item/handheld");
+            this.parentModel(newID("minecraft","item/handheld"));
             this.unstackable();
             this.texture("kubejs:item/defaultboy"); //default
             this.guiBG("default");

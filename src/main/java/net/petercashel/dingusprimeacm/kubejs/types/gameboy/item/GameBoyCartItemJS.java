@@ -1,20 +1,20 @@
 package net.petercashel.dingusprimeacm.kubejs.types.gameboy.item;
 
 import dev.latvian.mods.kubejs.item.ItemBuilder;
-import dev.latvian.mods.kubejs.item.custom.BasicItemJS;
+
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.common.capabilities.Capability;
+
 import net.neoforged.common.capabilities.ICapabilityProvider;
 import net.neoforged.common.capabilities.ICapabilitySerializable;
 import net.neoforged.common.util.INBTSerializable;
-import net.neoforged.common.util.LazyOptional;
+
 import net.petercashel.dingusprimeacm.dingusprimeacm;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability.GameBoyCartCapabilityImplem;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability.IGameBoyCartCapability;
@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.UUID;
 
-public class GameBoyCartItemJS extends BasicItemJS {
+public class GameBoyCartItemJS extends Item {
 
     public String gameID;
 

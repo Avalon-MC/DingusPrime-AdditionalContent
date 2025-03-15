@@ -5,7 +5,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.items.IItemHandler;
+
 import net.neoforged.network.NetworkEvent;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability.IGameBoyCartCapability;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.GameboyScreen;

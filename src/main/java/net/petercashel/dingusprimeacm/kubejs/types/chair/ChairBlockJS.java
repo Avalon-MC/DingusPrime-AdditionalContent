@@ -1,5 +1,6 @@
 package net.petercashel.dingusprimeacm.kubejs.types.chair;
 
+import dev.latvian.mods.kubejs.block.custom.HorizontalDirectionalBlockBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -10,10 +11,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.petercashel.dingusprimeacm.kubejs.basictypes.CardinalBlockJS;
 
 @SuppressWarnings("deprecation")
-public class ChairBlockJS  extends CardinalBlockJS {
+public class ChairBlockJS  extends HorizontalDirectionalBlockBuilder.HorizontalDirectionalBlockJS {
     private final double offset;
     public ChairBlockJS(ChairBuilder p) {
         super(p);

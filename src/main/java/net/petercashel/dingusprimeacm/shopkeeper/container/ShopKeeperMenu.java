@@ -81,7 +81,7 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
         this.tradeContainer.updateSellItem();
         super.slotsChanged(pInventory);
 
-        if (!this.PlayerReference.level.isClientSide) {
+        if (!this.PlayerReference.level().isClientSide) {
             PacketHandler.sendToPlayer(new ShopkeeperSetResultPacket_SC(this.containerId,this.tradeContainer.getItem(2)), (ServerPlayer) this.PlayerReference);
         }
     }
@@ -163,7 +163,7 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
                 if (!this.moveItemStackTo(itemstack1, 1, 37, true)) {
                     return ItemStack.EMPTY;
                 }
-                if (!this.PlayerReference.level.isClientSide) {
+                if (!this.PlayerReference.level().isClientSide) {
                     PacketHandler.sendToPlayer(new ShopkeeperSetResultPacket_SC(this.containerId,this.tradeContainer.getItem(2)), (ServerPlayer) this.PlayerReference);
                 }
                 this.tradeContainer.updateSellItem();
@@ -315,7 +315,7 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
 
             if (!RefundNotDrop) {
                 ItemStack result = merchantoffer.getResult();
-                this.PlayerReference.level.addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
+                this.PlayerReference.level().addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
             } else {
 
                 //DC protection
@@ -333,7 +333,7 @@ public class ShopKeeperMenu extends AbstractContainerMenu {
                     else
                     {
                         ItemStack result = merchantoffer.getResult();
-                        this.PlayerReference.level.addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
+                        this.PlayerReference.level().addFreshEntity(new ItemEntity(this.PlayerReference.level, PlayerReference.position().x, PlayerReference.position().y, PlayerReference.position().z, result));
                         this.tradeContainer.selectionHint_sk = -1;
                     }
                 }

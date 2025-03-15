@@ -6,7 +6,7 @@ import com.tm.calemieconomy.item.ItemWallet;
 import com.tm.calemieconomy.util.IItemCurrencyHolder;
 import com.tm.calemieconomy.util.helper.CurrencyHelper;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
+
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -70,7 +70,7 @@ public class ShopkeeperCurrencyHelper {
 
     public static boolean invoicePlayer(Player player, float amount)
     {
-        if (player.level.isClientSide) {
+        if (player.level().isClientSide) {
             return canAfford(player,amount); //Do not charge player client side.
         }
 

@@ -1,5 +1,6 @@
 package net.petercashel.dingusprimeacm.kubejs.types.chair;
 
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,8 +43,8 @@ public class ChairEntity extends Entity {
                 chairBlockPos = this.blockPosition().above();
             }
 
-            if (this.level.getBlockState(chairBlockPos).getBlock() instanceof ChairBlockJS) {
-                ChairBlockJS chair = (ChairBlockJS) this.level.getBlockState(chairBlockPos).getBlock();
+            if (this.level().getBlockState(chairBlockPos).getBlock() instanceof ChairBlockJS) {
+                ChairBlockJS chair = (ChairBlockJS) this.level().getBlockState(chairBlockPos).getBlock();
 
                 if (chair != null) {
                     BlockPos pos = chair.chairLastPlayerBlockPos;
@@ -55,7 +56,7 @@ public class ChairEntity extends Entity {
 
                         discard();
 
-                        if(!player.level.getBlockState(belowResetPos).isFaceSturdy(level, belowResetPos, Direction.UP, SupportType.FULL))
+                        if(!player.level().getBlockState(belowResetPos).isFaceSturdy(level(), belowResetPos, Direction.UP, SupportType.FULL))
                             return new Vec3(resetPosition.x, resetPosition.y + 1, resetPosition.z);
                         else
                             return resetPosition;
@@ -72,7 +73,7 @@ public class ChairEntity extends Entity {
 
                     discard();
 
-                    if(!player.level.getBlockState(belowResetPos).isFaceSturdy(level, belowResetPos, Direction.UP, SupportType.FULL))
+                    if(!player.level().getBlockState(belowResetPos).isFaceSturdy(level(), belowResetPos, Direction.UP, SupportType.FULL))
                         return new Vec3(resetPosition.x, resetPosition.y + 1, resetPosition.z);
                     else
                         return resetPosition;
@@ -85,15 +86,18 @@ public class ChairEntity extends Entity {
     }
 
     @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+
+    }
+
+    @Override
     public void remove(RemovalReason reason)
     {
-        ChairBlockJS chair = (ChairBlockJS) this.level.getBlockState(chairBlockPos).getBlock();
+        ChairBlockJS chair = (ChairBlockJS) this.level().getBlockState(chairBlockPos).getBlock();
         chair.chairEntity = null;
         super.remove(reason);
     }
 
-    @Override
-    protected void defineSynchedData() {}
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {}
@@ -101,10 +105,5 @@ public class ChairEntity extends Entity {
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {}
 
-    @Override
-    public Packet<?> getAddEntityPacket()
-    {
-        return new ClientboundAddEntityPacket(this);
-    }
 
 }
