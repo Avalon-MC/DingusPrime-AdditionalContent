@@ -1,7 +1,8 @@
 package net.petercashel.dingusprimeacm.world.daily;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.neoforged.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.petercashel.dingusprimeacm.world.WorldDataManager;
 
 import java.time.Instant;
@@ -28,7 +29,7 @@ public class DailyRewardData implements INBTSerializable<CompoundTag> {
     }
 
     @Override
-    public CompoundTag serializeNBT() {
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("version", version);
         nbt.putInt("currentRewardLevel", currentRewardLevel);
@@ -38,7 +39,7 @@ public class DailyRewardData implements INBTSerializable<CompoundTag> {
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt) {
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         int version = nbt.getInt("version");
         currentRewardLevel = nbt.getInt("currentRewardLevel");
         nextTimestamp = nbt.getLong("nextTimestamp");

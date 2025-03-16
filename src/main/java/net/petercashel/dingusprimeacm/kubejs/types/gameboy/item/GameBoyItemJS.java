@@ -68,12 +68,12 @@ public class GameBoyItemJS extends Item {
                 if (pPlayer.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof GameBoyItemJS
                     && pPlayer.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof GameBoyItemJS)
                 {
-                    pPlayer.sendMessage(Component.literal("Duel Wielding handhelds is not allowed."), Util.NIL_UUID);
+                    pPlayer.sendMessage(Component.literal("Duel Wielding handhelds is not allowed."));
                     return InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));
                 }
 
                 if (pPlayer.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof ShieldItem) {
-                    pPlayer.sendMessage(Component.literal("Shields do not make good fingers."), Util.NIL_UUID);
+                    pPlayer.sendMessage(Component.literal("Shields do not make good fingers."));
                     return InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));
                 }
 

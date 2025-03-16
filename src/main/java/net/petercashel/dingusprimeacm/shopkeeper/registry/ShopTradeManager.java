@@ -139,7 +139,7 @@ public class ShopTradeManager {
     public static ItemStack TryGetStackFromName(ResourceLocation resourceLocation, int count, ShopTradeInfo.ShopResultType shopResultType) {
         if (shopResultType == ShopTradeInfo.ShopResultType.block) {
             try {
-                RegistryObject<Block> item = RegistryObject.create(resourceLocation, ForgeRegistries.BLOCKS);
+                RegistryObject<Block> item = RegistryObject.create(resourceLocation, BuiltInRegistries.BLOCK);
                 if (item.isPresent()) {
                     return new ItemStack(item.get().asItem(), count);
                 }
@@ -149,7 +149,7 @@ public class ShopTradeManager {
             }
         } else {
             try {
-                RegistryObject<Item> item = RegistryObject.create(resourceLocation, ForgeRegistries.ITEMS);
+                RegistryObject<Item> item = RegistryObject.create(resourceLocation, BuiltInRegistries.ITEM);
                 if (item.isPresent()) {
                     return new ItemStack(item.get(), count);
                 }
@@ -163,7 +163,7 @@ public class ShopTradeManager {
 
         if (shopResultType == ShopTradeInfo.ShopResultType.block) {
             try {
-                RegistryObject<Block> item = RegistryObject.create(location, ForgeRegistries.BLOCKS);
+                RegistryObject<Block> item = RegistryObject.create(location, BuiltInRegistries.BLOCK);
                 if (item.isPresent()) {
                     return new ItemStack(item.get().asItem(), count);
                 }
@@ -173,7 +173,7 @@ public class ShopTradeManager {
             }
         } else {
             try {
-                RegistryObject<Item> item = RegistryObject.create(location, ForgeRegistries.ITEMS);
+                RegistryObject<Item> item = RegistryObject.create(location, BuiltInRegistries.ITEM);
                 if (item.isPresent()) {
                     return new ItemStack(item.get(), count);
                 }

@@ -47,6 +47,7 @@ import net.petercashel.dingusprimeacm.shopkeeper.entity.subtypes.*;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeManager;
 import net.petercashel.dingusprimeacm.world.WorldDataManager;
+import net.petercashel.dingusprimeacm.world.daily.DailyManager;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -73,6 +74,7 @@ public class dingusprimeacm
         // Register ourselves for server and other game events we are interested in
         NeoForge.EVENT_BUS.register(this);;
         NeoForge.EVENT_BUS.register(ForgeRegistryEvents.class);
+        NeoForge.EVENT_BUS.register(DailyManager.DailyManagerEvents.class);
         bus.register(ModRegistryEvents.class);
 
         CONTAINERS.register(bus);

@@ -2,31 +2,27 @@ package net.petercashel.dingusprimeacm.world.daily;
 
 import net.minecraft.Util;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
 import net.petercashel.dingusprimeacm.configuration.DPAcmConfig;
-import net.petercashel.dingusprimeacm.dingusprimeacm;
 import net.petercashel.dingusprimeacm.shopkeeper.container.ShopkeeperCurrencyHelper;
 import net.petercashel.dingusprimeacm.world.WorldDataManager;
-import net.petercashel.dingusprimeacm.world.zones.selection.PlayerSelectionSession;
 
 import java.util.Map;
-
-import static net.petercashel.dingusprimeacm.world.zones.ZoneManager.Instance;
 
 public class DailyManager {
     public static DailyManager Instance = new DailyManager();
     public DailyData Data = new DailyData();
 
 
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = dingusprimeacm.MODID)
     public class DailyManagerEvents {
         @SubscribeEvent
         public static void OnPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
-            if (event.getPlayer().getLevel().isClientSide) return;
-            Instance.HandleDailyLogin((ServerPlayer) event.getPlayer());
+            if (event.getEntity().level().isClientSide) return;
+            Instance.HandleDailyLogin((ServerPlayer) event.getEntity());
         }
 }
 
@@ -38,7 +34,7 @@ public class DailyManager {
             var Reward = data.GetCurrentReward();
             if (Reward == DailyRewardData.DailyRewardStatus.FirstTime) {
                 int currency = GetReward(0);
-                player.sendMessage(Component.literal("First Time Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
+                player.sendSystemMessage(Component.literal("First Time Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)));
                 ShopkeeperCurrencyHelper.refundPlayer(player, currency);
             }
             else if (Reward == DailyRewardData.DailyRewardStatus.TooEarly) {
@@ -52,21 +48,21 @@ public class DailyManager {
 
                 var rewardlevel = data.GetRewardLevel();
                 int currency = GetReward(rewardlevel);
-                player.sendMessage(Component.literal("Daily Login Bonus Missed! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
+                player.sendSystemMessage(Component.literal("Daily Login Bonus Missed! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)));
             }
             else {
                 var rewardlevel = data.GetRewardLevel();
                 int currency = GetReward(rewardlevel);
                 if (rewardlevel == GetMaxDailyRewardLevel()) {
-                    player.sendMessage(Component.literal("Daily Login Bonus Maxed! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
+                    player.sendSystemMessage(Component.literal("Daily Login Bonus Maxed! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)));
                     ShopkeeperCurrencyHelper.refundPlayer(player, currency);
                 } else {
                     if (rewardlevel > 1) {
                         //Streak?
-                        player.sendMessage(Component.literal("Daily Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
+                        player.sendSystemMessage(Component.literal("Daily Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)));
                         ShopkeeperCurrencyHelper.refundPlayer(player, currency);
                     } else {
-                        player.sendMessage(Component.literal("Daily Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)), Util.NIL_UUID);
+                        player.sendSystemMessage(Component.literal("Daily Login Bonus! ").append(ShopkeeperCurrencyHelper.formatCurrency(currency)));
                         ShopkeeperCurrencyHelper.refundPlayer(player, currency);
                     }
                 }

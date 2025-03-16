@@ -110,7 +110,7 @@ public class ShopkeeperCurrencyHelper {
         return true;
     }
 
-    public static final RegistryObject<Item> CopperCoin = RegistryObject.create(new ResourceLocation("calemieconomy:coin_copper"), ForgeRegistries.ITEMS);
+    public static final RegistryObject<Item> CopperCoin = RegistryObject.create(new ResourceLocation("calemieconomy:coin_copper"), BuiltInRegistries.ITEM);
 
     private static boolean GiveCoins(Player player, float amount) {
        if (amount <= 64) {

@@ -181,8 +181,8 @@ public class ShopKeeperScreen extends AbstractContainerScreen<ShopKeeperMenu> {
 
     }
 
-    public static final RegistryObject<Item> CopperCoin = RegistryObject.create(new ResourceLocation("calemieconomy:coin_copper"), ForgeRegistries.ITEMS);
-    public static final RegistryObject<Item> Wallet = RegistryObject.create(new ResourceLocation("calemieconomy:wallet"), ForgeRegistries.ITEMS);
+    public static final RegistryObject<Item> CopperCoin = RegistryObject.create(new ResourceLocation("calemieconomy:coin_copper"), BuiltInRegistries.ITEM);
+    public static final RegistryObject<Item> Wallet = RegistryObject.create(new ResourceLocation("calemieconomy:wallet"), BuiltInRegistries.ITEM);
 
     public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
         this.renderBackground(pPoseStack);

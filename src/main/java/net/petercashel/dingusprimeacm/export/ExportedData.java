@@ -17,8 +17,6 @@ public class ExportedData {
     @Expose
     public ArrayList<FluidExport> Fluids = new ArrayList<>();
 
-    @Expose
-    public ArrayList<GenericExport> Enchantments = new ArrayList<>();
 
     @Expose
     public ArrayList<GenericExport> BlockTags = new ArrayList<>();

@@ -2,8 +2,9 @@ package net.petercashel.dingusprimeacm.export;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.ChatType;
@@ -15,10 +16,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.registries.ForgeRegistries;
-import net.neoforged.registries.IForgeRegistry;
-import net.neoforged.registries.IForgeRegistryEntry;
-import net.neoforged.registries.RegistryManager;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.petercashel.dingusprimeacm.configuration.DPAcmConfig;
 import net.petercashel.dingusprimeacm.export.data.*;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -56,14 +55,14 @@ public class DataExporter {
     private static void SendStatus(String s) {
         if (Player != null) {
             if (Player.isAlive()) {
-                Player.sendMessage(Component.literal(s), ChatType.GAME_INFO, Util.NIL_UUID);
+                Player.sendSystemMessage(Component.literal(s), ChatType.GAME_INFO);
             }
         }
     }
     private static void SendChat(String s) {
         if (Player != null) {
             if (Player.isAlive()) {
-                Player.sendMessage(Component.literal(s), ChatType.CHAT, Util.NIL_UUID);
+                Player.sendSystemMessage(Component.literal(s), ChatType.CHAT);
             }
         }
     }
@@ -76,16 +75,13 @@ public class DataExporter {
         SendChat("Items " + exportData.Items.size());
         //ExportBlocks();
 
-        exportData.Fluids = ExportRegistry(ForgeRegistries.FLUIDS);
+        exportData.Fluids = ExportRegistry(NeoForgeRegistries.FLUID_TYPES);
         SendChat("Fluids " + exportData.Fluids.size());
 
-        exportData.Enchantments = new GenericExporter().Export(ForgeRegistries.ENCHANTMENTS, new ArrayList<GenericExport>());
-        SendChat("Enchantments " + exportData.Enchantments.size());
-
-        exportData.BlockTags = new GenericExporter().ExportTags(ForgeRegistries.BLOCKS, new ArrayList<GenericExport>());
+        exportData.BlockTags = new GenericExporter().ExportTags(BuiltInRegistries.BLOCK, new ArrayList<GenericExport>());
         SendChat("BlockTags " + exportData.BlockTags.size());
 
-        exportData.ItemTags = new GenericExporter().ExportTags(ForgeRegistries.ITEMS, new ArrayList<GenericExport>());
+        exportData.ItemTags = new GenericExporter().ExportTags(BuiltInRegistries.ITEM, new ArrayList<GenericExport>());
         SendChat("ItemTags " + exportData.ItemTags.size());
 
 
@@ -104,10 +100,10 @@ public class DataExporter {
         SendChat("Export Saved to " + cfgFile.getAbsolutePath());
     }
 
-    private static ArrayList<FluidExport> ExportRegistry(IForgeRegistry<Fluid> fluids) {
+    private static ArrayList<FluidExport> ExportRegistry(Registry<FluidType> fluids) {
         ArrayList<FluidExport> export = new ArrayList<>();
 
-        for (IForgeRegistryEntry<Fluid> fluidEntry : ForgeRegistries.FLUIDS) {
+        for (IForgeRegistryEntry<Fluid> fluidEntry : NeoForgeRegistries.FLUID_TYPES) {
             FluidExport fluidExport = new FluidExport(fluidEntry.getRegistryName());
             try {
                 Item bucket = ForgeRegistries.FLUIDS.getValue(fluidEntry.getRegistryName()).getBucket();
@@ -129,16 +125,16 @@ public class DataExporter {
 
 
 
-        for (ResourceLocation key : ForgeRegistries.ITEMS.getKeys()) {
-            SendStatus("Item " + count + " of " + ForgeRegistries.ITEMS.getKeys().size());
+        for (ResourceLocation key : BuiltInRegistries.ITEM.getKeys()) {
+            SendStatus("Item " + count + " of " + BuiltInRegistries.ITEM.getKeys().size());
 
             ItemExport itemExport = new ItemExport(key);
 
-            Item value = ForgeRegistries.ITEMS.getValue(key);
+            Item value = BuiltInRegistries.ITEM.getValue(key);
 
-            itemExport.NumericID = RegistryManager.ACTIVE.getRegistry(ForgeRegistries.ITEMS.getRegistryKey()).getID(value);
+            itemExport.NumericID = RegistryManager.ACTIVE.getRegistry(BuiltInRegistries.ITEM.getRegistryKey()).getID(value);
 
-            itemExport.Tags = new GenericExporter().ExportTagsFor(ForgeRegistries.ITEMS, new ArrayList<GenericExport>(), value);
+            itemExport.Tags = new GenericExporter().ExportTagsFor(BuiltInRegistries.ITEM, new ArrayList<GenericExport>(), value);
 
             NonNullList<ItemStack> subItems = NonNullList.create();
             value.fillItemCategory(CreativeModeTab.TAB_SEARCH, subItems);
@@ -148,9 +144,9 @@ public class DataExporter {
                 itemExport.isBlockItem = true;
 
                 Block block = ((BlockItem)value).getBlock();
-                itemExport.BlockKey = ForgeRegistries.BLOCKS.getKey(block);
-                itemExport.NumericID = RegistryManager.ACTIVE.getRegistry(ForgeRegistries.BLOCKS.getRegistryKey()).getID(block);
-                itemExport.BlockTags = new GenericExporter().ExportTagsFor(ForgeRegistries.BLOCKS, new ArrayList<GenericExport>(), block);
+                itemExport.BlockKey = BuiltInRegistries.BLOCK.getKey(block);
+                itemExport.NumericID = RegistryManager.ACTIVE.getRegistry(BuiltInRegistries.BLOCK.getRegistryKey()).getID(block);
+                itemExport.BlockTags = new GenericExporter().ExportTagsFor(BuiltInRegistries.BLOCK, new ArrayList<GenericExport>(), block);
 
                 //BlockExport blockExport = ExportBlock(itemExport.BlockKey, true, key);
                 //exportData.Blocks.add(blockExport);
@@ -225,9 +221,9 @@ public class DataExporter {
 //    private static void ExportBlocks() {
 //        int count = 1;
 //
-//        for (ResourceLocation key : ForgeRegistries.ITEMS.getKeys()) {
+//        for (ResourceLocation key : BuiltInRegistries.ITEM.getKeys()) {
 //            if (!exportData.Blocks.stream().anyMatch(x -> x.resourceLocation.equals(key))) {
-//                SendStatus("Block " + count + " of " + ForgeRegistries.ITEMS.getKeys().size());
+//                SendStatus("Block " + count + " of " + BuiltInRegistries.ITEM.getKeys().size());
 //
 //                BlockExport itemExport = ExportBlock(key, false, null);
 //
@@ -241,7 +237,7 @@ public class DataExporter {
 
         BlockExport itemExport = new BlockExport(key);
 
-        Item value = ForgeRegistries.ITEMS.getValue(key);
+        Item value = BuiltInRegistries.ITEM.get(key);
         NonNullList<ItemStack> subItems = NonNullList.create();
         value.fillItemCategory(CreativeModeTab.TAB_SEARCH, subItems);
 

@@ -39,7 +39,7 @@ public class CartShelfBlockEntityRenderer implements BlockEntityRenderer<CartShe
 
     }
 
-    public static final RegistryObject<Item> cart = RegistryObject.create(new ResourceLocation("kubejs:pkmonred"), ForgeRegistries.ITEMS);
+    public static final RegistryObject<Item> cart = RegistryObject.create(new ResourceLocation("kubejs:pkmonred"), BuiltInRegistries.ITEM);
 
     @Override
     public void render(CartShelfBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
