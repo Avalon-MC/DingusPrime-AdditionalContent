@@ -27,7 +27,6 @@ import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.petercashel.dingusprimeacm.creative.DPACM_MainTab;
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetContainer;
 import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.container.CartShelfContainer;
@@ -125,10 +124,10 @@ public class dingusprimeacm
 
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, MODID);
 
-    public static <T extends ShopKeeper> DeferredHolder<EntityType<T>> newShopKeeper(String name, EntityType.EntityFactory<T> factory) {
+    public static <T extends ShopKeeper> DeferredHolder<EntityType<?>, EntityType<T>> newShopKeeper(String name, EntityType.EntityFactory<T> factory) {
         return ENTITY_TYPES.register(name, () -> {
             return EntityType.Builder.<T>of(factory, MobCategory.AMBIENT)
-                    .sized(1.0f, 2.0f).build(new ResourceLocation(MODID, name).toString());
+                    .sized(1.0f, 2.0f).build(ResourceLocation.fromNamespaceAndPath(MODID, name).toString());
         });
     }
 
@@ -207,7 +206,7 @@ public class dingusprimeacm
         }
     }
 
-    public static final DeferredHolder<EntityType<ChairEntity>> CHAIR_ENTITY_TYPE = ENTITY_TYPES.register("entity_chair", () -> {
+    public static final DeferredHolder<EntityType<?>, EntityType<ChairEntity>> CHAIR_ENTITY_TYPE = ENTITY_TYPES.register("entity_chair", () -> {
         return EntityType.Builder.<ChairEntity>of(ChairEntity::new, MobCategory.MISC)
                 .setTrackingRange(256)
                 .setUpdateInterval(20)
@@ -216,35 +215,35 @@ public class dingusprimeacm
     });
 
 
-    public static final DeferredHolder<EntityType<ShopKeeper>> SHOP_KEEPER = newShopKeeper("shopkeeper", ShopKeeper::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper>> SHOP_KEEPER = newShopKeeper("shopkeeper", ShopKeeper::new);
 //            ENTITY_TYPES.register("shopkeeper", () -> {
 //                return EntityType.Builder.<ShopKeeper>of(ShopKeeper::new, MobCategory.AMBIENT)
 //                        .sized(1.0f, 2.0f).build(new ResourceLocation(MODID, "shopkeeper").toString());
 //            });
 
-    public static final DeferredHolder<EntityType<ShopKeeper_Furniture>> SHOP_KEEPER_Furniture = newShopKeeper("shopkeeper_furniture", ShopKeeper_Furniture::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_General>> SHOP_KEEPER_General = newShopKeeper("shopkeeper_general", ShopKeeper_General::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_Furniture>> SHOP_KEEPER_Furniture = newShopKeeper("shopkeeper_furniture", ShopKeeper_Furniture::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_General>> SHOP_KEEPER_General = newShopKeeper("shopkeeper_general", ShopKeeper_General::new);
 
-    public static final DeferredHolder<EntityType<ShopKeeper_weapons>> SHOP_KEEPER_weapons = newShopKeeper("shopkeeper_weapons", ShopKeeper_weapons::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_armor>> SHOP_KEEPER_armor = newShopKeeper("shopkeeper_armor", ShopKeeper_armor::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_tools>> SHOP_KEEPER_tools = newShopKeeper("shopkeeper_tools", ShopKeeper_tools::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_weapons>> SHOP_KEEPER_weapons = newShopKeeper("shopkeeper_weapons", ShopKeeper_weapons::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_armor>> SHOP_KEEPER_armor = newShopKeeper("shopkeeper_armor", ShopKeeper_armor::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_tools>> SHOP_KEEPER_tools = newShopKeeper("shopkeeper_tools", ShopKeeper_tools::new);
 
-    public static final DeferredHolder<EntityType<ShopKeeper_seeds>> SHOP_KEEPER_seeds = newShopKeeper("shopkeeper_seeds", ShopKeeper_seeds::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_trees>> SHOP_KEEPER_trees = newShopKeeper("shopkeeper_trees", ShopKeeper_trees::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_plants>> SHOP_KEEPER_plants = newShopKeeper("shopkeeper_plants", ShopKeeper_plants::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_seeds>> SHOP_KEEPER_seeds = newShopKeeper("shopkeeper_seeds", ShopKeeper_seeds::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_trees>> SHOP_KEEPER_trees = newShopKeeper("shopkeeper_trees", ShopKeeper_trees::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_plants>> SHOP_KEEPER_plants = newShopKeeper("shopkeeper_plants", ShopKeeper_plants::new);
 
-    public static final DeferredHolder<EntityType<ShopKeeper_cosmetic>> SHOP_KEEPER_cosmetic = newShopKeeper("shopkeeper_cosmetic", ShopKeeper_cosmetic::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_hats>> SHOP_KEEPER_hats = newShopKeeper("shopkeeper_hats", ShopKeeper_hats::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_shirts>> SHOP_KEEPER_shirts = newShopKeeper("shopkeeper_shirts", ShopKeeper_shirts::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_pants>> SHOP_KEEPER_pants = newShopKeeper("shopkeeper_pants", ShopKeeper_pants::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_shoes>> SHOP_KEEPER_shoes = newShopKeeper("shopkeeper_shoes", ShopKeeper_shoes::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_cosmetic>> SHOP_KEEPER_cosmetic = newShopKeeper("shopkeeper_cosmetic", ShopKeeper_cosmetic::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_hats>> SHOP_KEEPER_hats = newShopKeeper("shopkeeper_hats", ShopKeeper_hats::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_shirts>> SHOP_KEEPER_shirts = newShopKeeper("shopkeeper_shirts", ShopKeeper_shirts::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_pants>> SHOP_KEEPER_pants = newShopKeeper("shopkeeper_pants", ShopKeeper_pants::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_shoes>> SHOP_KEEPER_shoes = newShopKeeper("shopkeeper_shoes", ShopKeeper_shoes::new);
 
-    public static final DeferredHolder<EntityType<ShopKeeper_curios>> SHOP_KEEPER_curios = newShopKeeper("shopkeeper_curios", ShopKeeper_curios::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_curios>> SHOP_KEEPER_curios = newShopKeeper("shopkeeper_curios", ShopKeeper_curios::new);
 
-    public static final DeferredHolder<EntityType<ShopKeeper_custom1>> SHOP_KEEPER_custom1 = newShopKeeper("shopkeeper_custom1", ShopKeeper_custom1::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_custom2>> SHOP_KEEPER_custom2 = newShopKeeper("shopkeeper_custom2", ShopKeeper_custom2::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_custom3>> SHOP_KEEPER_custom3 = newShopKeeper("shopkeeper_custom3", ShopKeeper_custom3::new);
-    public static final DeferredHolder<EntityType<ShopKeeper_custom4>> SHOP_KEEPER_custom4 = newShopKeeper("shopkeeper_custom4", ShopKeeper_custom4::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_custom1>> SHOP_KEEPER_custom1 = newShopKeeper("shopkeeper_custom1", ShopKeeper_custom1::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_custom2>> SHOP_KEEPER_custom2 = newShopKeeper("shopkeeper_custom2", ShopKeeper_custom2::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_custom3>> SHOP_KEEPER_custom3 = newShopKeeper("shopkeeper_custom3", ShopKeeper_custom3::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_custom4>> SHOP_KEEPER_custom4 = newShopKeeper("shopkeeper_custom4", ShopKeeper_custom4::new);
 
 
 
