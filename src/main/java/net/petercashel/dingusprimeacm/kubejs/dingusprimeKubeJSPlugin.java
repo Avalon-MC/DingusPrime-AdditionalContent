@@ -1,23 +1,15 @@
 package net.petercashel.dingusprimeacm.kubejs;
 
-import dev.latvian.mods.kubejs.BuilderBase;
-import dev.latvian.mods.kubejs.KubeJSPlugin;
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
-import dev.latvian.mods.kubejs.script.CustomJavaToJsWrappersEvent;
+import dev.latvian.mods.kubejs.plugin.ClassFilter;
+import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
+import dev.latvian.mods.kubejs.script.ScriptManager;
 import dev.latvian.mods.kubejs.script.ScriptType;
-import dev.latvian.mods.kubejs.util.ClassFilter;
 import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.neoforge.event.RegistryEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.registries.IForgeRegistry;
-import net.neoforged.registries.NewRegistryEvent;
-import net.neoforged.registries.RegistryBuilder;
-import net.petercashel.dingusprimeacm.kubejs.basictypes.CardinalBlockJS_NoEntity;
-import net.petercashel.dingusprimeacm.kubejs.basictypes.RealBasicBlockJS;
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetBlockEntity;
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetBlockJS;
 import net.petercashel.dingusprimeacm.kubejs.types.chair.ChairBlockJS;
@@ -27,7 +19,6 @@ import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyCartItemJ
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyItemJS;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomRegistryEventJS;
-import net.petercashel.dingusprimeacm.kubejs.basictypes.CardinalBlockJS;
 import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.block.CartShelfBlockEntity;
 import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.block.CartShelfBlockJS;
 import net.petercashel.dingusprimeacm.kubejs.types.lamps.LampBlockJS;
@@ -35,12 +26,13 @@ import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo.ShopType;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeRegistryEventJS;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class dingusprimeKubeJSPlugin extends KubeJSPlugin {
+public class dingusprimeKubeJSPlugin implements KubeJSPlugin {
 
     @Override
     public void addClasses(ScriptType type, ClassFilter filter) {

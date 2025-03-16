@@ -2,6 +2,7 @@ package net.petercashel.dingusprimeacm.kubejs.types.flatpack;
 
 import dev.latvian.mods.kubejs.block.custom.BasicBlockJS;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -44,15 +45,15 @@ public class FlatpackBlockJS extends BasicBlockJS {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide && pHand == InteractionHand.MAIN_HAND)
+    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
+        if (!pLevel.isClientSide && pPlayer.getUsedItemHand() == InteractionHand.MAIN_HAND)
         {
             for (var ItemData: ItemsToCreate) {
                 ResourceLocation location = GetResourceLocation(ItemData.ResourceName);
                 ItemStack stack = GetItemStack(location, ItemData.Amount);
 
                 if (stack != null && stack.isEmpty() == false) {
-                    pLevel.addFreshEntity(new ItemEntity(pPlayer.level, pPlayer.position().x, pPlayer.position().y, pPlayer.position().z, stack));
+                    pLevel.addFreshEntity(new ItemEntity(pPlayer.level(), pPlayer.position().x, pPlayer.position().y, pPlayer.position().z, stack));
                 }
             }
 
@@ -62,14 +63,14 @@ public class FlatpackBlockJS extends BasicBlockJS {
         }
 
 
-        return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHit);
     }
 
     public ItemStack CreateItem(int i) {
         if (i+1 > ItemsToCreate.size()) {
             return ItemStack.EMPTY;
         }
-        return GetItemStack(new ResourceLocation(ItemsToCreate.get(i).ResourceName), ItemsToCreate.get(i).Amount);
+        return GetItemStack(ResourceLocation.parse(ItemsToCreate.get(i).ResourceName), ItemsToCreate.get(i).Amount);
     }
 
 
@@ -77,7 +78,7 @@ public class FlatpackBlockJS extends BasicBlockJS {
         List<FormattedCharSequence> names = new ArrayList<>();
 
         for (var item : ItemsToCreate ) {
-            ItemStack stack = GetItemStack(new ResourceLocation(item.ResourceName), item.Amount);
+            ItemStack stack = GetItemStack(ResourceLocation.parse(item.ResourceName), item.Amount);
             names.add(Component.literal(item.Amount + "x ").append(stack.getHoverName()).append("").getVisualOrderText());
         }
 
@@ -88,9 +89,9 @@ public class FlatpackBlockJS extends BasicBlockJS {
 
     private ItemStack GetItemStack(ResourceLocation resourceLocation, int count) {
 
-        ResourceLocation location = new ResourceLocation("kubejs", resourceLocation.getPath());
+        ResourceLocation location = ResourceLocation.fromNamespaceAndPath("kubejs", resourceLocation.getPath());
         try {
-            RegistryObject<Item> item = RegistryObject.create(resourceLocation, ForgeRegistries.ITEMS);
+            RegistryObject<Item> item = RegistryObject.create(resourceLocation, Registries.ITEM);
             if (item.isPresent()) {
                 return new ItemStack(item.get().asItem(), count);
             }
@@ -99,17 +100,7 @@ public class FlatpackBlockJS extends BasicBlockJS {
 
         }
         try {
-            RegistryObject<Item> item = RegistryObject.create(location, ForgeRegistries.ITEMS);
-            if (item.isPresent()) {
-                return new ItemStack(item.get().asItem(), count);
-            }
-
-        } catch (Exception ex) {
-
-        }
-
-        try {
-            RegistryObject<Block> item = RegistryObject.create(resourceLocation, ForgeRegistries.BLOCKS);
+            RegistryObject<Item> item = RegistryObject.create(location, Registries.ITEM);
             if (item.isPresent()) {
                 return new ItemStack(item.get().asItem(), count);
             }
@@ -119,7 +110,17 @@ public class FlatpackBlockJS extends BasicBlockJS {
         }
 
         try {
-            RegistryObject<Block> item = RegistryObject.create(location, ForgeRegistries.BLOCKS);
+            RegistryObject<Block> item = RegistryObject.create(resourceLocation, Registries.BLOCK);
+            if (item.isPresent()) {
+                return new ItemStack(item.get().asItem(), count);
+            }
+
+        } catch (Exception ex) {
+
+        }
+
+        try {
+            RegistryObject<Block> item = RegistryObject.create(location, Registries.BLOCK);
             if (item.isPresent()) {
                 return new ItemStack(item.get().asItem(), count);
             }
@@ -135,9 +136,9 @@ public class FlatpackBlockJS extends BasicBlockJS {
     public ResourceLocation GetResourceLocation(String resourceLocation ) {
         if (resourceLocation.contains(":")) {
             String[] parts = resourceLocation.split(":");
-            return new ResourceLocation(parts[0], parts[1]);
+            return ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]);
         } else {
-            return new ResourceLocation(resourceLocation);
+            return ResourceLocation.parse(resourceLocation);
         }
     }
 

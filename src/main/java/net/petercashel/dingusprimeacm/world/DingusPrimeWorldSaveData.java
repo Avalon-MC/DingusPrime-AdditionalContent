@@ -4,7 +4,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.petercashel.dingusprimeacm.world.daily.DailyManager;
-import net.petercashel.dingusprimeacm.world.zones.ZoneManager;
 
 public class DingusPrimeWorldSaveData extends SavedData {
 
@@ -12,6 +11,19 @@ public class DingusPrimeWorldSaveData extends SavedData {
 
     public DingusPrimeWorldSaveData() {
 
+    }
+
+    // Create new instance of saved data
+    public static DingusPrimeWorldSaveData Create() {
+        return new DingusPrimeWorldSaveData();
+    }
+
+    // Load existing instance of saved data
+    public static DingusPrimeWorldSaveData Load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        DingusPrimeWorldSaveData data = DingusPrimeWorldSaveData.Create();
+        // Load saved data
+        data.load(tag);
+        return data;
     }
 
     private void InitStatics() {

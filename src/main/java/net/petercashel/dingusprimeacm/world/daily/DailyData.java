@@ -1,9 +1,11 @@
 package net.petercashel.dingusprimeacm.world.daily;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.petercashel.dingusprimeacm.world.WorldDataManager;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +21,7 @@ public class DailyData implements INBTSerializable<CompoundTag> {
 
 
     @Override
-    public CompoundTag serializeNBT() {
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("version", version);
 
@@ -43,7 +45,7 @@ public class DailyData implements INBTSerializable<CompoundTag> {
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt) {
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         int version = nbt.getInt("version");
         PlayerDailyRewardData.clear();
 

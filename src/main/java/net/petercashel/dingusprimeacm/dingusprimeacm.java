@@ -2,6 +2,7 @@
 package net.petercashel.dingusprimeacm;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -9,7 +10,9 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -55,22 +58,23 @@ public class dingusprimeacm
     public static final Logger LOGGER = LogUtils.getLogger();
 
 
-    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(BuiltInRegistries.BLOCKS, MODID);
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEMS, MODID);
-    private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(BuiltInRegistries.MENU_TYPES, MODID);
-    public dingusprimeacm()
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(BuiltInRegistries.BLOCK, MODID);
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, MODID);
+    private static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(BuiltInRegistries.MENU, MODID);
+    public dingusprimeacm(IEventBus bus, Dist dist)
     {
         // Register the setup method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        bus.addListener(this::setup);
         // Register the enqueueIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
+        bus.addListener(this::enqueueIMC);
         // Register the processIMC method for modloading
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+        bus.addListener(this::processIMC);
 
         // Register ourselves for server and other game events we are interested in
-        NeoForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);;
+        NeoForge.EVENT_BUS.register(ForgeRegistryEvents.class);
+        bus.register(ModRegistryEvents.class);
 
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         CONTAINERS.register(bus);
         ENTITY_TYPES.register(bus);
         BLOCKS.register(bus);
@@ -117,7 +121,7 @@ public class dingusprimeacm
         WorldDataManager.OnServerStarted(event);
     }
 
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPES, MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, MODID);
 
     public static <T extends ShopKeeper> DeferredHolder<EntityType<T>> newShopKeeper(String name, EntityType.EntityFactory<T> factory) {
         return ENTITY_TYPES.register(name, () -> {
@@ -126,26 +130,22 @@ public class dingusprimeacm
         });
     }
 
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
     public class ForgeRegistryEvents {
-
         @SubscribeEvent
         public static void registerCommands(RegisterCommandsEvent event){
             DingusPrimeAcmCommand.register(event.getDispatcher());
         }
+
     }
 
     public static final DPACM_MainTab DPACM_MAINTAB = new DPACM_MainTab(CreativeModeTab.TABS.length, MODID);
 
 
-    // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD
-    // Event bus for receiving Registry Events)
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents
+    public static class ModRegistryEvents
     {
 
         @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
+        public static void onBlocksRegistry(final RegisterEvent.Register<Block> blockRegistryEvent)
         {
             // Register a new block here
 
@@ -250,19 +250,19 @@ public class dingusprimeacm
     public static final Capability<IGameBoyCartCapability> GAMEBOYCART_CAP_INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
     public static final DeferredHolder<MenuType<ShopKeeperMenu>> SHOP_KEEPER_CONTAINER = CONTAINERS.register("shopkeepermenu",
-            () -> IForgeMenuType.create((windowId, inv, data) -> new ShopKeeperMenu(windowId, inv)));
+            () -> IMenuTypeExtension.create((windowId, inv, data) -> new ShopKeeperMenu(windowId, inv)));
 
     public static final DeferredHolder<MenuType<GameboyContainer>> GAMEBOY_CONTAINER = CONTAINERS.register("gameboy",
-            () -> IForgeMenuType.create((windowId, inv, data) -> new GameboyContainer(windowId, inv, inv.player, inv.player.getItemInHand(inv.player.getUsedItemHand()))));
+            () -> IMenuTypeExtension.create((windowId, inv, data) -> new GameboyContainer(windowId, inv, inv.player, inv.player.getItemInHand(inv.player.getUsedItemHand()))));
 
     public static final DeferredHolder<MenuType<GameboyCartContainer>> GAMEBOYCART_CONTAINER = CONTAINERS.register("gameboycart",
-            () -> IForgeMenuType.create((windowId, inv, data) -> new GameboyCartContainer(windowId, inv, inv.player, inv.player.getItemInHand(inv.player.getUsedItemHand()))));
+            () -> IMenuTypeExtension.create((windowId, inv, data) -> new GameboyCartContainer(windowId, inv, inv.player, inv.player.getItemInHand(inv.player.getUsedItemHand()))));
 
     public static final DeferredHolder<MenuType<CartShelfContainer>> CARTSHELF_CONTAINER = CONTAINERS.register("cartshelf",
-            () -> IForgeMenuType.create((windowId, inv, data) -> new CartShelfContainer(windowId, data.readBlockPos(), inv, inv.player)));
+            () -> IMenuTypeExtension.create((windowId, inv, data) -> new CartShelfContainer(windowId, data.readBlockPos(), inv, inv.player)));
 
     public static final DeferredHolder<MenuType<CabnetContainer>> CABNET_CONTAINER = CONTAINERS.register("cabnet",
-            () -> IForgeMenuType.create((windowId, inv, data) -> new CabnetContainer(windowId, data.readBlockPos(), inv, inv.player)));
+            () -> IMenuTypeExtension.create((windowId, inv, data) -> new CabnetContainer(windowId, data.readBlockPos(), inv, inv.player)));
 
 
     @SubscribeEvent
