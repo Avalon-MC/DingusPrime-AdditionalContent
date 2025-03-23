@@ -70,12 +70,12 @@ public class dingusprimeKubeJSPlugin implements KubeJSPlugin {
     public static BlockEntityType<CabnetBlockEntity> CABNET_BE;
 
     @SubscribeEvent
-    public static void registerTE(RegistryEvent.Register<BlockEntityType<?>> evt) {
+    public static void registerTE(RegisterEvent.Register<BlockEntityType<?>> evt) {
         RegisterShelves(evt);
         RegisterCabnets(evt);
     }
 
-    private static void RegisterShelves(RegistryEvent.Register<BlockEntityType<?>> evt) {
+    private static void RegisterShelves(RegisterEvent.Register<BlockEntityType<?>> evt) {
         // Register a new block here
         ArrayList<Block> validCartShelves = new ArrayList<>();
 

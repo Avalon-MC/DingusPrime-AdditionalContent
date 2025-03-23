@@ -1,20 +1,22 @@
 package net.petercashel.dingusprimeacm.kubejs.types.gameboy.item;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 
-import net.neoforged.common.capabilities.ICapabilityProvider;
-import net.neoforged.common.util.INBTSerializable;
 
-
-
-
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
-public class CapabilityProviderGameBoy implements INBTSerializable<CompoundTag>,ICapabilityProvider {
+public class CapabilityProviderGameBoy implements INBTSerializable<CompoundTag>, ICapabilityProvider<GameBoyCartItemJS, Void> {
 
     ItemStackHandler backend = new ItemStackHandler(1);
-    LazyOptional<IItemHandler> optionalStorage = LazyOptional.of(() -> backend);
+    Lazy<IItemHandler> optionalStorage = Lazy.of(() -> backend);
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction direction) {
@@ -25,14 +27,14 @@ public class CapabilityProviderGameBoy implements INBTSerializable<CompoundTag>,
     }
 
     @Override
-    public CompoundTag serializeNBT() {
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag tag = new CompoundTag();
-        tag.put("cart", backend.serializeNBT());
+        tag.put("cart", backend.serializeNBT(provider));
         return tag;
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt) {
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         if (nbt != null) {
             CompoundTag tag = nbt.getCompound("cart");
 
@@ -42,8 +44,15 @@ public class CapabilityProviderGameBoy implements INBTSerializable<CompoundTag>,
             }
 
             if (!tag.isEmpty()) {
-                backend.deserializeNBT(tag);
+                backend.deserializeNBT(provider,tag);
             }
         }
+    }
+
+
+
+    @Override
+    public @Nullable Object getCapability(Object object, Object context) {
+        return null;
     }
 }

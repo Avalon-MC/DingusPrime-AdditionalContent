@@ -21,17 +21,6 @@ public class WorldDataManager {
         return new DingusPrimeWorldSaveData();
     }
 
-    public static DingusPrimeWorldSaveData LoadWorldSaveData(CompoundTag tag) {
-        DingusPrimeWorldSaveData data = CreateWorldSaveData();
-        // Load saved data
-        if (tag != null && !tag.isEmpty()) {
-            data.load(tag);
-        }
-
-
-
-        return data;
-    }
 
     public static void OnServerStarted(ServerStartedEvent event) {
         ServerLevel Overworld = event.getServer().overworld();

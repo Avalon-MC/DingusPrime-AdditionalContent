@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.petercashel.dingusprimeacm.dingusprimeacm_client;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.GameboyClientEvents;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,8 +50,14 @@ public class GameboyEmulator {
         GameboyOptions options = new GameboyOptions(null, false, false, forceGB); //No Saves for now.
         options.DisableDebug();
 
-        int length = Minecraft.getInstance().getResourceManager().getResource(romFile).getInputStream().readAllBytes().length;
-        Cartridge rom = new Cartridge(options, Minecraft.getInstance().getResourceManager().getResource(romFile).getInputStream(), length, gfb);
+        byte[] byteArray = Minecraft.getInstance().getResourceManager().getResource(romFile).get().open().readAllBytes();
+
+        int[] romData = new int[byteArray.length];
+        for (int i = 0; i < byteArray.length; i++) {
+            romData[i] = byteArray[i] & 0xff;
+        }
+
+        Cartridge rom = new Cartridge(options, romData, gfb);
         this.romInstance = rom;
 
         SerialEndpoint serialEndpoint = SerialEndpoint.NULL_ENDPOINT;

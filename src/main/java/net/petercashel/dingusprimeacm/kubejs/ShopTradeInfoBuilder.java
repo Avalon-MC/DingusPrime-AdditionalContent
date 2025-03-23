@@ -1,7 +1,6 @@
 package net.petercashel.dingusprimeacm.kubejs;
 
-import dev.latvian.mods.kubejs.BuilderBase;
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.registry.BuilderBase;
 import net.minecraft.resources.ResourceLocation;
 import net.petercashel.dingusprimeacm.shopkeeper.registry.ShopTradeInfo;
 
@@ -19,10 +18,7 @@ public class ShopTradeInfoBuilder extends BuilderBase<ShopTradeInfo> {
         super(i);
     }
 
-    @Override
-    public RegistryObjectBuilderTypes<ShopTradeInfo> getRegistryType() {
-        return dingusprimeKubeJSPlugin.SHOPTRADE;
-    }
+
 
     @Override
     public ShopTradeInfo createObject() {
@@ -32,9 +28,9 @@ public class ShopTradeInfoBuilder extends BuilderBase<ShopTradeInfo> {
     public ShopTradeInfoBuilder result(String resourceLocation ) {
         if (resourceLocation.contains(":")) {
             String[] parts = resourceLocation.split(":");
-            this.ResultName = new ResourceLocation(parts[0], parts[1]);
+            this.ResultName = ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]);
         } else {
-            this.ResultName = new ResourceLocation(resourceLocation);
+            this.ResultName = ResourceLocation.withDefaultNamespace(resourceLocation);
         }
         return this;
     }

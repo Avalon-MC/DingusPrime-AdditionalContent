@@ -55,8 +55,11 @@ public class Cartridge implements AddressSpace {
 
 
     public Cartridge(GameboyOptions options, InputStream inputStream, int streamLength, Battery batteryOverride)  throws IOException {
+        this(options, load(inputStream, streamLength), batteryOverride);
+    }
 
-        int[] rom = load(inputStream, streamLength);
+    public Cartridge(GameboyOptions options,  int[] rom, Battery batteryOverride)  throws IOException {
+
         CartridgeType type = CartridgeType.getById(rom[0x0147]);
         title = getTitle(rom);
         LOG.debug("Cartridge {}, type: {}", title, type);

@@ -11,6 +11,10 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.ItemCapability;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.common.util.TriState;
@@ -25,9 +29,9 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.petercashel.dingusprimeacm.creative.DPACM_MainTab;
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetContainer;
 import net.petercashel.dingusprimeacm.kubejs.types.cartshelf.container.CartShelfContainer;
 import net.petercashel.dingusprimeacm.kubejs.types.chair.ChairEntity;
@@ -36,6 +40,8 @@ import net.petercashel.dingusprimeacm.configuration.DPAcmConfig;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyCartContainer;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyContainer;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability.IGameBoyCartCapability;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyCartItemJS;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyCartItemJS.GameBoyCartCapabilityProvider;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyItemJS;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 import net.petercashel.dingusprimeacm.kubejs.dingusprimeKubeJSPlugin;
@@ -75,6 +81,7 @@ public class dingusprimeacm
         NeoForge.EVENT_BUS.register(ForgeRegistryEvents.class);
         NeoForge.EVENT_BUS.register(DailyManager.DailyManagerEvents.class);
         bus.register(ModRegistryEvents.class);
+        bus.addListener(this::registerCapabilities);
 
         CONTAINERS.register(bus);
         ENTITY_TYPES.register(bus);
@@ -245,24 +252,40 @@ public class dingusprimeacm
     public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_custom3>> SHOP_KEEPER_custom3 = newShopKeeper("shopkeeper_custom3", ShopKeeper_custom3::new);
     public static final DeferredHolder<EntityType<?>, EntityType<ShopKeeper_custom4>> SHOP_KEEPER_custom4 = newShopKeeper("shopkeeper_custom4", ShopKeeper_custom4::new);
 
+    public static final ItemCapability<GameBoyCartCapabilityProvider, Void> GAMEBOYCART_CAP_INSTANCE =
+            ItemCapability.create(
+                    // Provide a name to uniquely identify the capability.
+                    ResourceLocation.fromNamespaceAndPath("dingusprimeacm", "gameboycart_capability"),
+                    // Provide the queried type. Here, we want to look up `IItemHandler` instances.
+                    GameBoyCartCapabilityProvider.class,
+                    Void.class);
+
+    private void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerItem(
+                Capabilities.ItemHandler.ITEM, // capability to register for
+                (itemStack, context) -> {
+                    return new GameBoyCartCapabilityProvider();
+                },
+            // items to register for
+                UNKOWN_ITEM // default value
+
+        );
+    }
 
 
-
-    public static final Capability<IGameBoyCartCapability> GAMEBOYCART_CAP_INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
-
-    public static final DeferredHolder<MenuType<ShopKeeperMenu>> SHOP_KEEPER_CONTAINER = CONTAINERS.register("shopkeepermenu",
+    public static final DeferredHolder<MenuType<?>, MenuType<ShopKeeperMenu>> SHOP_KEEPER_CONTAINER = CONTAINERS.register("shopkeepermenu",
             () -> IMenuTypeExtension.create((windowId, inv, data) -> new ShopKeeperMenu(windowId, inv)));
 
-    public static final DeferredHolder<MenuType<GameboyContainer>> GAMEBOY_CONTAINER = CONTAINERS.register("gameboy",
+    public static final DeferredHolder<MenuType<?>, MenuType<GameboyContainer>> GAMEBOY_CONTAINER = CONTAINERS.register("gameboy",
             () -> IMenuTypeExtension.create((windowId, inv, data) -> new GameboyContainer(windowId, inv, inv.player, inv.player.getItemInHand(inv.player.getUsedItemHand()))));
 
-    public static final DeferredHolder<MenuType<GameboyCartContainer>> GAMEBOYCART_CONTAINER = CONTAINERS.register("gameboycart",
+    public static final DeferredHolder<MenuType<?>, MenuType<GameboyCartContainer>> GAMEBOYCART_CONTAINER = CONTAINERS.register("gameboycart",
             () -> IMenuTypeExtension.create((windowId, inv, data) -> new GameboyCartContainer(windowId, inv, inv.player, inv.player.getItemInHand(inv.player.getUsedItemHand()))));
 
-    public static final DeferredHolder<MenuType<CartShelfContainer>> CARTSHELF_CONTAINER = CONTAINERS.register("cartshelf",
+    public static final DeferredHolder<MenuType<?>, MenuType<CartShelfContainer>> CARTSHELF_CONTAINER = CONTAINERS.register("cartshelf",
             () -> IMenuTypeExtension.create((windowId, inv, data) -> new CartShelfContainer(windowId, data.readBlockPos(), inv, inv.player)));
 
-    public static final DeferredHolder<MenuType<CabnetContainer>> CABNET_CONTAINER = CONTAINERS.register("cabnet",
+    public static final DeferredHolder<MenuType<?>, MenuType<CabnetContainer>> CABNET_CONTAINER = CONTAINERS.register("cabnet",
             () -> IMenuTypeExtension.create((windowId, inv, data) -> new CabnetContainer(windowId, data.readBlockPos(), inv, inv.player)));
 
 

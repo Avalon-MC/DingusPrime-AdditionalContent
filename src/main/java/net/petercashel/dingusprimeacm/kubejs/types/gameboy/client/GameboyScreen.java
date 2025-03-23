@@ -4,12 +4,14 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.petercashel.dingusprimeacm.dingusprimeacm_client;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.emulation.GameboyEmulator;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.emulation.GameboyStatus;
@@ -18,12 +20,14 @@ import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 import net.petercashel.dingusprimeacm.networking.PacketHandler;
 import net.petercashel.dingusprimeacm.networking.packets.gb.GBSaveReqPacket_CS;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 import java.io.IOException;
 
 public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
 
-    private final ResourceLocation GUI = new ResourceLocation("dingusprimeacm", "textures/gui/gameboy_gui_default.png");
+    private final ResourceLocation GUI = ResourceLocation.fromNamespaceAndPath("dingusprimeacm", "textures/gui/gameboy_gui_default.png");
     private ResourceLocation UIBack;
 
     public static final BufferedImage GBImageBuffer = new BufferedImage(160, 144, BufferedImage.TYPE_INT_RGB);
@@ -47,17 +51,19 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
         lastInstance = this;
 
         if (dynamicResource == null) {
-            int color = NativeImage.combine(255, 1, 1, 128);
+            int color = new Color(255, 1, 1, 128).getRGB();
+
             for (int x = 0; x < 160; x++) {
                 for (int y = 0; y < 144; y++)
                 {
+
                     GBImageBuffer.setRGB(x,y,color);
                     imageBuffer.getPixels().setPixelRGBA(x,y,color);
                 }
             }
 
             imageBuffer.upload();
-            dynamicResource = Minecraft.getInstance().textureManager.register("gameboytex", imageBuffer);
+            dynamicResource = Minecraft.getInstance().getTextureManager().register("gameboytex", imageBuffer);
         }
 
         UIBack = container.GetUIBack(GUI);
@@ -88,8 +94,8 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
+    public void render(GuiGraphics matrixStack, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(matrixStack, mouseX, mouseY, partialTicks);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderTooltip(matrixStack, mouseX, mouseY);
 
@@ -97,10 +103,10 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphics matrixStack, int mouseX, int mouseY) {
 
         if (ShowControls && false) {
-            drawString(matrixStack, Minecraft.getInstance().font, "SOME TEXT", 41, 147, 0xffffff);
+            matrixStack.drawString(Minecraft.getInstance().font, "SOME TEXT", 41, 147, 0xffffff);
 
         }
 
@@ -144,7 +150,7 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics matrixStack, float partialTicks, int mouseX, int mouseY) {
         int relX = (this.width - this.imageWidth) / 2;
         int relY = (this.height - this.imageHeight) / 2;
 
@@ -156,16 +162,16 @@ public class GameboyScreen extends AbstractContainerScreen<GameboyContainer> {
         }
 
         //Status
-        AbstractContainerScreen.fill(matrixStack,relX + statusPos[0], relY+ statusPos[1], relX+ statusPos[0] + statusSize[0], relY+ statusPos[1]+ statusSize[1], GetStatusColor());
+        matrixStack.fill(relX + statusPos[0], relY+ statusPos[1], relX+ statusPos[0] + statusSize[0], relY+ statusPos[1]+ statusSize[1], GetStatusColor());
 
 
 
 
         RenderSystem.setShaderTexture(0, UIBack);
-        this.blit(matrixStack, relX, relY, 0, 0, this.imageWidth, 256);
+        matrixStack.blit(UIBack, relX, relY, 0, 0, this.imageWidth, 256);
 
         RenderSystem.setShaderTexture(0, dynamicResource);
-        blit(matrixStack, relX + videoPos[0], relY+ videoPos[1], 0, 0, videoSize[0], videoSize[1], videoSize[0], videoSize[1]);
+        matrixStack.blit(dynamicResource, relX + videoPos[0], relY+ videoPos[1], 0, 0, videoSize[0], videoSize[1], videoSize[0], videoSize[1]);
     }
 
 

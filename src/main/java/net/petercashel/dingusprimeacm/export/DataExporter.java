@@ -55,14 +55,14 @@ public class DataExporter {
     private static void SendStatus(String s) {
         if (Player != null) {
             if (Player.isAlive()) {
-                Player.sendSystemMessage(Component.literal(s), ChatType.GAME_INFO);
+                Player.sendSystemMessage(Component.literal(s));
             }
         }
     }
     private static void SendChat(String s) {
         if (Player != null) {
             if (Player.isAlive()) {
-                Player.sendSystemMessage(Component.literal(s), ChatType.CHAT);
+                Player.sendSystemMessage(Component.literal(s));
             }
         }
     }

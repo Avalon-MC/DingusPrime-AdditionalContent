@@ -25,20 +25,20 @@ public class DailyData implements INBTSerializable<CompoundTag> {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("version", version);
 
-        CompoundTag PlayerDailyRewardData = SavePlayerDailyRewardData(new CompoundTag());
+        CompoundTag PlayerDailyRewardData = SavePlayerDailyRewardData(provider,new CompoundTag());
         nbt.put("PlayerDailyRewardData", PlayerDailyRewardData);
 
 
         return nbt;
     }
 
-    private CompoundTag SavePlayerDailyRewardData(CompoundTag tag) {
+    private CompoundTag SavePlayerDailyRewardData(HolderLookup.Provider provider,CompoundTag tag) {
         tag.putInt("count", PlayerDailyRewardData.size());
         int i = 0;
         for (var entry : PlayerDailyRewardData.entrySet()) {
             CompoundTag nbt = new CompoundTag();
             nbt.putUUID("UUID", entry.getKey());
-            nbt.put("data", entry.getValue().serializeNBT());
+            nbt.put("data", entry.getValue().serializeNBT(provider));
             tag.put(Integer.toString((i++)), nbt);
         }
         return tag;
@@ -50,19 +50,19 @@ public class DailyData implements INBTSerializable<CompoundTag> {
         PlayerDailyRewardData.clear();
 
         CompoundTag PlayerDailyRewardData = nbt.getCompound("PlayerDailyRewardData");
-        LoadPlayerDailyRewardData(PlayerDailyRewardData);
+        LoadPlayerDailyRewardData(provider,PlayerDailyRewardData);
 
 
 
     }
 
-    private void LoadPlayerDailyRewardData(CompoundTag tag) {
+    private void LoadPlayerDailyRewardData(HolderLookup.Provider provider,CompoundTag tag) {
         int count = tag.getInt("count");
         for (int i = 0; i < count; i++) {
             CompoundTag nbt = tag.getCompound(Integer.toString(i));
             DailyRewardData data = new DailyRewardData();
             UUID uuid = nbt.getUUID("UUID");
-            data.deserializeNBT(nbt.getCompound("data"));
+            data.deserializeNBT(provider,nbt.getCompound("data"));
 
             PlayerDailyRewardData.put(uuid, data);
         }

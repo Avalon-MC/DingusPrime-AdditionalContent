@@ -7,14 +7,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-import net.neoforged.common.capabilities.ICapabilityProvider;
-import net.neoforged.common.capabilities.ICapabilitySerializable;
-import net.neoforged.common.util.INBTSerializable;
-
+import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.petercashel.dingusprimeacm.dingusprimeacm;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability.GameBoyCartCapabilityImplem;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.capability.IGameBoyCartCapability;
@@ -89,7 +87,7 @@ public class GameBoyCartItemJS extends Item {
     }
 
 
-    public class GameBoyCartCapabilityProvider implements  ICapabilityProvider, ICapabilitySerializable<CompoundTag>, INBTSerializable<CompoundTag> {
+    public class GameBoyCartCapabilityProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundTag>, INBTSerializable<CompoundTag> {
 
         private final IGameBoyCartCapability backend = new GameBoyCartCapabilityImplem();
         private final LazyOptional<IGameBoyCartCapability> optionalData = LazyOptional.of(() -> backend);

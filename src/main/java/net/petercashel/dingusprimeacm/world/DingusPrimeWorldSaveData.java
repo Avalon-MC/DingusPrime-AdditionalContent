@@ -22,7 +22,7 @@ public class DingusPrimeWorldSaveData extends SavedData {
     public static DingusPrimeWorldSaveData Load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         DingusPrimeWorldSaveData data = DingusPrimeWorldSaveData.Create();
         // Load saved data
-        data.load(tag);
+        data.load(tag, lookupProvider);
         return data;
     }
 
@@ -31,7 +31,7 @@ public class DingusPrimeWorldSaveData extends SavedData {
         DailyManager.Instance = new DailyManager();//System.currentTimeMillis()
     }
 
-    public void load(CompoundTag nbt) {
+    public void load(CompoundTag nbt, HolderLookup.Provider lookupProvider) {
         InitStatics();
 
         int version = nbt.getInt("version");
@@ -43,7 +43,7 @@ public class DingusPrimeWorldSaveData extends SavedData {
         }
 
         if (version == 2) {
-            DailyManager.Instance.Data.deserializeNBT(nbt.getCompound("DailyManager"));
+            DailyManager.Instance.Data.deserializeNBT(lookupProvider,nbt.getCompound("DailyManager"));
             DailyManager.LoadDailyRewards();
         }
 
@@ -60,7 +60,7 @@ public class DingusPrimeWorldSaveData extends SavedData {
         //WasZoneManager
 
         //V2
-        nbt.put("DailyManager", DailyManager.Instance.Data.serializeNBT());
+        nbt.put("DailyManager", DailyManager.Instance.Data.serializeNBT(registries));
 
         return nbt;
     }
