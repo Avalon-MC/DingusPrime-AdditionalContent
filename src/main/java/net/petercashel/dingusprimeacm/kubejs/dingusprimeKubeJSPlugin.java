@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetBlockEntity;
 import net.petercashel.dingusprimeacm.kubejs.types.cabnet.CabnetBlockJS;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.function.Supplier;
 
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class dingusprimeKubeJSPlugin implements KubeJSPlugin {
 
     @Override

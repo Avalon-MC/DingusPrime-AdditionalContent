@@ -146,7 +146,6 @@ public class dingusprimeacm
 
     }
 
-    public static final DPACM_MainTab DPACM_MAINTAB = new DPACM_MainTab(CreativeModeTab.TABS.length, MODID);
 
 
     public static class ModRegistryEvents

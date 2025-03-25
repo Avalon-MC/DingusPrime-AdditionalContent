@@ -1,7 +1,6 @@
 package net.petercashel.dingusprimeacm.kubejs;
 
-import dev.latvian.mods.kubejs.BuilderBase;
-import dev.latvian.mods.kubejs.RegistryObjectBuilderTypes;
+import dev.latvian.mods.kubejs.registry.BuilderBase;
 import net.minecraft.resources.ResourceLocation;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 
