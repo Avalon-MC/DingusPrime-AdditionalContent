@@ -1,1 +1,0 @@
-net.petercashel.dingusprimeacm.kubejs.dingusprimeKubeJSPlugin

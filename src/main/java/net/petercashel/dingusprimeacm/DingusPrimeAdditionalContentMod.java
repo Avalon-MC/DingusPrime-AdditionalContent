@@ -1,5 +1,8 @@
 package net.petercashel.dingusprimeacm;
 
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.petercashel.dingusprimeacm.datagen.DataGeneration;
+import net.petercashel.dingusprimeacm.world.WorldDataManager;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -91,6 +94,10 @@ public class DingusPrimeAdditionalContentMod
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+
+        modEventBus.addListener(DataGeneration::generate);
+
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -101,9 +108,9 @@ public class DingusPrimeAdditionalContentMod
         if (Config.logDirtBlock)
             LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
 
-        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
+        //LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
 
-        Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
+        //Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
     // Add the example block item to the building blocks tab
@@ -119,7 +126,14 @@ public class DingusPrimeAdditionalContentMod
     {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
+        WorldDataManager.OnServerStarting(event);
     }
+
+    @SubscribeEvent
+    public void onServerStarted(ServerStartedEvent event) {
+        WorldDataManager.OnServerStarted(event);
+    }
+
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

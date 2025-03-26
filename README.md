@@ -1,8 +1,10 @@
 
 [![Build 1.21.1](https://github.com/Avalon-MC/DingusPrime-AdditionalContent/actions/workflows/build_1.21.1.yml/badge.svg)](https://github.com/Avalon-MC/DingusPrime-AdditionalContent/actions/workflows/build_1.21.1.yml)
+  
+**This mod is being rewritten for 1.21.1. Too much is broken and unknown with capability changes, KubeJS changes and other 1.18 -> 1.21 changes that it's outside my knowledge set to fix. So here we go again.** 
 
 # DingusPrime Additional Content Mod - [MIT Licence](https://github.com/Avalon-MC/DingusPrime-AdditionalContent/blob/1.21.1/LICENSE)
-> A F~~orge 1.18.2~~  NeoForge 1.21.1 mod. Requires ~~Calemi's Economy~~, OpenLoader, KubeJS. Created by Peter Cashel (pacas00) and contributers.
+> A ~~Forge 1.18.2~~  NeoForge 1.21.1 mod. Requires ~~Calemi's Economy~~, OpenLoader, KubeJS. Created by Peter Cashel (pacas00) and contributers.
 >> PLEASE NOTE: DingusPrime ACM is in Alpha and is being semi-actively developed and tested.
 
 THIS MOD CONTAINS NO COPYRIGHTED MATERIAL. WE DO NOT DISTRIBUTE COPYRIGHTED MATERIAL. WE WILL NOT HELP YOU FIND ANY COPYRIGHTED MATERIAL. 
@@ -16,20 +18,20 @@ DingusPrime ACM is a mod to house additional custom content / code / any require
 
 
 It currently contains: 
-* A custom type for KubeJS to create handheld GameBoy like items
-* A custom type for KubeJS to create handheld cartridges for the use with the handhelds
-* A custom registry for ROMs to map between cart items and files
-* A GBStudio made 'game' (defaultrom.gb) to serve as a fallback when the game rom isnt loadable (missing file, not registered, no cart in handheld)
-* * Simple one screen 'game' that says there is no cart.
+* ~~A custom type for KubeJS to create handheld GameBoy like items~~
+* ~~A custom type for KubeJS to create handheld cartridges for the use with the handhelds~~
+* ~~A custom registry for ROMs to map between cart items and files~~
+* ~~A GBStudio made 'game' (defaultrom.gb) to serve as a fallback when the game rom isnt loadable (missing file, not registered, no cart in handheld)~~
+* * ~~Simple one screen 'game' that says there is no cart.~~
 
-* A Clone of the KubeJS 6 cardinal block type. This is not availible in KubeJS 5.5 for 1.18.2 and we need it for custom blocks.
+* ~~A Clone of the KubeJS 6 cardinal block type. This is not availible in KubeJS 5.5 for 1.18.2 and we need it for custom blocks.~~
 
-* A set of 18 Villager Trade NPCs for use in custom shops. They don't move around and have most of their AI removed. They can only be hurt by creative players (to prevent zombies killing them).
-* * Configurable using KubeJS scripts
-* * ~~Intergrates into Calemi's Economy.~~ Planned to be removed and replaced with a custom wallet system
-* * Max of 3 items random available each 'day'.
-* * Always available items supported.
-* * Cycles available items every 24 hours or every server restart.
+* ~~A set of 18 Villager Trade NPCs for use in custom shops. They don't move around and have most of their AI removed. They can only be hurt by creative players (to prevent zombies killing them).~~
+* * ~~Configurable using KubeJS scripts~~
+* * ~~Intergrates into Calemi's Economy. Planned to be removed and replaced with a custom wallet system~~
+* * ~~Max of 3 items random available each 'day'.~~
+* * ~~Always available items supported.~~
+* * ~~Cycles available items every 24 hours or every server restart.~~
 <br/>
 <br/>
 
