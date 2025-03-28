@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "block/barrel_bottom",
-		"1": "block/barrel_side",
-		"particle": "block/barrel_side"
+		"0": "minecraft:block/barrel_bottom",
+		"1": "minecraft:block/barrel_side",
+		"particle": "minecraft:block/barrel_side"
 	},
 	"elements": [
 		{

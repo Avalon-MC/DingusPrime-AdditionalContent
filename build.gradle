@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.gradle.userdev' version '7.0.183'
+    id 'net.neoforged.gradle.common' version '7.0.183'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -175,8 +176,13 @@ dependencies {
     compileOnly("dev.architectury:architectury-neoforge:$architectury_version")
 
 
+
     api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+    interfaceInjections {
+        "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
+    } // optional
     //interfaceInjectionData("dev.latvian.mods:kubejs-neoforge:$kubejs_version") // optional
+    //interfaceInjections("dev.latvian.mods:kubejs-neoforge:$kubejs_version") // optional
 
     api("net.darkhax.openloader:openloader-neoforge-${minecraft_version}:${openloader_min_version}")
 
