@@ -89,6 +89,9 @@ public class DingusPrimeAdditionalContentMod
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
+        // Register the DingusRegistries class to the mod event bus
+        modEventBus.register(DingusRegistries.class);
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 

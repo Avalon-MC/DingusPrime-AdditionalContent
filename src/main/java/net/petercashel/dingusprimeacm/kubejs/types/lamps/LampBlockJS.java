@@ -83,7 +83,7 @@ public class LampBlockJS extends BasicBlockJS {
             //Switch state
             var newState = pState.cycle(LIT);
             pLevel.setBlock(pPos, newState, 1);
-            pLevel.sendBlockUpdated(pPos, pLevel.getBlockState(pPos), pLevel.getBlockState(pPos), 3);
+            pLevel.sendBlockUpdated(pPos, pLevel.getBlockState(pPos), pLevel.getBlockState(pPos), 2);
             pLevel.scheduleTick(pPos, pLevel.getBlockState(pPos).getBlock(), 4);
             return InteractionResult.SUCCESS;
         } else {

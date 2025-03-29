@@ -1,18 +1,23 @@
 package net.petercashel.dingusprimeacm.kubejs;
 
-import dev.latvian.mods.kubejs.KubeJS;
 import dev.latvian.mods.kubejs.block.custom.BasicBlockJS;
-import dev.latvian.mods.kubejs.event.EventGroupRegistry;
+import dev.latvian.mods.kubejs.event.*;
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
 import dev.latvian.mods.kubejs.registry.BuilderTypeRegistry;
 import dev.latvian.mods.kubejs.registry.ServerRegistryRegistry;
 import dev.latvian.mods.kubejs.script.BindingRegistry;
 import dev.latvian.mods.kubejs.script.DataComponentTypeInfoRegistry;
 import dev.latvian.mods.kubejs.script.TypeWrapperRegistry;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.neoforged.neoforge.registries.RegisterEvent;
+import net.petercashel.dingusprimeacm.DingusRegistries;
 import net.petercashel.dingusprimeacm.kubejs.basictypes.CustomCardinalBlockBuilder;
 import net.petercashel.dingusprimeacm.kubejs.types.flatpack.FlatpackBlockJS;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 import net.petercashel.dingusprimeacm.kubejs.types.lamps.LampBlockJS;
+
 
 public class dingusprimeKubeJSPlugin implements KubeJSPlugin {
 
@@ -50,6 +55,11 @@ public class dingusprimeKubeJSPlugin implements KubeJSPlugin {
 
 
         });
+
+        registry.addDefault(DingusRegistries.ROMINFO_REGISTRY_KEY, RomInfo.RomInfoBuilder.class, RomInfo.RomInfoBuilder::new);
+        registry.of(DingusRegistries.ROMINFO_REGISTRY_KEY, reg -> {
+            reg.add("rom", RomInfo.RomInfoBuilder.class, RomInfo.RomInfoBuilder::new);
+        });
     }
 
     @Override
@@ -57,9 +67,19 @@ public class dingusprimeKubeJSPlugin implements KubeJSPlugin {
         // Add your code here
     }
 
+
+    public static void RomRegistryEvent(RegisterEvent. RegisterHelper<RomInfo> registry, Registry<RomInfo> rominfoRegistry, ResourceKey<Registry<RomInfo>> rominfoRegistryKey, RegisterEvent event) {
+        //How
+
+
+    }
+
+
+
     @Override
     public void registerEvents(EventGroupRegistry registry) {
         // Add your code here
+
     }
 
     @Override
