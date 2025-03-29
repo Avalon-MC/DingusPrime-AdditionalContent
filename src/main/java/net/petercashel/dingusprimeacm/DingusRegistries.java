@@ -1,6 +1,8 @@
 package net.petercashel.dingusprimeacm;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -8,7 +10,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.datacomponent.CartItemDataComponent;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
+
+import java.util.function.Supplier;
 
 public class DingusRegistries {
 
@@ -35,5 +40,11 @@ public class DingusRegistries {
 
 
         });
+
+//        event.register(Registries.DATA_COMPONENT_TYPE, registry -> {
+//            registry.register("cart_item_data_component",            );
+//        });
     }
+
+
 }

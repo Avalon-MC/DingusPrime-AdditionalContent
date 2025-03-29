@@ -15,6 +15,7 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import net.petercashel.dingusprimeacm.DingusRegistries;
 import net.petercashel.dingusprimeacm.kubejs.basictypes.CustomCardinalBlockBuilder;
 import net.petercashel.dingusprimeacm.kubejs.types.flatpack.FlatpackBlockJS;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyCartItem;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 import net.petercashel.dingusprimeacm.kubejs.types.lamps.LampBlockJS;
 
@@ -53,6 +54,11 @@ public class dingusprimeKubeJSPlugin implements KubeJSPlugin {
             reg.add("lamp_top", LampBlockJS.LampTopBuilder.class, LampBlockJS.LampTopBuilder::new);
 
 
+
+        });
+
+        registry.of(Registries.ITEM, reg -> {
+            reg.add("gbcart", GameBoyCartItem.GBCartridgeBuilder.class, GameBoyCartItem.GBCartridgeBuilder::new);
 
         });
 
@@ -95,6 +101,7 @@ public class dingusprimeKubeJSPlugin implements KubeJSPlugin {
     @Override
     public void registerDataComponentTypeDescriptions(DataComponentTypeInfoRegistry registry) {
         // Add your code here
+
     }
 
 

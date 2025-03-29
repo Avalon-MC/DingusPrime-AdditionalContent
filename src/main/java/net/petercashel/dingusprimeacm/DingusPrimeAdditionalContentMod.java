@@ -1,7 +1,9 @@
 package net.petercashel.dingusprimeacm;
 
+import net.minecraft.core.component.DataComponentType;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.petercashel.dingusprimeacm.datagen.DataGeneration;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.datacomponent.CartItemDataComponent;
 import net.petercashel.dingusprimeacm.world.WorldDataManager;
 import org.slf4j.Logger;
 
@@ -37,6 +39,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.function.Supplier;
+
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(DingusPrimeAdditionalContentMod.MODID)
 public class DingusPrimeAdditionalContentMod
@@ -70,6 +74,22 @@ public class DingusPrimeAdditionalContentMod
                 output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
             }).build());
 
+
+
+
+    public static final DeferredRegister.DataComponents DATA_COMPONENTS_REGISTRAR = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, DingusPrimeAdditionalContentMod.MODID);
+
+    public static final Supplier<DataComponentType<CartItemDataComponent>> CART_ITEM_DATA_COMPONENT = DATA_COMPONENTS_REGISTRAR.registerComponentType(
+            "cart_item_data_component",
+            builder -> builder
+                    // The codec to read/write the data to disk
+                    .persistent(CartItemDataComponent.CARTITEM_SAVE_CODEC)
+                    // The codec to read/write the data across the network
+                    .networkSynchronized(CartItemDataComponent.CARTITEM_STREAM_CODEC)
+    );
+
+
+
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public DingusPrimeAdditionalContentMod(IEventBus modEventBus, ModContainer modContainer)
@@ -83,6 +103,8 @@ public class DingusPrimeAdditionalContentMod
         ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
+
+        DATA_COMPONENTS_REGISTRAR.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (DingusPrimeAdditionalContentMod) to respond directly to events.
@@ -150,4 +172,7 @@ public class DingusPrimeAdditionalContentMod
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
     }
+
+
+
 }
