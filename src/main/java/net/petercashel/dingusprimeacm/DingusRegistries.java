@@ -5,11 +5,11 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NewRegistryEvent;
-import net.neoforged.neoforge.registries.RegisterEvent;
-import net.neoforged.neoforge.registries.RegistryBuilder;
+import net.neoforged.neoforge.registries.*;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.datacomponent.CartItemDataComponent;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 
@@ -25,6 +25,9 @@ public class DingusRegistries {
             .create();
 
     public static final DeferredRegister<RomInfo> ROMS = DeferredRegister.create(ROMINFO_REGISTRY, DingusPrimeAdditionalContentMod.MODID);
+    public static final DeferredHolder<RomInfo, RomInfo> DEFAULT_ROM = ROMS.register("defaultrom", () -> {
+        return new RomInfo(new RomInfo.RomInfoBuilder(ResourceLocation.fromNamespaceAndPath("kubejs", "defaultrom")).romPath("dingusprimeacm:rom/defaultrom.gb"));
+    });
 
     @SubscribeEvent
     static void registerRegistries(NewRegistryEvent event) {
@@ -37,6 +40,9 @@ public class DingusRegistries {
             //registry.register(ResourceLocation.fromNamespaceAndPath("yourmodid", "example_spell"), () -> new Spell(...));
             //new RomRegistryEvent<RomInfo>(ROMS).post("rom_registry");
 
+            RomInfo.RomInfoBuilder defaultRom = new RomInfo.RomInfoBuilder(ResourceLocation.fromNamespaceAndPath("kubejs", "defaultrom"));
+            RomInfo defaultRomInfo = new RomInfo(defaultRom.romPath("dingusprimeacm:rom/defaultrom.gb"));
+            registry.register(ResourceLocation.fromNamespaceAndPath("kubejs", "defaultrom"), defaultRomInfo);
 
 
         });

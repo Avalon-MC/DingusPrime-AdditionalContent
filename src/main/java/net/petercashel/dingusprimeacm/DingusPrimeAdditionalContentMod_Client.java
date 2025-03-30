@@ -2,31 +2,23 @@ package net.petercashel.dingusprimeacm;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.registries.ClientRegistryManager;
-import net.petercashel.dingusprimeacm.DingusPrimeAdditionalContentMod;
-import net.petercashel.dingusprimeacm.kubejs.dingusprimeKubeJSPlugin;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.GameboyInventoryMenuScreen;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.GameboyMenuScreen;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.emulation.GameboyAudio;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.emulation.GameboyController;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.client.emulation.GameboyDisplay;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 @EventBusSubscriber(modid = DingusPrimeAdditionalContentMod.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -66,6 +58,13 @@ public class DingusPrimeAdditionalContentMod_Client {
     public static KeyMapping WithGUIConflictContext(KeyMapping mapping) {
         mapping.setKeyConflictContext(KeyConflictContext.GUI);
         return mapping;
+    }
+
+    @SubscribeEvent
+    // Event is listened to on the mod event bus
+    public static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(DingusPrimeAdditionalContentMod.GAMEBOY_INVENTORY_MENU.get(), GameboyInventoryMenuScreen::new);
+        event.register(DingusPrimeAdditionalContentMod.GAMEBOY_MENU.get(), GameboyMenuScreen::new);
     }
 
     @SubscribeEvent
@@ -152,7 +151,7 @@ public class DingusPrimeAdditionalContentMod_Client {
         @SubscribeEvent
         public static void onClientDisconnectionFromServer(net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingOut event) {
             try {
-                //GameboyScreen.lastInstance.emulator.StopEmulation();
+                GameboyMenuScreen.lastInstance.emulator.StopEmulation();
             } catch (Exception ex) {
                 //I dont care
             }
@@ -161,9 +160,9 @@ public class DingusPrimeAdditionalContentMod_Client {
     }
 
     private static ArrayList<Lazy<KeyMapping>> GBBinds;
-    //public static GameboyController controller = new GameboyController();
-    //public static GameboyDisplay gameboyDisplay = new GameboyDisplay();
-    //public static GameboyAudio gameboyAudio = new GameboyAudio();
+    public static GameboyController controller = new GameboyController();
+    public static GameboyDisplay gameboyDisplay = new GameboyDisplay();
+    public static GameboyAudio gameboyAudio = new GameboyAudio();
 
 
     public static boolean HandlePressed(int pKeyCode, int pScanCode, int pModifiers) {
@@ -171,7 +170,7 @@ public class DingusPrimeAdditionalContentMod_Client {
             for (int i = 0; i < GBBinds.size(); i++) {
                 KeyMapping mapping = GBBinds.get(i).get();
                 if (mapping.isActiveAndMatches(InputConstants.getKey(pKeyCode, pScanCode))) {
-                    //controller.UpdateBinding(mapping, true);
+                    controller.UpdateBinding(mapping, true);
                     return true;
                 }
             }
@@ -183,7 +182,7 @@ public class DingusPrimeAdditionalContentMod_Client {
             for (int i = 0; i < GBBinds.size(); i++) {
                 KeyMapping mapping = GBBinds.get(i).get();
                 if (mapping.isActiveAndMatches(InputConstants.getKey(pKeyCode, pScanCode))) {
-                    //controller.UpdateBinding(mapping, false);
+                    controller.UpdateBinding(mapping, false);
                     return true;
                 }
             }

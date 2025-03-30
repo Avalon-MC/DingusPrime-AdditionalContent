@@ -14,9 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.MutableDataComponentHolder;
 import net.petercashel.dingusprimeacm.DingusPrimeAdditionalContentMod;
-import net.petercashel.dingusprimeacm.DingusRegistries;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.datacomponent.CartItemDataComponent;
 
 import java.util.List;
@@ -26,6 +24,7 @@ public class GameBoyCartItem extends Item {
     public GameBoyCartItem(Properties properties) {
         super(properties);
     }
+
 
     @Override
     public DataComponentMap components() {
@@ -175,5 +174,21 @@ public class GameBoyCartItem extends Item {
             this.gameID = v;
             return this;
         }
+    }
+
+
+    //Data Component Helper
+    public static CartItemDataComponent GetDataComponent(ItemStack cartStack) {
+        if (cartStack.getComponents().has(DingusPrimeAdditionalContentMod.CART_ITEM_DATA_COMPONENT.get())) {
+            return cartStack.getComponents().get(DingusPrimeAdditionalContentMod.CART_ITEM_DATA_COMPONENT.get());
+        }
+
+        if (cartStack.getItem() instanceof GameBoyCartItem item) {
+            var newComponent = new CartItemDataComponent(item.gameID, UUID.randomUUID().toString());
+            cartStack.set(DingusPrimeAdditionalContentMod.CART_ITEM_DATA_COMPONENT.get(), newComponent);
+
+            return newComponent;
+        }
+        return null;
     }
 }

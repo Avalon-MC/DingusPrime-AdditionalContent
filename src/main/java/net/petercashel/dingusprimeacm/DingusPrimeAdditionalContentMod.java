@@ -1,9 +1,22 @@
 package net.petercashel.dingusprimeacm;
 
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.inventory.MenuType;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.items.ComponentItemHandler;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.HandlerThread;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.petercashel.dingusprimeacm.datagen.DataGeneration;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyInventoryMenu;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.container.GameboyMenu;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.datacomponent.CartItemDataComponent;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyItem;
+import net.petercashel.dingusprimeacm.networking.PacketHandler;
 import net.petercashel.dingusprimeacm.world.WorldDataManager;
 import org.slf4j.Logger;
 
@@ -75,6 +88,10 @@ public class DingusPrimeAdditionalContentMod
             }).build());
 
 
+    public static final DeferredRegister<MenuType<?>> MENU_TYPE_DEFERRED_REGISTER = DeferredRegister.create(BuiltInRegistries.MENU, MODID);
+
+    public static final Supplier<MenuType<GameboyInventoryMenu>> GAMEBOY_INVENTORY_MENU = MENU_TYPE_DEFERRED_REGISTER.register("gameboy_inventory_menu", () -> new MenuType<GameboyInventoryMenu>(GameboyInventoryMenu::new, FeatureFlags.DEFAULT_FLAGS));
+    public static final Supplier<MenuType<GameboyMenu>> GAMEBOY_MENU = MENU_TYPE_DEFERRED_REGISTER.register("gameboy_menu", () -> new MenuType<GameboyMenu>(GameboyMenu::new, FeatureFlags.DEFAULT_FLAGS));
 
 
     public static final DeferredRegister.DataComponents DATA_COMPONENTS_REGISTRAR = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, DingusPrimeAdditionalContentMod.MODID);
@@ -88,6 +105,16 @@ public class DingusPrimeAdditionalContentMod
                     .networkSynchronized(CartItemDataComponent.CARTITEM_STREAM_CODEC)
     );
 
+    public void registerCapabilities(RegisterCapabilitiesEvent event) {
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (item.getClass() == GameBoyItem.class) {
+                event.registerItem(Capabilities.ItemHandler.ITEM,
+                        (stack, ctx) -> new ComponentItemHandler(stack, DataComponents.CONTAINER, 1),
+                        item
+                );
+            }
+        }
+    }
 
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
@@ -104,12 +131,16 @@ public class DingusPrimeAdditionalContentMod
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
 
+        MENU_TYPE_DEFERRED_REGISTER.register(modEventBus);
+
         DATA_COMPONENTS_REGISTRAR.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (DingusPrimeAdditionalContentMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
+
+        modEventBus.addListener(this::registerCapabilities);
 
         // Register the DingusRegistries class to the mod event bus
         modEventBus.register(DingusRegistries.class);
@@ -157,6 +188,19 @@ public class DingusPrimeAdditionalContentMod
     @SubscribeEvent
     public void onServerStarted(ServerStartedEvent event) {
         WorldDataManager.OnServerStarted(event);
+    }
+
+
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD)
+    public static class ModEvents
+    {
+        @SubscribeEvent
+        public static void register(final RegisterPayloadHandlersEvent event) {
+            // Sets the current network version
+            final PayloadRegistrar registrar = event.registrar("1")
+                    .executesOn(HandlerThread.NETWORK);
+            PacketHandler.RegisterNetwork(registrar);
+        }
     }
 
 

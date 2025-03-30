@@ -16,6 +16,7 @@ import net.petercashel.dingusprimeacm.DingusRegistries;
 import net.petercashel.dingusprimeacm.kubejs.basictypes.CustomCardinalBlockBuilder;
 import net.petercashel.dingusprimeacm.kubejs.types.flatpack.FlatpackBlockJS;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyCartItem;
+import net.petercashel.dingusprimeacm.kubejs.types.gameboy.item.GameBoyItem;
 import net.petercashel.dingusprimeacm.kubejs.types.gameboy.registry.RomInfo;
 import net.petercashel.dingusprimeacm.kubejs.types.lamps.LampBlockJS;
 
@@ -59,6 +60,7 @@ public class dingusprimeKubeJSPlugin implements KubeJSPlugin {
 
         registry.of(Registries.ITEM, reg -> {
             reg.add("gbcart", GameBoyCartItem.GBCartridgeBuilder.class, GameBoyCartItem.GBCartridgeBuilder::new);
+            reg.add("gameboy", GameBoyItem.GameBoyBuilder.class, GameBoyItem.GameBoyBuilder::new);
 
         });
 
@@ -72,14 +74,6 @@ public class dingusprimeKubeJSPlugin implements KubeJSPlugin {
     public void registerServerRegistries(ServerRegistryRegistry registry) {
         // Add your code here
     }
-
-
-    public static void RomRegistryEvent(RegisterEvent. RegisterHelper<RomInfo> registry, Registry<RomInfo> rominfoRegistry, ResourceKey<Registry<RomInfo>> rominfoRegistryKey, RegisterEvent event) {
-        //How
-
-
-    }
-
 
 
     @Override
